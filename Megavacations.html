@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Un Toque - EcoDrivers</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background-color: #0d131d;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            background-color: #17212f;
+            border: 1px solid #233143;
+            border-radius: 20px;
+            padding: 30px 24px;
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+        .title {
+            font-size: 26px;
+            font-weight: 700;
+            color: #29a3f2;
+            margin-bottom: 6px;
+        }
+        .subtitle {
+            font-size: 13px;
+            color: #8fa0b5;
+            margin-bottom: 24px;
+        }
+        .btn-bdv {
+            display: block;
+            background-color: #0084c7;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 12px rgba(0, 132, 199, 0.3);
+            transition: background-color 0.2s;
+        }
+        .btn-bdv:active {
+            background-color: #006ea6;
+        }
+        .section-title {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            color: #64778d;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .bank-info {
+            font-size: 13px;
+            color: #8fa0b5;
+            margin-bottom: 16px;
+        }
+        .btn-copy {
+            background-color: #222f3e;
+            color: #ffffff;
+            border: 1px solid #2c3e50;
+            border-radius: 12px;
+            padding: 14px;
+            width: 100%;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            cursor: pointer;
+            position: relative;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .btn-copy:active {
+            background-color: #2c3e50;
+            border-color: #29a3f2;
+        }
+        .toast {
+            visibility: hidden;
+            background-color: #29a3f2;
+            color: #ffffff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 8px 16px;
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 13px;
+            font-weight: 600;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 class="title">Un Toque</h1>
+        <p class="subtitle">Selecciona tu método de pago</p>
+
+        <!-- Botón BDV con el link dinámico passthrough -->
+        <a href="https://bdvdigital.banvenez.com/pagomovil?id=J507055108&phone=584123096908&bank=0108&description=9dxBliWt4XnVSB0LTqNasQ%3D%3D&amount=100" class="btn-bdv" target="_blank">
+            Pagar con Banco de Venezuela
+        </a>
+
+        <div class="section-title">Banco Exterior / Provincial</div>
+        <div class="bank-info">Banco: 0108 - Provincial</div>
+
+        <button class="btn-copy" onclick="copyToClipboard('507055108', 'Cédula copiada')">
+            Copiar Cédula (J-507055108)
+        </button>
+
+        <button class="btn-copy" onclick="copyToClipboard('04123096908', 'Teléfono copiado')">
+            Copiar Teléfono (0412-3096908)
+        </button>
+    </div>
+
+    <div id="toast" class="toast">Texto copiado</div>
+
+    <script>
+        function copyToClipboard(text, message) {
+            navigator.clipboard.writeText(text).then(function() {
+                showToast(message);
+            }, function() {
+                // Fallback para navegadores antiguos
+                var dummy = document.createElement("textarea");
+                document.body.appendChild(dummy);
+                dummy.value = text;
+                dummy.select();
+                document.execCommand("copy");
+                document.body.removeChild(dummy);
+                showToast(message);
+            });
+        }
+
+        function showToast(message) {
+            var toast = document.getElementById("toast");
+            toast.innerText = message;
+            toast.className = "toast show";
+            setTimeout(function(){ 
+                toast.className = toast.className.replace("toast show", "toast"); 
+            }, 2000);
+        }
+    </script>
+
+</body>
+</html>
