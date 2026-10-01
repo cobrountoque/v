@@ -12,139 +12,189 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
         body {
-            background-color: #08121e;
-            color: #ffffff;
+            background-color: #f4f6f9;
+            color: #2c3e50;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
+            padding: 16px;
         }
-        .container {
-            background: linear-gradient(180deg, #0e1c2e 0%, #0a1523 100%);
-            border: 1px solid #1c2d42;
-            border-radius: 20px;
-            padding: 32px 24px;
+        .app-card {
+            background-color: #ffffff;
+            border-radius: 28px;
+            padding: 32px 24px 100px 24px;
             width: 100%;
             max-width: 390px;
             text-align: center;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
             position: relative;
             overflow: hidden;
+            min-height: 620px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
-        /* Barra superior con color corporativo BDV */
-        .brand-bar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, #e30613 0%, #0072bc 100%);
+
+        /* Logo BDV e Isotipo en SVG */
+        .brand-header {
+            margin-top: 10px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
         }
-        .bdv-logo-header {
-            margin-bottom: 16px;
+        .bdv-v-logo {
+            width: 46px;
+            height: 46px;
         }
-        .bdv-badge {
-            display: inline-block;
-            background-color: rgba(0, 114, 188, 0.15);
-            border: 1px solid rgba(0, 114, 188, 0.4);
-            color: #29a3f2;
-            font-size: 11px;
+        .bdv-text-logo {
+            font-size: 34px;
+            font-weight: 900;
+            color: #000000;
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+
+        .header-title {
+            font-size: 18px;
             font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 20px;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-        }
-        .title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #ffffff;
+            color: #1e293b;
             margin-bottom: 4px;
         }
-        .subtitle {
+        .header-subtitle {
             font-size: 13px;
-            color: #8fa0b5;
+            color: #64748b;
             margin-bottom: 24px;
         }
-        .btn-bdv-main {
+
+        /* Botón Principal Azul BDV */
+        .btn-bdv-primary {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            background: linear-gradient(135deg, #0072bc 0%, #005696 100%);
+            background-color: #2b6cb0;
             color: #ffffff;
             text-decoration: none;
             font-size: 15px;
-            font-weight: 700;
-            padding: 16px;
-            border-radius: 12px;
+            font-weight: 600;
+            padding: 15px 20px;
+            border-radius: 14px;
             margin-bottom: 24px;
-            box-shadow: 0 4px 15px rgba(0, 114, 188, 0.4);
-            border: 1px solid #1a8ad4;
-            transition: transform 0.1s;
+            box-shadow: 0 4px 12px rgba(43, 108, 176, 0.3);
+            border: none;
+            transition: background-color 0.2s, transform 0.1s;
         }
-        .btn-bdv-main:active {
+        .btn-bdv-primary:active {
+            background-color: #1e4e80;
             transform: scale(0.98);
         }
+
         .divider {
             height: 1px;
-            background-color: #1c2d42;
-            margin: 20px 0;
+            background-color: #e2e8f0;
+            margin: 16px 0 20px 0;
         }
-        .section-title {
+
+        .merchant-section {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        .merchant-label {
             font-size: 11px;
             font-weight: 700;
-            letter-spacing: 1.2px;
-            color: #64778d;
+            color: #64748b;
             text-transform: uppercase;
-            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
         }
         .merchant-name {
             font-size: 16px;
-            font-weight: 600;
-            color: #e2e8f0;
-            margin-bottom: 16px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        /* Botones para copiar datos */
+        .copy-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
         .btn-copy {
-            background-color: #142132;
-            color: #ffffff;
-            border: 1px solid #23354d;
+            background-color: #ffffff;
+            color: #1e293b;
+            border: 1px solid #cbd5e1;
             border-radius: 12px;
-            padding: 14px;
-            width: 100%;
+            padding: 13px 16px;
             font-size: 14px;
             font-weight: 600;
-            margin-bottom: 12px;
-            cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: background-color 0.2s, border-color 0.2s;
+            cursor: pointer;
+            transition: all 0.2s;
         }
         .btn-copy:active {
-            background-color: #1c2d42;
-            border-color: #0072bc;
+            background-color: #f1f5f9;
+            border-color: #2b6cb0;
         }
-        .copy-icon {
+        .copy-badge {
             font-size: 12px;
-            color: #0072bc;
-            background-color: rgba(0, 114, 188, 0.15);
-            padding: 4px 8px;
-            border-radius: 6px;
+            color: #2b6cb0;
+            background-color: #ebf8ff;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-weight: 700;
         }
-        .footer-tag {
-            font-size: 11px;
-            color: #4a5a6e;
-            margin-top: 20px;
+
+        /* Franjas tricolor BDV en el pie de página (Amarillo, Azul, Rojo) */
+        .bdv-footer-stripes {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            pointer-events: none;
         }
+        .stripe-yellow {
+            position: absolute;
+            bottom: -20px;
+            left: -30px;
+            width: 220px;
+            height: 70px;
+            background-color: #f59e0b;
+            transform: rotate(-12deg);
+        }
+        .stripe-blue {
+            position: absolute;
+            bottom: -25px;
+            left: 40px;
+            width: 320px;
+            height: 70px;
+            background-color: #2563eb;
+            transform: rotate(-12deg);
+        }
+        .stripe-red {
+            position: absolute;
+            bottom: -45px;
+            right: -20px;
+            width: 200px;
+            height: 65px;
+            background-color: #dc2626;
+            transform: rotate(-12deg);
+        }
+
+        /* Toast de notificación */
         .toast {
             visibility: hidden;
-            background-color: #0072bc;
+            background-color: #1e293b;
             color: #ffffff;
             text-align: center;
-            border-radius: 8px;
+            border-radius: 10px;
             padding: 10px 18px;
             position: fixed;
             bottom: 30px;
@@ -154,7 +204,7 @@
             font-weight: 600;
             z-index: 1000;
             opacity: 0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             transition: opacity 0.3s, visibility 0.3s;
         }
         .toast.show {
@@ -165,39 +215,61 @@
 </head>
 <body>
 
-    <div class="container">
-        <div class="brand-bar"></div>
+    <div class="app-card">
+        <div>
+            <!-- Header con Isotipo "V" Tricolor y Nombre BDV -->
+            <div class="brand-header">
+                <svg class="bdv-v-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Ala Amarilla -->
+                    <path d="M15 15 L45 85 L30 85 L5 25 Z" fill="#EAB308" />
+                    <!-- Ala Azul -->
+                    <path d="M42 25 L65 85 L48 85 L30 35 Z" fill="#1D4ED8" />
+                    <!-- Ala Roja -->
+                    <path d="M72 20 L52 85 L68 85 L90 28 Z" fill="#DC2626" />
+                </svg>
+                <span class="bdv-text-logo">BDV</span>
+            </div>
 
-        <div class="bdv-badge">Banco de Venezuela</div>
-        <h1 class="title">Pago Móvil BDV</h1>
-        <p class="subtitle">Terminal de Pago Interbancario</p>
+            <h1 class="header-title">PagomóvilBDV QR</h1>
+            <p class="header-subtitle">Terminal Oficial de Recepción de Pagos</p>
 
-        <!-- Botón BDV Directo -->
-        <a href="https://bdvdigital.banvenez.com/pagomovil?id=V30911172&phone=584126732004&bank=0105&description=9dxBliWt4XnVSB0LTqNasQ%3D%3D&amount=100" class="btn-bdv-main" target="_blank">
-            <span>Pagar directo con BDV App</span>
-        </a>
+            <!-- Botón estilo Iniciar Sesión / PagomóvilBDV -->
+            <a href="https://bdvdigital.banvenez.com/pagomovil?id=V30911172&phone=584126732004&bank=0105&description=9dxBliWt4XnVSB0LTqNasQ%3D%3D&amount=100" class="btn-bdv-primary" target="_blank">
+                Abrir App BDV Digital
+            </a>
 
-        <div class="divider"></div>
+            <div class="divider"></div>
 
-        <div class="section-title">Datos para Pago Móvil desde otros bancos</div>
-        <div class="merchant-name">Comercio: EcoDrivers</div>
+            <div class="merchant-section">
+                <div class="merchant-label">Comercio Afiliado</div>
+                <div class="merchant-name">EcoDrivers</div>
+            </div>
 
-        <button class="btn-copy" onclick="copyToClipboard('0102', 'Código de Banco copiado')">
-            <span>Banco: 0102 - BDV</span>
-            <span class="copy-icon">Copiar</span>
-        </button>
+            <!-- Botones de copiar datos -->
+            <div class="copy-group">
+                <button class="btn-copy" onclick="copyToClipboard('0102', 'Código BDV copiado')">
+                    <span>Banco: 0102 - BDV</span>
+                    <span class="copy-badge">Copiar</span>
+                </button>
 
-        <button class="btn-copy" onclick="copyToClipboard('30911172', 'Cedula copiada')">
-            <span>Cedula: V-30911172</span>
-            <span class="copy-icon">Copiar</span>
-        </button>
+                <button class="btn-copy" onclick="copyToClipboard('30911172', 'Cedula copiada')">
+                    <span>Cedula: V-30911172</span>
+                    <span class="copy-badge">Copiar</span>
+                </button>
 
-        <button class="btn-copy" onclick="copyToClipboard('04126732004', 'Teléfono copiado')">
-            <span>Teléfono: 0412-6732004</span>
-            <span class="copy-icon">Copiar</span>
-        </button>
+                <button class="btn-copy" onclick="copyToClipboard('04126732004', 'Teléfono copiado')">
+                    <span>Teléfono: 0412-6732004</span>
+                    <span class="copy-badge">Copiar</span>
+                </button>
+            </div>
+        </div>
 
-        <div class="footer-tag">Tecnología de Cobro Inteligente NFC por Un Toque</div>
+        <!-- Diseño de franjas diagonales del fondo de la App del BDV -->
+        <div class="bdv-footer-stripes">
+            <div class="stripe-yellow"></div>
+            <div class="stripe-blue"></div>
+            <div class="stripe-red"></div>
+        </div>
     </div>
 
     <div id="toast" class="toast">Texto copiado</div>
