@@ -23,47 +23,32 @@
         .app-card {
             background-color: #ffffff;
             border-radius: 28px;
-            padding: 32px 24px 80px 24px;
+            padding: 32px 24px 70px 24px;
             width: 100%;
             max-width: 390px;
             text-align: center;
             box-shadow: 0 10px 25px rgba(29, 53, 137, 0.1);
             position: relative;
             overflow: hidden;
-            min-height: 600px;
+            min-height: 620px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
 
-        /* Header con Isotipo "T" del Banco del Tesoro */
+        /* Header con la imagen del Logo del Banco del Tesoro */
         .brand-header {
             margin-top: 10px;
             margin-bottom: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
         }
         
-        /* Logo SVG preciso de la "T" del Banco del Tesoro */
-        .tesoro-logo-svg {
-            width: 65px;
-            height: 65px;
-        }
-        
-        .tesoro-text-title {
-            font-size: 26px;
-            font-weight: 800;
-            color: #1d3589;
-            letter-spacing: -0.5px;
-            line-height: 1.1;
-        }
-        .tesoro-tagline {
-            font-size: 12px;
-            color: #e32219;
-            font-style: italic;
-            font-weight: 600;
+        .tesoro-logo-img {
+            max-width: 220px;
+            height: auto;
+            margin-bottom: 8px;
         }
 
         .header-title {
@@ -75,11 +60,11 @@
         .header-subtitle {
             font-size: 13px;
             color: #64748b;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
-        /* Botón Principal de Pago BDV con datos precargados hacia el Banco del Tesoro */
-        .btn-tesoro-primary {
+        /* Botón Arriba: Abrir App Banco del Tesoro */
+        .btn-bt-app {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -90,12 +75,12 @@
             font-weight: 700;
             padding: 15px 20px;
             border-radius: 14px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             box-shadow: 0 4px 14px rgba(29, 53, 137, 0.35);
             border: none;
-            transition: background-color 0.2s, transform 0.1s;
+            transition: transform 0.1s;
         }
-        .btn-tesoro-primary:active {
+        .btn-bt-app:active {
             transform: scale(0.98);
         }
 
@@ -105,25 +90,34 @@
             margin: 16px 0 20px 0;
         }
 
-        .merchant-section {
-            background-color: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 20px;
-        }
-        .merchant-label {
-            font-size: 11px;
+        .payment-section-title {
+            font-size: 12px;
             font-weight: 700;
             color: #64748b;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 4px;
+            margin-bottom: 12px;
         }
-        .merchant-name {
-            font-size: 16px;
+
+        /* Botón Abajo: Pagar con BDV dentro de la sección de pagos */
+        .btn-bdv-payment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #0072bc;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
             font-weight: 700;
-            color: #1d3589;
+            padding: 14px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 3px 10px rgba(0, 114, 188, 0.25);
+            border: none;
+            transition: transform 0.1s;
+        }
+        .btn-bdv-payment:active {
+            transform: scale(0.98);
         }
 
         /* Botones de copiar datos */
@@ -165,7 +159,7 @@
             bottom: -20px;
             left: -20px;
             right: -20px;
-            height: 70px;
+            height: 65px;
             pointer-events: none;
         }
         .shape-blue {
@@ -173,7 +167,7 @@
             bottom: 0;
             left: 0;
             width: 65%;
-            height: 60px;
+            height: 55px;
             background-color: #2996da;
             border-top-right-radius: 60px;
         }
@@ -182,7 +176,7 @@
             bottom: 0;
             right: 0;
             width: 55%;
-            height: 50px;
+            height: 45px;
             background-color: #e32219;
             border-top-left-radius: 60px;
         }
@@ -216,39 +210,29 @@
 
     <div class="app-card">
         <div>
-            <!-- Branding Banco del Tesoro -->
+            <!-- Branding con la imagen oficial cargada -->
             <div class="brand-header">
-                <!-- SVG de la T exacta del Banco del Tesoro -->
-                <svg class="tesoro-logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Parte Superior Horizontal Celeste (Izquierda) -->
-                    <path d="M15 25 C15 16, 22 10, 32 10 L48 10 C48 20, 42 28, 30 28 L25 28 C18 28, 15 25, 15 25 Z" fill="#2996DA" />
-                    <!-- Parte Superior Horizontal Amarilla (Derecha) -->
-                    <path d="M48 10 L68 10 C78 10, 85 16, 85 25 C85 25, 82 28, 75 28 L58 28 C48 28, 48 20, 48 10 Z" fill="#F4A817" />
-                    <!-- Tronco Vertical Azul (Izquierda) -->
-                    <path d="M32 26 L50 26 L50 70 C50 80, 42 88, 32 88 C22 88, 16 80, 16 70 L16 35 C16 28, 22 26, 32 26 Z" fill="#1D3589" />
-                    <!-- Tronco Vertical Rojo (Derecha) -->
-                    <path d="M50 26 L68 26 C78 26, 84 32, 84 40 L84 70 C84 80, 76 88, 66 88 C56 88, 50 80, 50 70 Z" fill="#E32219" />
-                </svg>
-                <div class="tesoro-text-title">Banco del Tesoro</div>
-                <div class="tesoro-tagline">Revolucionamos la Banca</div>
+                <img src="IMG_0383.png" alt="Banco del Tesoro" class="tesoro-logo-img">
             </div>
 
             <h1 class="header-title">Tesoro Pago Móvil (P2P / P2C)</h1>
             <p class="header-subtitle">Terminal Oficial de Cobro Interbancario</p>
 
-            <!-- Botón de Pago directo con la tecnología de BDV (con banco destino 0163) -->
-            <a href="https://bdvdigital.banvenez.com/pagomovil?id=J30911172&phone=584121234567&bank=0163&description=Pago%20a%20Banco%20del%20Tesoro&amount=100" class="btn-tesoro-primary" target="_blank">
-                Pagar directo con BDV App
+            <!-- Botón Superior: Abrir App Oficial BT Móvil -->
+            <a href="https://play.google.com/store/apps/details?id=com.bancodeltesoro.btmovil" class="btn-bt-app" target="_blank">
+                Abrir BT Móvil (Banco del Tesoro)
             </a>
 
             <div class="divider"></div>
 
-            <div class="merchant-section">
-                <div class="merchant-label">Comercio Afiliado</div>
-                <div class="merchant-name">EcoDrivers</div>
-            </div>
+            <div class="payment-section-title">Opciones de Pago Móvil</div>
 
-            <!-- Botones de copiar -->
+            <!-- Botón Inferior: Pagar rápido con BDV -->
+            <a href="https://bdvdigital.banvenez.com/pagomovil?id=J30911172&phone=584121234567&bank=0163&description=Pago%20a%20Banco%20del%20Tesoro&amount=100" class="btn-bdv-payment" target="_blank">
+                Pagar directo con BDV App
+            </a>
+
+            <!-- Botones de copiar datos -->
             <div class="copy-group">
                 <button class="btn-copy" onclick="copyToClipboard('0163', 'Código Tesoro copiado')">
                     <span>Banco: 0163 - Banco del Tesoro</span>
