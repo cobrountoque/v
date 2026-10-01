@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco de Venezuela - Visor de Pago Móvil</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background-color: #08121e;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            background: linear-gradient(180deg, #0e1c2e 0%, #0a1523 100%);
+            border: 1px solid #1c2d42;
+            border-radius: 20px;
+            padding: 32px 24px;
+            width: 100%;
+            max-width: 390px;
+            text-align: center;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+            position: relative;
+            overflow: hidden;
+        }
+        /* Barra superior con color corporativo BDV */
+        .brand-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #e30613 0%, #0072bc 100%);
+        }
+        .bdv-logo-header {
+            margin-bottom: 16px;
+        }
+        .bdv-badge {
+            display: inline-block;
+            background-color: rgba(0, 114, 188, 0.15);
+            border: 1px solid rgba(0, 114, 188, 0.4);
+            color: #29a3f2;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        .title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+        .subtitle {
+            font-size: 13px;
+            color: #8fa0b5;
+            margin-bottom: 24px;
+        }
+        .btn-bdv-main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #0072bc 0%, #005696 100%);
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 700;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 15px rgba(0, 114, 188, 0.4);
+            border: 1px solid #1a8ad4;
+            transition: transform 0.1s;
+        }
+        .btn-bdv-main:active {
+            transform: scale(0.98);
+        }
+        .divider {
+            height: 1px;
+            background-color: #1c2d42;
+            margin: 20px 0;
+        }
+        .section-title {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            color: #64778d;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .merchant-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e2e8f0;
+            margin-bottom: 16px;
+        }
+        .btn-copy {
+            background-color: #142132;
+            color: #ffffff;
+            border: 1px solid #23354d;
+            border-radius: 12px;
+            padding: 14px;
+            width: 100%;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .btn-copy:active {
+            background-color: #1c2d42;
+            border-color: #0072bc;
+        }
+        .copy-icon {
+            font-size: 12px;
+            color: #0072bc;
+            background-color: rgba(0, 114, 188, 0.15);
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+        .footer-tag {
+            font-size: 11px;
+            color: #4a5a6e;
+            margin-top: 20px;
+        }
+        .toast {
+            visibility: hidden;
+            background-color: #0072bc;
+            color: #ffffff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 10px 18px;
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 13px;
+            font-weight: 600;
+            z-index: 1000;
+            opacity: 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="brand-bar"></div>
+
+        <div class="bdv-badge">Banco de Venezuela</div>
+        <h1 class="title">Pago Móvil BDV</h1>
+        <p class="subtitle">Terminal de Pago Interbancario</p>
+
+        <!-- Botón BDV Directo -->
+        <a href="https://bdvdigital.banvenez.com/pagomovil?id=V30911172&phone=584126732004&bank=0105&description=9dxBliWt4XnVSB0LTqNasQ%3D%3D&amount=100" class="btn-bdv-main" target="_blank">
+            <span>Pagar directo con BDV App</span>
+        </a>
+
+        <div class="divider"></div>
+
+        <div class="section-title">Datos para Pago Móvil desde otros bancos</div>
+        <div class="merchant-name">Comercio: EcoDrivers</div>
+
+        <button class="btn-copy" onclick="copyToClipboard('0102', 'Código de Banco copiado')">
+            <span>Banco: 0102 - BDV</span>
+            <span class="copy-icon">Copiar</span>
+        </button>
+
+        <button class="btn-copy" onclick="copyToClipboard('30911172', 'Cedula copiada')">
+            <span>Cedula: V-30911172</span>
+            <span class="copy-icon">Copiar</span>
+        </button>
+
+        <button class="btn-copy" onclick="copyToClipboard('04126732004', 'Teléfono copiado')">
+            <span>Teléfono: 0412-6732004</span>
+            <span class="copy-icon">Copiar</span>
+        </button>
+
+        <div class="footer-tag">Tecnología de Cobro Inteligente NFC por Un Toque</div>
+    </div>
+
+    <div id="toast" class="toast">Texto copiado</div>
+
+    <script>
+        function copyToClipboard(text, message) {
+            navigator.clipboard.writeText(text).then(function() {
+                showToast(message);
+            }, function() {
+                var dummy = document.createElement("textarea");
+                document.body.appendChild(dummy);
+                dummy.value = text;
+                dummy.select();
+                document.execCommand("copy");
+                document.body.removeChild(dummy);
+                showToast(message);
+            });
+        }
+
+        function showToast(message) {
+            var toast = document.getElementById("toast");
+            toast.innerText = message;
+            toast.className = "toast show";
+            setTimeout(function(){ 
+                toast.className = toast.className.replace("toast show", "toast"); 
+            }, 2000);
+        }
+    </script>
+
+</body>
+</html>
