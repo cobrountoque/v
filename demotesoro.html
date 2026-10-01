@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco del Tesoro - Tesoro Pago Móvil</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background-color: #f0f4f8;
+            color: #1d3589;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 16px;
+        }
+        .app-card {
+            background-color: #ffffff;
+            border-radius: 28px;
+            padding: 32px 24px 100px 24px;
+            width: 100%;
+            max-width: 390px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(29, 53, 137, 0.1);
+            position: relative;
+            overflow: hidden;
+            min-height: 620px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Curva superior decorativa amarilla/celeste */
+        .top-decoration {
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 160px;
+            height: 160px;
+            background: radial-gradient(circle, #f4a817 0%, #2996da 100%);
+            border-radius: 50%;
+            opacity: 0.2;
+            pointer-events: none;
+        }
+
+        /* Header con Isotipo "T" del Banco del Tesoro */
+        .brand-header {
+            margin-top: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .tesoro-logo-svg {
+            width: 60px;
+            height: 60px;
+        }
+        .tesoro-text-title {
+            font-size: 26px;
+            font-weight: 800;
+            color: #1d3589;
+            letter-spacing: -0.5px;
+            line-height: 1.1;
+        }
+        .tesoro-tagline {
+            font-size: 11px;
+            color: #e32219;
+            font-style: italic;
+            font-weight: 600;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1d3589;
+            margin-bottom: 4px;
+        }
+        .header-subtitle {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 24px;
+        }
+
+        /* Botón Principal Azul Tesoro */
+        .btn-tesoro-primary {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1d3589 0%, #162766 100%);
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 700;
+            padding: 15px 20px;
+            border-radius: 14px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 14px rgba(29, 53, 137, 0.35);
+            border: none;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .btn-tesoro-primary:active {
+            transform: scale(0.98);
+        }
+
+        .divider {
+            height: 1px;
+            background-color: #e2e8f0;
+            margin: 16px 0 20px 0;
+        }
+
+        .merchant-section {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        .merchant-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        .merchant-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1d3589;
+        }
+
+        /* Botones de copiar datos */
+        .copy-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .btn-copy {
+            background-color: #ffffff;
+            color: #1d3589;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 13px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-copy:active {
+            background-color: #f1f5f9;
+            border-color: #1d3589;
+        }
+        .copy-badge {
+            font-size: 12px;
+            color: #1d3589;
+            background-color: #eef2ff;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+
+        /* Formas orgánicas tricolor del Banco del Tesoro al fondo */
+        .tesoro-footer-shapes {
+            position: absolute;
+            bottom: -30px;
+            left: -40px;
+            right: -40px;
+            height: 90px;
+            pointer-events: none;
+        }
+        .shape-blue {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 70%;
+            height: 70px;
+            background-color: #2996da;
+            border-top-right-radius: 80px;
+            transform: rotate(-5deg);
+        }
+        .shape-red {
+            position: absolute;
+            bottom: -10px;
+            right: 0;
+            width: 60%;
+            height: 75px;
+            background-color: #e32219;
+            border-top-left-radius: 80px;
+            transform: rotate(3deg);
+        }
+        .shape-yellow {
+            position: absolute;
+            bottom: 25px;
+            right: 30%;
+            width: 80px;
+            height: 40px;
+            background-color: #f4a817;
+            border-radius: 50px;
+        }
+
+        /* Toast */
+        .toast {
+            visibility: hidden;
+            background-color: #1d3589;
+            color: #ffffff;
+            text-align: center;
+            border-radius: 10px;
+            padding: 10px 18px;
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 13px;
+            font-weight: 600;
+            z-index: 1000;
+            opacity: 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-card">
+        <div class="top-decoration"></div>
+
+        <div>
+            <!-- Branding Banco del Tesoro -->
+            <div class="brand-header">
+                <!-- Isotipo estilo T entrelazada (Celeste, Amarillo, Rojo) -->
+                <svg class="tesoro-logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="20" y="20" width="60" height="20" rx="10" fill="#2996DA" />
+                    <rect x="20" y="20" width="20" height="60" rx="10" fill="#F4A817" />
+                    <rect x="40" y="35" width="20" height="45" rx="10" fill="#E32219" />
+                </svg>
+                <div class="tesoro-text-title">Banco del Tesoro</div>
+                <div class="tesoro-tagline">Revolucionamos la Banca</div>
+            </div>
+
+            <h1 class="header-title">Tesoro Pago Móvil (P2P / P2C)</h1>
+            <p class="header-subtitle">Terminal Oficial de Cobro Interbancario</p>
+
+            <!-- Botón Principal -->
+            <a href="https://tesoroenlinea.bt.gob.ve" class="btn-tesoro-primary" target="_blank">
+                Abrir Tesoro en Línea
+            </a>
+
+            <div class="divider"></div>
+
+            <div class="merchant-section">
+                <div class="merchant-label">Comercio Afiliado</div>
+                <div class="merchant-name">EcoDrivers</div>
+            </div>
+
+            <!-- Botones de copiar -->
+            <div class="copy-group">
+                <button class="btn-copy" onclick="copyToClipboard('0163', 'Código Tesoro copiado')">
+                    <span>Banco: 0163 - Banco del Tesoro</span>
+                    <span class="copy-badge">Copiar</span>
+                </button>
+
+                <button class="btn-copy" onclick="copyToClipboard('30911172', 'Cedula copiada')">
+                    <span>Cedula: V-30911172</span>
+                    <span class="copy-badge">Copiar</span>
+                </button>
+
+                <button class="btn-copy" onclick="copyToClipboard('04121234567', 'Teléfono copiado')">
+                    <span>Teléfono: 0412-1234567</span>
+                    <span class="copy-badge">Copiar</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Curvas características del Banco del Tesoro en el pie -->
+        <div class="tesoro-footer-shapes">
+            <div class="shape-yellow"></div>
+            <div class="shape-blue"></div>
+            <div class="shape-red"></div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">Texto copiado</div>
+
+    <script>
+        function copyToClipboard(text, message) {
+            navigator.clipboard.writeText(text).then(function() {
+                showToast(message);
+            }, function() {
+                var dummy = document.createElement("textarea");
+                document.body.appendChild(dummy);
+                dummy.value = text;
+                dummy.select();
+                document.execCommand("copy");
+                document.body.removeChild(dummy);
+                showToast(message);
+            });
+        }
+
+        function showToast(message) {
+            var toast = document.getElementById("toast");
+            toast.innerText = message;
+            toast.className = "toast show";
+            setTimeout(function(){ 
+                toast.className = toast.className.replace("toast show", "toast"); 
+            }, 2000);
+        }
+    </script>
+
+</body>
+</html>
