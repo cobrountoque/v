@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago Móvil | Un Toque</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f5f6f8;
+            color: #3a3f47;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 16px;
+        }
+
+        .visor-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 28px;
+            width: 100%;
+            max-width: 380px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(58, 63, 71, 0.08);
+            text-align: center;
+            padding: 28px 20px;
+        }
+
+        /* Logo / Header "UN TOQUE" */
+        .brand-header {
+            margin-bottom: 20px;
+        }
+
+        .brand-logo {
+            max-width: 160px;
+            height: auto;
+        }
+
+        .bank-tag {
+            background-color: #eef6f8;
+            color: #4a8b99;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        /* Bloques de Datos de Pago */
+        .data-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .data-item {
+            background-color: #f8fafc;
+            border: 1px solid #edf2f7;
+            border-radius: 16px;
+            padding: 14px 16px;
+            text-align: left;
+            position: relative;
+        }
+
+        .data-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #4a8b99;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 4px;
+        }
+
+        .data-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: #3a3f47;
+            word-break: break-all;
+        }
+
+        /* Botón de Copiar rápido dentro del campo */
+        .btn-copy {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: #3a3f47;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-copy:active {
+            background-color: #4a8b99;
+            color: #ffffff;
+            border-color: #4a8b99;
+        }
+
+        /* Botón principal para abrir App/BT Móvil */
+        .btn-open-app {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            background-color: #4a8b99;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 16px;
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 700;
+            border: none;
+            box-shadow: 0 4px 14px rgba(74, 139, 153, 0.3);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-open-app:active {
+            transform: scale(0.98);
+            background-color: #3d737f;
+        }
+
+        .footer-text {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="visor-card">
+        <!-- Logo de Un Toque -->
+        <div class="brand-header">
+            <!-- Puedes reemplazar con <img src="untoque.jpg" class="brand-logo"> si tienes la imagen subida -->
+            <div style="font-size: 26px; font-weight: 900; color: #3a3f47; letter-spacing: -0.5px;">
+                UN <span style="color: #4a8b99;">TOQUE</span>
+            </div>
+        </div>
+
+        <div class="bank-tag">
+            Banco del Tesoro (0163)
+        </div>
+
+        <div class="data-group">
+            <!-- Banco -->
+            <div class="data-item">
+                <div class="data-label">Banco</div>
+                <div class="data-value">0163 - Banco del Tesoro</div>
+            </div>
+
+            <!-- Cédula / RIF -->
+            <div class="data-item">
+                <div class="data-label">Cédula / RIF</div>
+                <div class="data-value" id="cedula-val">V-00000000</div>
+                <button class="btn-copy" onclick="copiarTexto('cedula-val')">Copiar</button>
+            </div>
+
+            <!-- Teléfono -->
+            <div class="data-item">
+                <div class="data-label">Teléfono</div>
+                <div class="data-value" id="telefono-val">04120000000</div>
+                <button class="btn-copy" onclick="copiarTexto('telefono-val')">Copiar</button>
+            </div>
+        </div>
+
+        <!-- Botón para abrir la aplicación -->
+        <a href="btmovil://" onclick="abrirAppBT(event)" class="btn-open-app">
+            📲 Abrir App del Banco
+        </a>
+
+        <div class="footer-text">
+            Powered by UN TOQUE
+        </div>
+    </div>
+
+    <script>
+        function copiarTexto(elementId) {
+            const texto = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(texto).then(() => {
+                alert('¡Copiado al portapapeles!');
+            });
+        }
+
+        function abrirAppBT(event) {
+            // Intenta abrir el esquema de la app
+            window.location.href = "btmovil://";
+            
+            // Si no abre en 1.5s, redirige a la tienda
+            setTimeout(function() {
+                window.location.href = "https://play.google.com/store/apps/details?id=com.bancodeltesoro.btmovil";
+            }, 1500);
+        }
+    </script>
+
+</body>
+</html>
