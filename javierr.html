@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Javier Reinozo - Tarjeta Ejecutiva</title>
+    <title>Javier Reinozo - Samsung Center Service Manager</title>
     <style>
         * {
             box-sizing: border-box;
@@ -12,7 +12,7 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
         body {
-            background-color: #0d1117;
+            background-color: #0b0e14;
             color: #ffffff;
             display: flex;
             justify-content: center;
@@ -23,63 +23,65 @@
         .card-container {
             background-color: #161b22;
             border: 1px solid #30363d;
-            border-radius: 24px;
+            border-radius: 28px;
             width: 100%;
             max-width: 380px;
             overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
             text-align: center;
             padding-bottom: 30px;
         }
         
-        /* Imagen Banner Superior (Ajustada según su imagen) */
+        /* Banner Header */
         .banner-header {
             width: 100%;
-            height: 140px;
-            background: linear-gradient(135deg, #0042a5 0%, #001233 100%);
+            height: 120px;
+            background: linear-gradient(135deg, #034ea2 0%, #001e4d 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
         }
         .banner-title {
-            font-size: 28px;
-            font-weight: 900;
-            letter-spacing: 4px;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 3px;
             color: #ffffff;
-            text-transform: uppercase;
         }
 
         /* Foto de perfil */
         .profile-avatar {
-            width: 90px;
-            height: 90px;
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
             border: 4px solid #161b22;
-            margin-top: -45px;
-            background-color: #21262d;
+            margin-top: -55px;
             object-fit: cover;
-            position: relative;
-            z-index: 2;
+            background-color: #21262d;
         }
 
         .user-name {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 700;
-            margin-top: 12px;
+            margin-top: 10px;
             color: #f0f6fc;
         }
         .user-role {
             font-size: 13px;
+            color: #2996da;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+        .user-company {
+            font-size: 12px;
             color: #8b949e;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         /* Botones de enlaces */
         .links-group {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             padding: 0 20px;
         }
         .btn-link {
@@ -101,54 +103,69 @@
             transform: scale(0.98);
             background-color: #30363d;
         }
-        .btn-save-contact {
+        
+        /* Botón de Productos (Destacado) */
+        .btn-products {
             background: linear-gradient(135deg, #238636 0%, #2ea043 100%);
             color: #ffffff;
             border: none;
-            margin-top: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(46, 160, 67, 0.3);
+            margin-bottom: 4px;
         }
     </style>
 </head>
 <body>
 
     <div class="card-container">
-        <!-- Banner con imagen centrada -->
         <div class="banner-header">
-            <div class="banner-title">CURAÇAO</div>
+            <div class="banner-title">SAMSUNG by tekspot</div>
         </div>
 
-        <!-- Foto de Perfil (placeholder) -->
+        <!-- Foto enviada por Javier -->
         <div style="display: flex; justify-content: center;">
-            <div class="profile-avatar" style="display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:24px;">JR</div>
+            <img src="javier-foto.png" alt="Javier Reinozo" class="profile-avatar">
         </div>
 
         <h1 class="user-name">Javier Reinozo</h1>
-        <p class="user-role">Ejecutivo / Representante Comercial</p>
+        <p class="user-role">Samsung Center Service Manager</p>
+        <p class="user-company">CURAÇAO</p>
 
         <div class="links-group">
-            <!-- Guardar contacto -->
-            <a href="#" class="btn-link btn-save-contact">
-                🎴 Guardar Contacto en Agenda
+            <!-- Botón Destacado de Productos / Tienda -->
+            <a href="#" class="btn-link btn-products" target="_blank">
+                🛍️ Ver Nuestros Productos
             </a>
 
             <!-- WhatsApp -->
-            <a href="https://wa.me/58000000000" class="btn-link" target="_blank">
-                💬 Enviar WhatsApp
+            <a href="https://wa.me/584247330872" class="btn-link" target="_blank">
+                💬 WhatsApp Directo
+            </a>
+
+            <!-- Llamada telefónica -->
+            <a href="tel:+584247330872" class="btn-link">
+                📞 Llamar al Teléfono
             </a>
 
             <!-- Instagram -->
-            <a href="https://instagram.com" class="btn-link" target="_blank">
-                📸 Ver Perfil de Instagram
+            <a href="https://instagram.com/jlreinozo" class="btn-link" target="_blank">
+                📸 Instagram (@jlreinozo)
             </a>
 
-            <!-- Llamada directa -->
-            <a href="tel:+58000000000" class="btn-link">
-                📞 Llamada Telefónica
+            <!-- Correo -->
+            <a href="mailto:jreinozo@tekspotla.com" class="btn-link">
+                ✉️ Enviar Correo Electrónico
             </a>
 
             <!-- Google Maps -->
-            <a href="https://maps.google.com" class="btn-link" target="_blank">
-                📍 Ver Ubicación en Google Maps
+            <a href="https://maps.app.goo.gl/12°08'06.8&quot;N+68°57'27.2&quot;W" class="btn-link" target="_blank">
+                📍 Ubicación en Google Maps
+            </a>
+
+            <!-- Guardar Contacto vCard -->
+            <a href="contacto-javier.vcf" class="btn-link" style="border-color: #2996da; color: #58a6ff;">
+                🎴 Guardar Contacto en Agenda
             </a>
         </div>
     </div>
