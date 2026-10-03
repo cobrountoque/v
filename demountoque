@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Con un Toque - Tu Pago Móvil</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background-color: #f0f4f8;
+            color: #1d3589;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 16px;
+        }
+        .app-card {
+            background-color: #ffffff;
+            border-radius: 28px;
+            padding: 32px 24px 70px 24px;
+            width: 100%;
+            max-width: 390px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(29, 53, 137, 0.1);
+            position: relative;
+            overflow: hidden;
+            min-height: 620px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Header con la imagen del Logo del Banco del Tesoro */
+        .brand-header {
+            margin-top: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .tesoro-logo-img {
+            max-width: 220px;
+            height: auto;
+            margin-bottom: 8px;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1d3589;
+            margin-bottom: 4px;
+        }
+        .header-subtitle {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        /* Botón Arriba: Abrir App Banco del Tesoro */
+        .btn-bt-app {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1d3589 0%, #162766 100%);
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 700;
+            padding: 15px 20px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 14px rgba(29, 53, 137, 0.35);
+            border: none;
+            transition: transform 0.1s;
+        }
+        .btn-bt-app:active {
+            transform: scale(0.98);
+        }
+
+        .divider {
+            height: 1px;
+            background-color: #e2e8f0;
+            margin: 16px 0 20px 0;
+        }
+
+        .payment-section-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        /* Botón Abajo: Pagar con BDV dentro de la sección de pagos */
+        .btn-bdv-payment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #0072bc;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 14px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 3px 10px rgba(0, 114, 188, 0.25);
+            border: none;
+            transition: transform 0.1s;
+        }
+        .btn-bdv-payment:active {
+            transform: scale(0.98);
+        }
+
+        /* Botones de copiar datos */
+        .copy-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .btn-copy {
+            background-color: #ffffff;
+            color: #1d3589;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 13px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-copy:active {
+            background-color: #f1f5f9;
+            border-color: #1d3589;
+        }
+        .copy-badge {
+            font-size: 12px;
+            color: #1d3589;
+            background-color: #eef2ff;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+
+        /* Formas de color institucionales en el pie */
+        .tesoro-footer-shapes {
+            position: absolute;
+            bottom: -20px;
+            left: -20px;
+            right: -20px;
+            height: 65px;
+            pointer-events: none;
+        }
+        .shape-blue {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 65%;
+            height: 55px;
+            background-color: #2996da;
+            border-top-right-radius: 60px;
+        }
+        .shape-red {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 55%;
+            height: 45px;
+            background-color: #e32219;
+            border-top-left-radius: 60px;
+        }
+
+        /* Toast */
+        .toast {
+            visibility: hidden;
+            background-color: #1d3589;
+            color: #ffffff;
+            text-align: center;
+            border-radius: 10px;
+            padding: 10px 18px;
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 13px;
+            font-weight: 600;
+            z-index: 1000;
+            opacity: 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-card">
+        <div>
+            <!-- Branding con la imagen oficial cargada -->
+            <div class="brand-header">
+                <img src="untoque.jpg" alt="Banco del Tesoro" class="tesoro-logo-img">
+            </div>
+
+            <h1 class="header-title">Tesoro Pago Móvil (P2P / P2C)</h1>
+            <p class="header-subtitle">Terminal Oficial de Cobro Interbancario</p>
+
+            <!-- Botón Superior: Ver Instagram de un toque -->
+            <a href="https://www.instagram.com/ecodriversve?stkn=dXFzMDI0Y2h6eWpj&utm_source=qr" class="btn-bt-app" target="_blank">
+                Ver Instagram de Un Toque
+            </a>
+
+            <div class="divider"></div>
+
+            <div class="payment-section-title">Opciones de Pago Móvil</div>
+
+            <!-- Botón Inferior: Pagar rápido con BDV -->
+            <a href="https://bdvdigital.banvenez.com/pagomovil?id=V30911172&phone=584126732004&bank=0105&description=Pago%20a%20Banco%20del%20Tesoro&amount=100" class="btn-bdv-payment" target="_blank">
+                Pagar directo con BDV App
+            </a>
+
+            <!-- Botones de copiar datos -->
+            <div class="copy-group">
+                <button class="btn-copy" onclick="copyToClipboard('0105', 'Código Mercantil copiado')">
+                    <span>Banco: 0105 - Banco Mercantil</span>
+                    <span class="copy-badge">Copiar</span>
+                </button>
+
+                <button class="btn-copy" onclick="copyToClipboard('30911172', 'Cedula Copiada')">
+                    <span>Cedula: V30911172</span>
+                    <span class="copy-badge">Copiar</span>
+                </button>
+
+                <button class="btn-copy" onclick="copyToClipboard('04126732004', 'Teléfono copiado')">
+                    <span>Teléfono: 0412-6732004</span>
+                    <span class="copy-badge">Copiar</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Curvas del pie -->
+        <div class="tesoro-footer-shapes">
+            <div class="shape-blue"></div>
+            <div class="shape-red"></div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">Texto copiado</div>
+
+    <script>
+        function copyToClipboard(text, message) {
+            navigator.clipboard.writeText(text).then(function() {
+                showToast(message);
+            }, function() {
+                var dummy = document.createElement("textarea");
+                document.body.appendChild(dummy);
+                dummy.value = text;
+                dummy.select();
+                document.execCommand("copy");
+                document.body.removeChild(dummy);
+                showToast(message);
+            });
+        }
+
+        function showToast(message) {
+            var toast = document.getElementById("toast");
+            toast.innerText = message;
+            toast.className = "toast show";
+            setTimeout(function(){ 
+                toast.className = toast.className.replace("toast show", "toast"); 
+            }, 2000);
+        }
+    </script>
+
+</body>
+</html>
