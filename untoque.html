@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UN TOQUE - Visor de Pago Móvil</title>
+    <title>Un Toque - Pago Móvil</title>
     <style>
         * {
             box-sizing: border-box;
@@ -21,72 +21,63 @@
             padding: 16px;
         }
 
-        .visor-container {
+        .container {
             background-color: #ffffff;
             border-radius: 28px;
             width: 100%;
             max-width: 380px;
-            padding: 28px 20px 24px 20px;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+            padding: 24px 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             text-align: center;
             position: relative;
             overflow: hidden;
         }
 
-        /* 1. Imagen / Logo de UN TOQUE */
-        .logo-container {
+        /* Imagen del Logo */
+        .logo {
+            width: 180px;
             margin-bottom: 12px;
         }
 
-        .logo-img {
-            max-width: 180px;
-            height: auto;
-        }
-
-        /* Textos Header */
-        .main-title {
-            font-size: 17px;
+        /* Títulos */
+        .title {
+            font-size: 16px;
             font-weight: 800;
             color: #3a3f47;
             margin-bottom: 2px;
         }
 
-        .sub-title {
+        .subtitle {
             font-size: 12px;
             color: #8fa0a6;
             margin-bottom: 16px;
         }
 
         /* Botón Instagram */
-        .btn-instagram {
+        .btn-main {
             display: block;
             width: 100%;
             background-color: #3a3f47;
             color: #ffffff;
             text-decoration: none;
-            padding: 13px;
-            border-radius: 12px;
+            padding: 14px;
+            border-radius: 14px;
             font-size: 14px;
             font-weight: 700;
-            margin-bottom: 22px;
-            transition: background-color 0.2s;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(58, 63, 71, 0.2);
         }
 
-        .btn-instagram:active {
-            background-color: #26292e;
-        }
-
-        /* Subtítulo Sección Opciones */
-        .section-label {
+        .section-title {
             font-size: 11px;
             font-weight: 800;
             color: #8fa0a6;
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
+            letter-spacing: 1px;
             margin-bottom: 12px;
+            text-transform: uppercase;
         }
 
-        /* 1. Botón BDV App */
+        /* Botón BDV */
         .btn-bdv {
             display: block;
             width: 100%;
@@ -97,53 +88,44 @@
             border-radius: 12px;
             font-size: 14px;
             font-weight: 700;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             box-shadow: 0 4px 10px rgba(74, 139, 153, 0.25);
-            transition: background-color 0.2s;
         }
 
-        .btn-bdv:active {
-            background-color: #3c727e;
-        }
-
-        /* Filas con botón copiar individual */
-        .data-row {
+        /* Filas de Datos */
+        .row {
             background-color: #ffffff;
             border: 1px solid #e5e9ed;
             border-radius: 12px;
             padding: 10px 14px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            text-align: left;
-        }
-
-        .data-text {
             font-size: 13px;
             font-weight: 700;
             color: #3a3f47;
         }
 
-        .btn-copy-small {
-            background-color: #edf2f5;
+        .btn-copy {
+            background-color: #eef3f5;
             color: #3a3f47;
             border: none;
-            padding: 6px 14px;
+            padding: 6px 12px;
             border-radius: 8px;
             font-size: 12px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s;
         }
 
-        .btn-copy-small:active {
+        .btn-copy:active {
             background-color: #4a8b99;
             color: #ffffff;
         }
 
-        /* 5. Botón Copiar Todos los Datos */
+        /* Botón Copiar Todos los Datos */
         .btn-copy-all {
+            display: block;
             width: 100%;
             background-color: #eef6f8;
             color: #4a8b99;
@@ -153,8 +135,7 @@
             font-size: 13px;
             font-weight: 800;
             cursor: pointer;
-            margin-top: 4px;
-            transition: all 0.2s;
+            margin-top: 6px;
         }
 
         .btn-copy-all:active {
@@ -162,118 +143,77 @@
             color: #ffffff;
         }
 
-        /* Notificación Flotante de Copiado */
-        #toast {
-            visibility: hidden;
-            min-width: 180px;
-            background-color: #3a3f47;
-            color: #fff;
-            text-align: center;
-            border-radius: 20px;
-            padding: 10px 16px;
-            position: fixed;
-            z-index: 10;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 13px;
-            font-weight: 600;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            opacity: 0;
-            transition: opacity 0.3s, visibility 0.3s;
-        }
-
-        #toast.show {
-            visibility: visible;
-            opacity: 1;
+        /* Adorno inferior con color del logo */
+        .footer-shape {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background-color: #4a8b99;
         }
     </style>
 </head>
 <body>
 
-    <div class="visor-container">
+    <div class="container">
+        <!-- Reemplaza con la ruta real de tu imagen si la tienes en GitHub -->
+        <img src="untoque-logo.png" alt="Un Toque" class="logo" onerror="this.onerror=null; this.parentNode.insertAdjacentHTML('afterbegin', '<div style=\'font-size:24px; font-weight:900; color:#3a3f47; margin-bottom:12px;\'>UN <span style=\'color:#4a8b99;\'>TOQUE</span></div>'); this.remove();">
 
-        <!-- Logo Superior (reemplazar la ruta de src por tu imagen si la tienes local) -->
-        <div class="logo-container">
-            <img src="untoque.jpg" alt="UN TOQUE" class="logo-img" onerror="this.onerror=null; this.parentNode.innerHTML='<div style=\'font-size:26px; font-weight:900; color:#3a3f47;\'>UN <span style=\'color:#4a8b99;\'>TOQUE</span></div>';">
-        </div>
+        <div class="title">Con Un Toque haces tus pagos móviles</div>
+        <div class="subtitle">Terminal Oficial de Cobro Interbancario</div>
 
-        <!-- Título -->
-        <div class="main-title">Con UN TOQUE haces tus pago móvil</div>
-        <div class="sub-title">Terminal Oficial de Cobro Interbancario</div>
-
-        <!-- Botón Instagram -->
-        <a href="https://www.instagram.com/untoque" target="_blank" class="btn-instagram">
-            Ir al Instagram de UN TOQUE
+        <a href="https://instagram.com" target="_blank" class="btn-main">
+            Ver Instagram de Un Toque
         </a>
 
-        <!-- Opciones de Pago -->
-        <div class="section-label">OPCIONES DE PAGO MÓVIL</div>
+        <div class="section-title">OPCIONES DE PAGO MÓVIL</div>
 
-        <!-- 1. Pagar directo con BDV App -->
-        <a href="bdvmovil://" onclick="abrirBDV(event)" class="btn-bdv">
-            PAGAR DIRECTO CON BDV APP
+        <!-- 1. BDV -->
+        <a href="bdvmovil://" class="btn-bdv">
+            Pagar directo con BDV App
         </a>
 
-        <!-- 2. Copiar Banco -->
-        <div class="data-row">
-            <div class="data-text">Banco: <span id="banco-val">0163 - Banco del Tesoro</span></div>
-            <button class="btn-copy-small" onclick="copiar('0163 - Banco del Tesoro', 'Banco copiado')">Copiar</button>
+        <!-- 2. Banco -->
+        <div class="row">
+            <span>Banco: <span id="banco">0105 - Banco Mercantil</span></span>
+            <button class="btn-copy" onclick="copiar('0105 - Banco Mercantil')">Copiar</button>
         </div>
 
-        <!-- 3. Copiar Cédula / RIF -->
-        <div class="data-row">
-            <div class="data-text">Cedula: <span id="rif-val">V30911172</span></div>
-            <button class="btn-copy-small" onclick="copiar('30911172', 'cedula copiada')">Copiar</button>
+        <!-- 3. Cédula -->
+        <div class="row">
+            <span>Cedula: <span id="cedula">V30911172</span></span>
+            <button class="btn-copy" onclick="copiar('V30911172')">Copiar</button>
         </div>
 
-        <!-- 4. Copiar Teléfono -->
-        <div class="data-row">
-            <div class="data-text">Teléfono: <span id="telf-val">0412-6732004</span></div>
-            <button class="btn-copy-small" onclick="copiar('04126732004', 'Teléfono copiado')">Copiar</button>
+        <!-- 4. Teléfono -->
+        <div class="row">
+            <span>Teléfono: <span id="telefono">0412-6732004</span></span>
+            <button class="btn-copy" onclick="copiar('04126732004')">Copiar</button>
         </div>
 
-        <!-- 5. Copiar Todos los Datos -->
+        <!-- 5. Copiar Todos -->
         <button class="btn-copy-all" onclick="copiarTodos()">
-            📋 COPIAR TODOS LOS DATOS
+            📋 Copiar todos los datos
         </button>
 
+        <div class="footer-shape"></div>
     </div>
 
-    <!-- Alerta Flotante -->
-    <div id="toast">¡Copiado con éxito!</div>
-
     <script>
-        function copiar(texto, mensaje) {
-            navigator.clipboard.writeText(texto).then(() => {
-                mostrarToast(mensaje);
-            });
+        function copiar(texto) {
+            navigator.clipboard.writeText(texto);
+            alert('¡Copiado!');
         }
 
         function copiarTodos() {
-            const banco = document.getElementById('banco-val').innerText;
-            const rif = document.getElementById('rif-val').innerText;
-            const telf = document.getElementById('telf-val').innerText;
+            const banco = document.getElementById('banco').innerText;
+            const cedula = document.getElementById('cedula').innerText;
+            const telefono = document.getElementById('telefono').innerText;
+            const todo = `Banco: ${banco}\nCedula: ${cedula}\nTeléfono: ${telefono}`;
             
-            const todo = `Datos de Pago Móvil:\nBanco: ${banco}\nRIF/CI: ${rif}\nTeléfono: ${telf}`;
-            
-            navigator.clipboard.writeText(todo).then(() => {
-                mostrarToast('¡Todos los datos copiados!');
-            });
-        }
-
-        function mostrarToast(mensaje) {
-            const toast = document.getElementById("toast");
-            toast.innerText = mensaje;
-            toast.className = "show";
-            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 2000);
-        }
-
-        function abrirBDV(e) {
-            window.location.href = "bdvmovil://";
-            setTimeout(() => {
-                window.location.href = "https://play.google.com/store/apps/details?id=com.bdv.bdvapp";
-            }, 1500);
+            navigator.clipboard.writeText(todo);
+            alert('¡Todos los datos copiados!');
         }
     </script>
 
