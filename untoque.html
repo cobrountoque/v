@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Un Toque - Pago Móvil</title>
+    <title>Con un Toque - Tu Pago Móvil</title>
     <style>
         * {
             box-sizing: border-box;
@@ -11,209 +11,290 @@
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
-
         body {
             background-color: #f5f6f8;
+            color: #3a3f47;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             padding: 16px;
         }
-
-        .container {
+        .app-card {
             background-color: #ffffff;
             border-radius: 28px;
+            padding: 32px 24px 50px 24px;
             width: 100%;
-            max-width: 380px;
-            padding: 24px 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            max-width: 390px;
             text-align: center;
+            box-shadow: 0 10px 25px rgba(58, 63, 71, 0.08);
             position: relative;
             overflow: hidden;
+            min-height: 620px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        /* Imagen del Logo */
-        .logo {
-            width: 180px;
-            margin-bottom: 12px;
+        /* Header con la imagen del Logo de Un Toque */
+        .brand-header {
+            margin-top: 10px;
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .tesoro-logo-img {
+            max-width: 200px;
+            height: auto;
+            margin-bottom: 8px;
         }
 
-        /* Títulos */
-        .title {
-            font-size: 16px;
+        .header-title {
+            font-size: 18px;
             font-weight: 800;
             color: #3a3f47;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
         }
-
-        .subtitle {
-            font-size: 12px;
+        .header-subtitle {
+            font-size: 13px;
             color: #8fa0a6;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
 
-        /* Botón Instagram */
-        .btn-main {
-            display: block;
-            width: 100%;
+        /* Botón Arriba: Ver Instagram de Un Toque */
+        .btn-bt-app {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             background-color: #3a3f47;
             color: #ffffff;
             text-decoration: none;
-            padding: 14px;
-            border-radius: 14px;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 700;
+            padding: 15px 20px;
+            border-radius: 14px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(58, 63, 71, 0.2);
+            box-shadow: 0 4px 14px rgba(58, 63, 71, 0.2);
+            border: none;
+            transition: transform 0.1s, background-color 0.2s;
+        }
+        .btn-bt-app:active {
+            transform: scale(0.98);
+            background-color: #282c32;
         }
 
-        .section-title {
-            font-size: 11px;
-            font-weight: 800;
+        .divider {
+            height: 1px;
+            background-color: #e2e8f0;
+            margin: 16px 0 20px 0;
+        }
+
+        .payment-section-title {
+            font-size: 12px;
+            font-weight: 700;
             color: #8fa0a6;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
             text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
         }
 
-        /* Botón BDV */
-        .btn-bdv {
-            display: block;
-            width: 100%;
+        /* Botón Abajo: Pagar directo con BDV */
+        .btn-bdv-payment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             background-color: #4a8b99;
             color: #ffffff;
             text-decoration: none;
-            padding: 13px;
-            border-radius: 12px;
             font-size: 14px;
             font-weight: 700;
-            margin-bottom: 10px;
-            box-shadow: 0 4px 10px rgba(74, 139, 153, 0.25);
-        }
-
-        /* Filas de Datos */
-        .row {
-            background-color: #ffffff;
-            border: 1px solid #e5e9ed;
+            padding: 14px;
             border-radius: 12px;
-            padding: 10px 14px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 13px;
-            font-weight: 700;
-            color: #3a3f47;
-        }
-
-        .btn-copy {
-            background-color: #eef3f5;
-            color: #3a3f47;
+            margin-bottom: 12px;
+            box-shadow: 0 3px 10px rgba(74, 139, 153, 0.25);
             border: none;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
+            transition: transform 0.1s, background-color 0.2s;
+        }
+        .btn-bdv-payment:active {
+            transform: scale(0.98);
+            background-color: #3c727e;
         }
 
+        /* Botones de copiar datos */
+        .copy-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .btn-copy {
+            background-color: #ffffff;
+            color: #3a3f47;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 13px 16px;
+            font-size: 14px;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
         .btn-copy:active {
-            background-color: #4a8b99;
-            color: #ffffff;
+            background-color: #f1f5f9;
+            border-color: #4a8b99;
+        }
+        .copy-badge {
+            font-size: 12px;
+            color: #3a3f47;
+            background-color: #eef3f5;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-weight: 700;
         }
 
         /* Botón Copiar Todos los Datos */
         .btn-copy-all {
-            display: block;
-            width: 100%;
             background-color: #eef6f8;
             color: #4a8b99;
             border: 1.5px dashed #4a8b99;
-            padding: 12px;
             border-radius: 12px;
-            font-size: 13px;
+            padding: 13px 16px;
+            font-size: 14px;
             font-weight: 800;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
             cursor: pointer;
-            margin-top: 6px;
+            transition: all 0.2s;
+            margin-top: 2px;
         }
-
         .btn-copy-all:active {
             background-color: #4a8b99;
             color: #ffffff;
         }
 
-        /* Adorno inferior con color del logo */
-        .footer-shape {
+        /* Barra decorativa en el pie con color Un Toque */
+        .untoque-footer-bar {
             position: absolute;
             bottom: 0;
             left: 0;
-            width: 100%;
-            height: 8px;
+            right: 0;
+            height: 10px;
             background-color: #4a8b99;
+        }
+
+        /* Toast Notification */
+        .toast {
+            visibility: hidden;
+            background-color: #3a3f47;
+            color: #ffffff;
+            text-align: center;
+            border-radius: 12px;
+            padding: 10px 18px;
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 13px;
+            font-weight: 600;
+            z-index: 1000;
+            opacity: 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Reemplaza con la ruta real de tu imagen si la tienes en GitHub -->
-        <img src="untoque-logo.png" alt="Un Toque" class="logo" onerror="this.onerror=null; this.parentNode.insertAdjacentHTML('afterbegin', '<div style=\'font-size:24px; font-weight:900; color:#3a3f47; margin-bottom:12px;\'>UN <span style=\'color:#4a8b99;\'>TOQUE</span></div>'); this.remove();">
+    <div class="app-card">
+        <div>
+            <!-- Branding con el Logo de Un Toque -->
+            <div class="brand-header">
+                <img src="untoque.jpg" alt="Un Toque" class="tesoro-logo-img">
+            </div>
 
-        <div class="title">Con Un Toque haces tus pagos móviles</div>
-        <div class="subtitle">Terminal Oficial de Cobro Interbancario</div>
+            <h1 class="header-title">Con Un Toque haces tus pagos móviles</h1>
+            <p class="header-subtitle">Terminal Oficial de Cobro Interbancario</p>
 
-        <a href="https://instagram.com" target="_blank" class="btn-main">
-            Ver Instagram de Un Toque
-        </a>
+            <!-- Botón Superior: Ver Instagram de Un Toque -->
+            <a href="https://www.instagram.com/ecodriversve?stkn=dXFzMDI0Y2h6eWpj&utm_source=qr" class="btn-bt-app" target="_blank">
+                Ver Instagram de Un Toque
+            </a>
 
-        <div class="section-title">OPCIONES DE PAGO MÓVIL</div>
+            <div class="divider"></div>
 
-        <!-- 1. BDV -->
-        <a href="bdvmovil://" class="btn-bdv">
-            Pagar directo con BDV App
-        </a>
+            <div class="payment-section-title">Opciones de Pago Móvil</div>
 
-        <!-- 2. Banco -->
-        <div class="row">
-            <span>Banco: <span id="banco">0105 - Banco Mercantil</span></span>
-            <button class="btn-copy" onclick="copiar('0105 - Banco Mercantil')">Copiar</button>
+            <!-- Botón Inferior: Pagar directo con BDV -->
+            <a href="https://bdvdigital.banvenez.com/pagomovil?id=V30911172&phone=584126732004&bank=0105&description=Pago%20a%20Banco%20del%20Tesoro&amount=100" class="btn-bdv-payment" target="_blank">
+                Pagar directo con BDV App
+            </a>
+
+            <!-- Botones de copiar datos -->
+            <div class="copy-group">
+                <button class="btn-copy" onclick="copyToClipboard('0105', 'Código Mercantil copiado')">
+                    <span>Banco: 0105 - Banco Mercantil</span>
+                    <span class="copy-badge">Copiar</span>
+                </button>
+
+                <button class="btn-copy" onclick="copyToClipboard('V30911172', 'Cédula copiada')">
+                    <span>Cedula: V30911172</span>
+                    <span class="copy-badge">Copiar</span>
+                </button>
+
+                <button class="btn-copy" onclick="copyToClipboard('04126732004', 'Teléfono copiado')">
+                    <span>Teléfono: 0412-6732004</span>
+                    <span class="copy-badge">Copiar</span>
+                </button>
+
+                <!-- 5. Copiar Todos los Datos -->
+                <button class="btn-copy-all" onclick="copyAllData()">
+                    📋 Copiar todos los datos
+                </button>
+            </div>
         </div>
 
-        <!-- 3. Cédula -->
-        <div class="row">
-            <span>Cedula: <span id="cedula">V30911172</span></span>
-            <button class="btn-copy" onclick="copiar('V30911172')">Copiar</button>
-        </div>
-
-        <!-- 4. Teléfono -->
-        <div class="row">
-            <span>Teléfono: <span id="telefono">0412-6732004</span></span>
-            <button class="btn-copy" onclick="copiar('04126732004')">Copiar</button>
-        </div>
-
-        <!-- 5. Copiar Todos -->
-        <button class="btn-copy-all" onclick="copiarTodos()">
-            📋 Copiar todos los datos
-        </button>
-
-        <div class="footer-shape"></div>
+        <!-- Barra inferior Un Toque -->
+        <div class="untoque-footer-bar"></div>
     </div>
 
+    <div id="toast" class="toast">Texto copiado</div>
+
     <script>
-        function copiar(texto) {
-            navigator.clipboard.writeText(texto);
-            alert('¡Copiado!');
+        function copyToClipboard(text, message) {
+            navigator.clipboard.writeText(text).then(function() {
+                showToast(message);
+            }, function() {
+                var dummy = document.createElement("textarea");
+                document.body.appendChild(dummy);
+                dummy.value = text;
+                dummy.select();
+                document.execCommand("copy");
+                document.body.removeChild(dummy);
+                showToast(message);
+            });
         }
 
-        function copiarTodos() {
-            const banco = document.getElementById('banco').innerText;
-            const cedula = document.getElementById('cedula').innerText;
-            const telefono = document.getElementById('telefono').innerText;
-            const todo = `Banco: ${banco}\nCedula: ${cedula}\nTeléfono: ${telefono}`;
-            
-            navigator.clipboard.writeText(todo);
-            alert('¡Todos los datos copiados!');
+        function copyAllData() {
+            var fullText = "Datos de Pago Móvil:\nBanco: 0105 - Banco Mercantil\nCedula: V30911172\nTeléfono: 0412-6732004";
+            copyToClipboard(fullText, '¡Todos los datos copiados!');
+        }
+
+        function showToast(message) {
+            var toast = document.getElementById("toast");
+            toast.innerText = message;
+            toast.className = "toast show";
+            setTimeout(function(){ 
+                toast.className = toast.className.replace("toast show", "toast"); 
+            }, 2000);
         }
     </script>
 
