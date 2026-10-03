@@ -32,20 +32,14 @@
             padding-bottom: 30px;
         }
         
-        /* Banner Header */
+        /* Banner Header con la imagen corporativa */
         .banner-header {
             width: 100%;
-            height: 120px;
-            background: linear-gradient(135deg, #034ea2 0%, #001e4d 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .banner-title {
-            font-size: 22px;
-            font-weight: 800;
-            letter-spacing: 3px;
-            color: #ffffff;
+            height: 170px;
+            background-image: url('IMG_0611.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         /* Foto de perfil */
@@ -57,6 +51,8 @@
             margin-top: -55px;
             object-fit: cover;
             background-color: #21262d;
+            position: relative;
+            z-index: 2;
         }
 
         .user-name {
@@ -104,7 +100,7 @@
             background-color: #30363d;
         }
         
-        /* Botón de Productos (Destacado) */
+        /* Botón Destacado de Productos */
         .btn-products {
             background: linear-gradient(135deg, #238636 0%, #2ea043 100%);
             color: #ffffff;
@@ -119,13 +115,12 @@
 <body>
 
     <div class="card-container">
-        <div class="banner-header">
-            <div class="banner-title">SAMSUNG by tekspot</div>
-        </div>
+        <!-- Banner de fondo con la imagen de Samsung / Curaçao -->
+        <div class="banner-header"></div>
 
-        <!-- Foto enviada por Javier -->
+        <!-- Foto de perfil circular -->
         <div style="display: flex; justify-content: center;">
-            <img src="Javier.png.JPG" alt="Javier Reinozo" class="profile-avatar">
+            <img src="javier-foto.JPG" alt="Javier Reinozo" class="profile-avatar">
         </div>
 
         <h1 class="user-name">Javier Reinozo</h1>
@@ -138,7 +133,7 @@
                 🛍️ Ver Nuestros Productos
             </a>
 
-            <!-- WhatsApp -->
+            <!-- WhatsApp Directo -->
             <a href="https://wa.me/584247330872" class="btn-link" target="_blank">
                 💬 WhatsApp Directo
             </a>
@@ -158,7 +153,7 @@
                 ✉️ Enviar Correo Electrónico
             </a>
 
-            <!-- Google Maps -->
+            <!-- Ubicación Google Maps corregida con coordenadas -->
             <a href="https://www.google.com/maps?q=12.135228,-68.957562" class="btn-link" target="_blank">
                 📍 Ubicación en Google Maps
             </a>
