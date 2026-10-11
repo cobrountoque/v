@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Banco del Tesoro - Tesoro Pago Móvil</title>
+    <title>Banco del Tesoro - Pago Móvil & Billetera</title>
     <style>
         * {
             box-sizing: border-box;
@@ -12,7 +12,7 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
         body {
-            background-color: #f0f4f8;
+            background-color: #f5f6f8;
             color: #1d3589;
             display: flex;
             justify-content: center;
@@ -23,47 +23,43 @@
         .app-card {
             background-color: #ffffff;
             border-radius: 28px;
-            padding: 32px 24px 70px 24px;
+            padding: 28px 20px 65px 20px;
             width: 100%;
             max-width: 390px;
             text-align: center;
             box-shadow: 0 10px 25px rgba(29, 53, 137, 0.1);
             position: relative;
             overflow: hidden;
-            min-height: 620px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
         }
 
-        /* Header con la imagen del Logo del Banco del Tesoro */
+        /* Branding con Logo Oficial */
         .brand-header {
-            margin-top: 10px;
-            margin-bottom: 20px;
+            margin-top: 6px;
+            margin-bottom: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-        
         .tesoro-logo-img {
-            max-width: 220px;
+            max-width: 210px;
             height: auto;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
-
         .header-title {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 700;
             color: #1d3589;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
         .header-subtitle {
-            font-size: 13px;
+            font-size: 12px;
             color: #64748b;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
-        /* Botón Arriba: Abrir App Banco del Tesoro */
+        /* Botón Superior BT Móvil */
         .btn-bt-app {
             display: flex;
             align-items: center;
@@ -71,12 +67,12 @@
             background: linear-gradient(135deg, #1d3589 0%, #162766 100%);
             color: #ffffff;
             text-decoration: none;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
-            padding: 15px 20px;
+            padding: 14px 18px;
             border-radius: 14px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 14px rgba(29, 53, 137, 0.35);
+            margin-bottom: 18px;
+            box-shadow: 0 4px 14px rgba(29, 53, 137, 0.3);
             border: none;
             transition: transform 0.1s;
         }
@@ -84,22 +80,35 @@
             transform: scale(0.98);
         }
 
-        .divider {
+        /* Separadores */
+        .section-divider {
+            position: relative;
+            text-align: center;
+            margin: 8px 0 14px 0;
+        }
+        .section-divider::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
             height: 1px;
             background-color: #e2e8f0;
-            margin: 16px 0 20px 0;
+            z-index: 1;
         }
-
         .payment-section-title {
-            font-size: 12px;
+            position: relative;
+            z-index: 2;
+            background-color: #ffffff;
+            padding: 0 10px;
+            font-size: 11px;
             font-weight: 700;
             color: #64748b;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 12px;
+            letter-spacing: 0.8px;
         }
 
-        /* Botón Abajo: Pagar con BDV dentro de la sección de pagos */
+        /* Botón Pagar con BDV */
         .btn-bdv-payment {
             display: flex;
             align-items: center;
@@ -109,7 +118,7 @@
             text-decoration: none;
             font-size: 14px;
             font-weight: 700;
-            padding: 14px;
+            padding: 13px;
             border-radius: 12px;
             margin-bottom: 12px;
             box-shadow: 0 3px 10px rgba(0, 114, 188, 0.25);
@@ -124,15 +133,16 @@
         .copy-group {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 9px;
+            margin-bottom: 16px;
         }
         .btn-copy {
             background-color: #ffffff;
             color: #1d3589;
             border: 1px solid #cbd5e1;
             border-radius: 12px;
-            padding: 13px 16px;
-            font-size: 14px;
+            padding: 12px 14px;
+            font-size: 13px;
             font-weight: 600;
             display: flex;
             justify-content: space-between;
@@ -145,7 +155,7 @@
             border-color: #1d3589;
         }
         .copy-badge {
-            font-size: 12px;
+            font-size: 11px;
             color: #1d3589;
             background-color: #eef2ff;
             padding: 4px 10px;
@@ -153,13 +163,54 @@
             font-weight: 700;
         }
 
-        /* Formas de color institucionales en el pie */
+        /* Botón Copiar Todos los Datos (Estilo Banco del Tesoro) */
+        .btn-copy-all {
+            background-color: #f8fafc;
+            color: #1d3589;
+            border: 1.5px dashed #1d3589;
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-size: 13px;
+            font-weight: 800;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-copy-all:active {
+            background-color: #1d3589;
+            color: #ffffff;
+        }
+
+        /* Botón Mis Documentos Digitales (Billetera) */
+        .btn-documents {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #1d3589 0%, #162766 100%);
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 14px;
+            border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(29, 53, 137, 0.25);
+            transition: transform 0.1s;
+        }
+        .btn-documents:active {
+            transform: scale(0.98);
+        }
+
+        /* Curvas del pie del Banco del Tesoro */
         .tesoro-footer-shapes {
             position: absolute;
             bottom: -20px;
             left: -20px;
             right: -20px;
-            height: 65px;
+            height: 60px;
             pointer-events: none;
         }
         .shape-blue {
@@ -167,7 +218,7 @@
             bottom: 0;
             left: 0;
             width: 65%;
-            height: 55px;
+            height: 50px;
             background-color: #2996da;
             border-top-right-radius: 60px;
         }
@@ -176,7 +227,7 @@
             bottom: 0;
             right: 0;
             width: 55%;
-            height: 45px;
+            height: 40px;
             background-color: #e32219;
             border-top-left-radius: 60px;
         }
@@ -210,7 +261,7 @@
 
     <div class="app-card">
         <div>
-            <!-- Branding con la imagen oficial cargada -->
+            <!-- Branding del Tesoro -->
             <div class="brand-header">
                 <img src="IMG_0383.png" alt="Banco del Tesoro" class="tesoro-logo-img">
             </div>
@@ -218,28 +269,29 @@
             <h1 class="header-title">Tesoro Pago Móvil (P2P / P2C)</h1>
             <p class="header-subtitle">Terminal Oficial de Cobro Interbancario</p>
 
-            <!-- Botón Superior: Abrir App Oficial BT Móvil -->
-            <a href="https://apps.apple.com/app/id6743000548" class="btn-bt-app" target="_blank">
+            <!-- Botón Superior -->
+            <a href="https://apps.apple.com/app/id6743000548" onclick="abrirBT(event)" class="btn-bt-app">
                 Abrir BT Móvil (Banco del Tesoro)
             </a>
 
-            <div class="divider"></div>
+            <!-- Separador Pago Móvil -->
+            <div class="section-divider">
+                <span class="payment-section-title">Opciones de Pago Móvil</span>
+            </div>
 
-            <div class="payment-section-title">Opciones de Pago Móvil</div>
-
-            <!-- Botón Inferior: Pagar rápido con BDV -->
-            <a href="https://bdvdigital.banvenez.com/pagomovil?id=V30911172&phone=584126732004&bank=0163&description=Pago%20a%20Banco%20del%20Tesoro&amount=100" class="btn-bdv-payment" target="_blank">
+            <!-- Pagar con BDV -->
+            <a href="https://bdvdigital.banvenez.com/pagomovil?id=V14227713&phone=584123255382&bank=0163&description=Pago%20a%20Banco%20del%20Tesoro&amount=100" class="btn-bdv-payment" target="_blank">
                 Pagar directo con BDV App
             </a>
 
-            <!-- Botones de copiar datos -->
+            <!-- Lista de Datos + Copiar Todos -->
             <div class="copy-group">
-                <button class="btn-copy" onclick="copyToClipboard('0163', 'Código Tesoro copiado')">
+                <button class="btn-copy" onclick="copyToClipboard('0163', 'Código Banco del Tesoro copiado')">
                     <span>Banco: 0163 - Banco del Tesoro</span>
                     <span class="copy-badge">Copiar</span>
                 </button>
 
-                <button class="btn-copy" onclick="copyToClipboard('14227713', 'Cedula copiada')">
+                <button class="btn-copy" onclick="copyToClipboard('1427713', 'Cedula copiada')">
                     <span>Cedula: V-14227713</span>
                     <span class="copy-badge">Copiar</span>
                 </button>
@@ -248,10 +300,27 @@
                     <span>Teléfono: 0412-3255382</span>
                     <span class="copy-badge">Copiar</span>
                 </button>
+
+                <!-- BOTÓN AGREGADO: Copiar Todos los Datos -->
+                <button class="btn-copy-all" onclick="copyAllData()">
+                    📋 Copiar todos los datos
+                </button>
+            </div>
+
+            <!-- Separador Documentos -->
+            <div class="section-divider">
+                <span class="payment-section-title">Documentos y Billetera</span>
+            </div>
+
+            <!-- BOTÓN AGREGADO: Mis Documentos Digitales -->
+            <div>
+                <a href="https://cobrountoque.github.io/billetera" class="btn-documents" target="_blank">
+                    📁 Mis Documentos Digitales
+                </a>
             </div>
         </div>
 
-        <!-- Curvas del pie -->
+        <!-- Curvas Rojas y Azules en el pie -->
         <div class="tesoro-footer-shapes">
             <div class="shape-blue"></div>
             <div class="shape-red"></div>
@@ -275,6 +344,11 @@
             });
         }
 
+        function copyAllData() {
+            var fullText = "0163\n14227713\n04123255382";
+            copyToClipboard(fullText, '¡Todos los datos copiados!');
+        }
+
         function showToast(message) {
             var toast = document.getElementById("toast");
             toast.innerText = message;
@@ -282,6 +356,13 @@
             setTimeout(function(){ 
                 toast.className = toast.className.replace("toast show", "toast"); 
             }, 2000);
+        }
+
+        function abrirBT(e) {
+            window.location.href = "btmovil://";
+            setTimeout(function() {
+                window.location.href = "https://play.google.com/store/apps/details?id=com.bancodeltesoro.btmovil";
+            }, 1500);
         }
     </script>
 
