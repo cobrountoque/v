@@ -4,13 +4,20 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
 <title>ToqueCatálogo - Plataforma de Catálogos &amp; SaaS Venezuela</title>
-<!-- Tailwind CSS CDN with plugins -->
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN with forms container queries -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+          },
           colors: {
             brand: {
               50: '#ecfdf5',
@@ -30,11 +37,10 @@
       }
     }
   </script>
-<!-- Custom CSS for smooth transitions and responsive mock frames -->
 <style data-purpose="base-styling">
     body {
       -webkit-tap-highlight-color: transparent;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     }
     .hide-scrollbar::-webkit-scrollbar {
       display: none;
@@ -45,59 +51,58 @@
     }
   </style>
 </head>
-<body class="min-h-full flex flex-col text-slate-800 antialiased selection:bg-brand-500 selection:text-white pb-16">
+<body class="min-h-full flex flex-col text-slate-800 antialiased selection:bg-emerald-500 selection:text-white pb-16">
 <!-- BEGIN: TopBarAndTicker -->
-<header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm" data-purpose="sticky-header">
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs" data-purpose="sticky-header">
 <!-- Live BCV Rate Ticker -->
-<div class="bg-slate-900 text-white text-xs px-3 py-1.5 flex items-center justify-between font-medium">
+<div class="bg-slate-900 text-white text-xs px-3.5 py-1.5 flex items-center justify-between font-medium">
 <div class="flex items-center gap-2 overflow-hidden text-ellipsis whitespace-nowrap">
 <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">BCV OFICIAL</span>
-<span>1 USD = <strong class="text-emerald-400" id="global-rate-display">Bs. 48,20</strong></span>
+<span>1 USD = <strong class="text-emerald-400 font-bold" id="global-rate-display">Bs. 48,20</strong></span>
 <span class="text-slate-400 hidden sm:inline">• Sincronizado automáticamente</span>
 </div>
-<div class="flex items-center gap-1.5 text-[11px] text-slate-300">
-<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-<span>Online</span>
+<div class="flex items-center gap-2 text-[11px] text-slate-300">
+<span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>Online</span>
+<button class="text-slate-400 hover:text-emerald-400 underline ml-1 text-[10px]" onclick="promptEditRate()">Ajustar tasa</button>
 </div>
 </div>
-<!-- App Brand & View Switcher Bar -->
-<div class="max-w-5xl mx-auto px-4 py-2.5 flex items-center justify-between gap-2">
-<div class="flex items-center gap-2.5 cursor-pointer" onclick="switchView('landing')">
-<div class="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-white font-bold text-lg shadow-sm shadow-emerald-500/30">
-          T
-        </div>
+<!-- App Brand & Clean Navigation Bar -->
+<div class="max-w-5xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3">
+<!-- Brand Logo -->
+<div class="flex items-center gap-2.5 cursor-pointer" onclick="navigateTo('landing')">
+<div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-700 to-emerald-500 flex items-center justify-center text-white font-extrabold text-lg shadow-sm shadow-emerald-500/30">
+        T
+      </div>
 <div>
-<span class="font-extrabold text-base tracking-tight text-slate-900 flex items-center gap-1">
-            ToqueCatálogo
-            <span class="text-[10px] bg-slate-100 text-slate-600 font-semibold px-1.5 py-0.2 rounded border border-slate-200">PRO</span>
+<span class="font-extrabold text-base tracking-tight text-slate-900 flex items-center gap-1.5">
+          ToqueCatálogo
+          <span class="text-[10px] bg-emerald-50 text-emerald-700 font-bold px-1.5 py-0.2 rounded border border-emerald-200">VE</span>
 </span>
 </div>
 </div>
-<!-- Quick interactive View Switcher Tabs -->
-<nav class="flex items-center gap-1 overflow-x-auto hide-scrollbar py-0.5 text-xs font-semibold" data-purpose="view-switcher-navigation">
-<button class="px-2.5 py-1.5 rounded-md transition-all whitespace-nowrap bg-emerald-50 text-emerald-700 font-bold" id="nav-btn-landing" onclick="switchView('landing')">
-          🏠 Portada
+<!-- Navigation actions (Clean: No SuperAdmin or Seller leaks) -->
+<nav class="flex items-center gap-2 text-xs font-semibold" data-purpose="clean-top-nav">
+<button class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition whitespace-nowrap" onclick="scrollToDirectoryOrExplore()">
+        🛍️ Vitrinas
+      </button>
+<!-- User Logged Status Container (Dynamic) -->
+<div class="flex items-center gap-2" id="nav-user-container">
+<!-- Will show Iniciar Sesión / Registrarse when logged out, or Account badge when logged in -->
+<button class="px-3 py-1.5 rounded-lg text-slate-700 font-bold hover:bg-slate-100 border border-slate-200 transition whitespace-nowrap" onclick="openAuthModal('login')">
+          Iniciar Sesión
         </button>
-<button class="px-2.5 py-1.5 rounded-md transition-all whitespace-nowrap text-slate-600 hover:bg-slate-100" id="nav-btn-store" onclick="switchView('store')">
-          🛍️ Vitrina Tienda
+<button class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition shadow-xs whitespace-nowrap" onclick="openAuthModal('register')">
+          Crear mi Tienda
         </button>
-<button class="px-2.5 py-1.5 rounded-md transition-all whitespace-nowrap text-slate-600 hover:bg-slate-100" id="nav-btn-seller" onclick="switchView('seller')">
-          📦 Panel Vendedor
-        </button>
-<button class="px-2.5 py-1.5 rounded-md transition-all whitespace-nowrap text-slate-600 hover:bg-slate-100" id="nav-btn-billing" onclick="switchView('billing')">
-          💳 Suscripción $5
-        </button>
-<button class="px-2.5 py-1.5 rounded-md transition-all whitespace-nowrap text-slate-600 hover:bg-slate-100" id="nav-btn-superadmin" onclick="switchView('superadmin')">
-          🛡️ SuperAdmin
-        </button>
+</div>
 </nav>
 </div>
 </header>
 <!-- END: TopBarAndTicker -->
 <!-- Toast Notification System -->
-<div class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 flex items-center gap-2" id="toast">
+<div class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-xl opacity-0 pointer-events-none transition-opacity duration-300 flex items-center gap-2 border border-slate-700" id="toast">
 <span id="toast-icon">✅</span>
-<span id="toast-message">Copiado al portapapeles</span>
+<span id="toast-message">Notificación</span>
 </div>
 <main class="flex-grow max-w-5xl w-full mx-auto p-4 md:p-6" data-purpose="app-views-container">
 <!-- ========================================================================= -->
@@ -108,52 +113,52 @@
 <div class="text-center max-w-2xl mx-auto pt-6 pb-2 space-y-4">
 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-semibold border border-emerald-200">
 <span class="flex h-2 w-2 rounded-full bg-emerald-600"></span>
-          Optimizado para el Comercio en Venezuela
-        </div>
+        Optimizado para el Comercio en Venezuela
+      </div>
 <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
-          Tu Catálogo Digital con <span class="text-emerald-600">Cobro Dual</span> y Tasa BCV Oficial
-        </h1>
+        Tu Catálogo Digital con <span class="text-emerald-600">Cobro Dual</span> y Tasa BCV Oficial
+      </h1>
 <p class="text-base text-slate-600 leading-relaxed">
-          Vende por WhatsApp y Web sin comisiones por venta. Actualización automática de bolívares en base al Banco Central de Venezuela.
-        </p>
+        Vende por WhatsApp y Web sin comisiones por venta. Actualización automática de bolívares en base al Banco Central de Venezuela.
+      </p>
 <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
-<button class="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-md shadow-emerald-600/20 text-sm transition" onclick="switchView('seller')">
-            🚀 Registrar mi Tienda Gratis
-          </button>
-<button class="px-6 py-3 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold text-sm transition flex items-center gap-2" onclick="switchView('store')">
+<button class="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-md shadow-emerald-600/20 text-sm transition" onclick="openAuthModal('register')">
+          🚀 Registrar mi Tienda Gratis
+        </button>
+<button class="px-6 py-3 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold text-sm transition flex items-center gap-2" onclick="previewStorefront('kslr1609')">
 <span>👀 Ver Tienda Demo</span>
 </button>
 </div>
 </div>
 <!-- Feature Grid -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-<div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
+<div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs space-y-3">
 <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl font-bold">
-            💵
-          </div>
+          💵
+        </div>
 <h3 class="text-lg font-bold text-slate-900">Conversión BCV Automática</h3>
 <p class="text-sm text-slate-600">Fija tus precios en USD. La app calcula el valor en Bolívares en tiempo real para no perder dinero por devaluación.</p>
 </div>
-<div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
+<div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs space-y-3">
 <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-xl font-bold">
-            📲
-          </div>
+          📲
+        </div>
 <h3 class="text-lg font-bold text-slate-900">Pago Móvil BDV 1-Click</h3>
-<p class="text-sm text-slate-600">Los clientes pueden copiar tus datos de Pago Móvil con un toque o abrir directo la aplicación móvil del BDV.</p>
+<p class="text-sm text-slate-600">Tus clientes copian tus datos de Pago Móvil con un toque o abren directo la aplicación móvil del BDV.</p>
 </div>
-<div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
+<div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs space-y-3">
 <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl font-bold">
-            💬
-          </div>
+          💬
+        </div>
 <h3 class="text-lg font-bold text-slate-900">Checkout a WhatsApp</h3>
-<p class="text-sm text-slate-600">Recibe pedidos limpios y estructurados directamente a tu chat sin enredos ni comisiones por transacción.</p>
+<p class="text-sm text-slate-600">Recibe pedidos limpios y estructurados directamente a tu chat sin enredos ni intermediarios.</p>
 </div>
 </div>
 <!-- Pricing Plans -->
-<div class="bg-slate-900 text-white p-8 rounded-3xl space-y-8">
+<div class="bg-slate-900 text-white p-8 rounded-3xl space-y-8 shadow-xl">
 <div class="text-center max-w-lg mx-auto space-y-2">
 <h2 class="text-2xl sm:text-3xl font-bold">Planes simples y justos</h2>
-<p class="text-slate-400 text-sm">Sin porcentajes sobre tus ventas. Todo el dinero va a tu cuenta bancaria.</p>
+<p class="text-slate-400 text-sm">Sin porcentajes sobre tus ventas. Todo el dinero va directo a tu cuenta bancaria.</p>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
 <!-- Free Plan -->
@@ -166,19 +171,19 @@
 </div>
 <ul class="text-sm text-slate-300 space-y-2">
 <li class="flex items-center gap-2">✓ Hasta 2 productos</li>
-<li class="flex items-center gap-2">✓ Tasa de cambio BCV</li>
-<li class="flex items-center gap-2">✓ Checkout WhatsApp básico</li>
+<li class="flex items-center gap-2">✓ Tasa de cambio BCV oficial</li>
+<li class="flex items-center gap-2">✓ Botón Checkout a WhatsApp</li>
 </ul>
 </div>
-<button class="mt-6 w-full py-2.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-medium text-sm transition" onclick="switchView('seller')">
-              Comenzar Gratis
-            </button>
+<button class="mt-6 w-full py-2.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-medium text-sm transition" onclick="openAuthModal('register', 'gratis')">
+            Comenzar Gratis
+          </button>
 </div>
 <!-- Pro Plan -->
 <div class="bg-gradient-to-b from-emerald-900/60 to-slate-800 border-2 border-emerald-500 rounded-2xl p-6 flex flex-col justify-between relative shadow-xl">
 <div class="absolute -top-3 right-6 bg-emerald-500 text-slate-950 text-[11px] font-extrabold px-3 py-0.5 rounded-full uppercase tracking-wider">
-              Recomendado
-            </div>
+            Recomendado
+          </div>
 <div class="space-y-4">
 <span class="text-xs uppercase font-bold tracking-wider text-emerald-400">Plan ToqueCatálogo Pro</span>
 <div class="flex items-baseline gap-1">
@@ -189,200 +194,173 @@
 <ul class="text-sm text-slate-200 space-y-2 pt-1">
 <li class="flex items-center gap-2">✓ Catálogo y productos ilimitados</li>
 <li class="flex items-center gap-2">✓ Botón Pago Móvil BDV Directo</li>
-<li class="flex items-center gap-2">✓ Panel de Inventario &amp; Métricas</li>
+<li class="flex items-center gap-2">✓ Enlace exclusivo personalizado</li>
 <li class="flex items-center gap-2">✓ Sin comisiones por venta</li>
 </ul>
 </div>
-<button class="mt-6 w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm transition" onclick="switchView('billing')">
-              Suscribir Comercio Pro
-            </button>
+<button class="mt-6 w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm transition" onclick="openAuthModal('register', 'pro')">
+            Suscribir Comercio Pro
+          </button>
 </div>
 </div>
 </div>
 <!-- Marketplace Stores Directory -->
-<div class="space-y-4">
+<div class="space-y-4" id="section-stores-directory">
 <div class="flex items-center justify-between">
+<div>
 <h2 class="text-xl font-bold text-slate-900">Directorio de Tiendas Destacadas</h2>
-<span class="text-xs text-slate-500">Comercios verificados en Caracas</span>
+<p class="text-xs text-slate-500">Comercios verificados en Venezuela</p>
 </div>
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-<!-- Store Card 1: Featured KSLR 1609 -->
-<div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm hover:shadow-md transition space-y-3">
-<div class="flex items-center gap-3">
-<img alt="KSLR 1609" class="w-12 h-12 rounded-full object-cover border border-slate-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAg0SPFzwXz4D0TqTWFUnMhvM2azJlB3nK4zWl3wQqifK1Kkr6QV9ZhSjttbGAxNTsg1kg2N89vDS9Xem-bMpKJHlDFyk3frNOrlw7iTLw6xc_QMHs2a0zifqJeAvnsJZ9qYvTgazi6c5Dugj4LZF76h3Izv3TP9ezhXrnCb9QyJ3_oiw2xykn6jeirmW2BzAwSNljrbrMZLYOBh6YTGM7zrcqRN8bXPGlimppGete-UwfI3JpkrOpqO_v9q0VuE3mOxA"/>
-<div>
-<h4 class="font-bold text-slate-900 leading-tight">KSLR 1609</h4>
-<p class="text-xs text-slate-500">Accesorios Importados</p>
-<span class="text-[10px] text-emerald-600 font-medium">📍 Caracas, Venezuela</span>
+<span class="text-xs text-emerald-700 font-semibold bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200" id="dir-total-count">3 tiendas</span>
 </div>
-</div>
-<button class="w-full py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-medium text-xs transition flex items-center justify-center gap-1.5" onclick="switchView('store')">
-<span>Ver Vitrina Demo</span>
-<span>→</span>
-</button>
-</div>
-<!-- Store Card 2 -->
-<div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm opacity-90 space-y-3">
-<div class="flex items-center gap-3">
-<div class="w-12 h-12 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-lg">
-                ME
-              </div>
-<div>
-<h4 class="font-bold text-slate-900 leading-tight">Moda Express</h4>
-<p class="text-xs text-slate-500">Calzado y Ropa Urbana</p>
-<span class="text-[10px] text-emerald-600 font-medium">📍 Chacao, CCS</span>
-</div>
-</div>
-<button class="w-full py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-xs transition" onclick="switchView('store')">
-              Ver Vitrina
-            </button>
-</div>
-<!-- Store Card 3 -->
-<div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm opacity-90 space-y-3">
-<div class="flex items-center gap-3">
-<div class="w-12 h-12 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-lg">
-                GC
-              </div>
-<div>
-<h4 class="font-bold text-slate-900 leading-tight">Gourmet CCS</h4>
-<p class="text-xs text-slate-500">Snacks &amp; Delicateses</p>
-<span class="text-[10px] text-emerald-600 font-medium">📍 Las Mercedes, CCS</span>
-</div>
-</div>
-<button class="w-full py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-xs transition" onclick="switchView('store')">
-              Ver Vitrina
-            </button>
-</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="public-stores-grid">
+<!-- Rendered dynamically from stores DB -->
 </div>
 </div>
 </section>
 <!-- END: VIEW 1 -->
 <!-- ========================================================================= -->
-<!-- BEGIN: VIEW 2 - CLIENT STORE FRONT (VITRINA KSLR 1609)                    -->
+<!-- BEGIN: VIEW 2 - PUBLIC STOREFRONT (VITRINA DINÁMICA POR TIENDA)          -->
 <!-- ========================================================================= -->
 <section class="hidden max-w-md mx-auto space-y-5" data-purpose="public-storefront" id="view-store">
-<!-- Store Header Card (Inspired by reference mockup) -->
+<!-- Breadcrumb back -->
+<div class="flex items-center justify-between text-xs px-1">
+<button class="text-slate-600 hover:text-emerald-700 font-semibold flex items-center gap-1" onclick="navigateTo('landing')">
+        ← Volver a ToqueCatálogo
+      </button>
+<span class="text-slate-400 font-mono text-[10px]" id="store-slug-badge">toquecatalogo.pages.dev/?tienda=...</span>
+</div>
+<!-- Store Header Card -->
 <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm text-center space-y-4">
-<!-- Logo -->
 <div class="flex justify-center">
 <div class="relative">
-<img alt="KSLR 1609 Logo" class="w-24 h-24 rounded-full object-cover border-4 border-slate-100 shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAg0SPFzwXz4D0TqTWFUnMhvM2azJlB3nK4zWl3wQqifK1Kkr6QV9ZhSjttbGAxNTsg1kg2N89vDS9Xem-bMpKJHlDFyk3frNOrlw7iTLw6xc_QMHs2a0zifqJeAvnsJZ9qYvTgazi6c5Dugj4LZF76h3Izv3TP9ezhXrnCb9QyJ3_oiw2xykn6jeirmW2BzAwSNljrbrMZLYOBh6YTGM7zrcqRN8bXPGlimppGete-UwfI3JpkrOpqO_v9q0VuE3mOxA"/>
+<img alt="Store Logo" class="w-24 h-24 rounded-full object-cover border-4 border-slate-100 shadow-sm" id="sf-store-logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAg0SPFzwXz4D0TqTWFUnMhvM2azJlB3nK4zWl3wQqifK1Kkr6QV9ZhSjttbGAxNTsg1kg2N89vDS9Xem-bMpKJHlDFyk3frNOrlw7iTLw6xc_QMHs2a0zifqJeAvnsJZ9qYvTgazi6c5Dugj4LZF76h3Izv3TP9ezhXrnCb9QyJ3_oiw2xykn6jeirmW2BzAwSNljrbrMZLYOBh6YTGM7zrcqRN8bXPGlimppGete-UwfI3JpkrOpqO_v9q0VuE3mOxA"/>
 <span class="absolute bottom-1 right-1 bg-emerald-500 text-white rounded-full p-1 shadow" title="Comercio Verificado">
 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path></svg>
 </span>
 </div>
 </div>
 <div>
-<h2 class="text-xl font-extrabold text-slate-900 tracking-tight">KSLR 1609</h2>
-<p class="text-xs font-semibold text-emerald-600 tracking-wide uppercase mt-0.5">Accesorios Importados</p>
-<p class="text-[11px] text-slate-400 font-medium tracking-wider uppercase mt-0.5">Caracas, Venezuela</p>
+<h2 class="text-xl font-extrabold text-slate-900 tracking-tight" id="sf-store-name">KSLR 1609</h2>
+<p class="text-xs font-semibold text-emerald-600 tracking-wide uppercase mt-0.5" id="sf-store-category">Accesorios Importados</p>
+<p class="text-[11px] text-slate-400 font-medium tracking-wider uppercase mt-0.5" id="sf-store-location">Caracas, Venezuela</p>
 </div>
 <!-- Social & Direct Contact Buttons -->
 <div class="space-y-2 pt-1">
-<a class="w-full py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-semibold text-xs tracking-wide flex items-center justify-center gap-2 shadow-sm transition" href="https://wa.me/584126732004" target="_blank">
-<span>💬</span> WhatsApp Directo
-          </a>
-<a class="w-full py-3 px-4 rounded-xl bg-slate-700 hover:bg-slate-800 text-white font-semibold text-xs tracking-wide flex items-center justify-center gap-2 shadow-sm transition" href="https://instagram.com" target="_blank">
-<span>📸</span> Instagram (@kslr.oficial)
-          </a>
+<a class="w-full py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-semibold text-xs tracking-wide flex items-center justify-center gap-2 shadow-sm transition" href="#" id="sf-wa-link" target="_blank">
+<span>💬</span> WhatsApp Directo (<span id="sf-phone-display">0412-6732004</span>)
+        </a>
 </div>
 <!-- Pago Movil Quick Section -->
 <div class="pt-2 border-t border-slate-100 space-y-2.5 text-left">
 <div class="text-center">
-<span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Opciones de Pago Móvil</span>
+<span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Datos Oficiales de Pago Móvil</span>
 </div>
 <!-- BDV Direct Link Button -->
-<a class="w-full py-2.5 px-4 rounded-xl bg-cyan-700 hover:bg-cyan-800 text-white font-semibold text-xs flex items-center justify-center gap-2 shadow-sm transition" href="https://bdvenlinea.banvenez.com" target="_blank">
-<span>📲</span> Pagar directo con BDV App
-          </a>
+<a class="w-full py-2 px-4 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-semibold text-xs flex items-center justify-center gap-2 shadow-xs transition" href="https://bdvenlinea.banvenez.com" target="_blank">
+<span>📲</span> Abrir BDV en Línea
+        </a>
 <!-- Bank Details Copy Tiles -->
 <div class="space-y-1.5 text-xs">
 <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
-<span class="text-slate-700 font-medium">Banco: <strong>0102 - BDV</strong></span>
-<button class="text-slate-500 hover:text-slate-900 font-semibold text-[11px] bg-white px-2 py-1 rounded border border-slate-200 shadow-2xs" onclick="copyToClipboard('0102', 'Banco copiado')">Copiar</button>
+<span class="text-slate-700 font-medium">Banco: <strong id="sf-bank-display">0102 - BDV</strong></span>
+<button class="text-slate-500 hover:text-slate-900 font-semibold text-[11px] bg-white px-2 py-1 rounded border border-slate-200 shadow-2xs" onclick="copyDynamicField('sf-bank-display', 'Banco copiado')">Copiar</button>
 </div>
 <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
-<span class="text-slate-700 font-medium">Cédula: <strong>V-32446771</strong></span>
-<button class="text-slate-500 hover:text-slate-900 font-semibold text-[11px] bg-white px-2 py-1 rounded border border-slate-200 shadow-2xs" onclick="copyToClipboard('32446771', 'Cédula copiada')">Copiar</button>
+<span class="text-slate-700 font-medium">Cédula: <strong id="sf-id-display">V-32446771</strong></span>
+<button class="text-slate-500 hover:text-slate-900 font-semibold text-[11px] bg-white px-2 py-1 rounded border border-slate-200 shadow-2xs" onclick="copyDynamicField('sf-id-display', 'Cédula copiada')">Copiar</button>
 </div>
 <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
-<span class="text-slate-700 font-medium">Teléfono: <strong>0412-6732004</strong></span>
-<button class="text-slate-500 hover:text-slate-900 font-semibold text-[11px] bg-white px-2 py-1 rounded border border-slate-200 shadow-2xs" onclick="copyToClipboard('04126732004', 'Teléfono copiado')">Copiar</button>
+<span class="text-slate-700 font-medium">Teléfono: <strong id="sf-pm-phone-display">0412-6732004</strong></span>
+<button class="text-slate-500 hover:text-slate-900 font-semibold text-[11px] bg-white px-2 py-1 rounded border border-slate-200 shadow-2xs" onclick="copyDynamicField('sf-pm-phone-display', 'Teléfono copiado')">Copiar</button>
 </div>
 </div>
-<button class="w-full py-2 rounded-xl border border-dashed border-cyan-500 bg-cyan-50 hover:bg-cyan-100 text-cyan-800 text-xs font-semibold flex items-center justify-center gap-1.5 transition" onclick="copyAllPaymentData()">
-            📋 Copiar todos los datos de Pago Móvil
-          </button>
+<button class="w-full py-2 rounded-xl border border-dashed border-emerald-500 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-semibold flex items-center justify-center gap-1.5 transition" onclick="copyActiveStorePaymentData()">
+          📋 Copiar todos los datos de Pago Móvil
+        </button>
 </div>
 </div>
 <!-- Catalog Header and Category Filter -->
 <div class="space-y-3">
 <div class="flex items-center justify-between px-1">
-<h3 class="text-sm font-bold uppercase tracking-wider text-slate-700">Catálogo de Artículos</h3>
-<span class="text-xs text-slate-500" id="catalog-count-badge">4 disponibles</span>
-</div>
-<!-- Category Pill Selector -->
-<div class="flex items-center gap-1.5 overflow-x-auto hide-scrollbar pb-1 text-xs">
-<button class="cat-pill active px-3 py-1.5 rounded-full bg-slate-900 text-white font-medium whitespace-nowrap" onclick="filterCategory('todos')">Todos</button>
-<button class="cat-pill px-3 py-1.5 rounded-full bg-white border border-slate-200 text-slate-600 font-medium whitespace-nowrap" onclick="filterCategory('relojes')">Relojes</button>
-<button class="cat-pill px-3 py-1.5 rounded-full bg-white border border-slate-200 text-slate-600 font-medium whitespace-nowrap" onclick="filterCategory('billeteras')">Billeteras</button>
-<button class="cat-pill px-3 py-1.5 rounded-full bg-white border border-slate-200 text-slate-600 font-medium whitespace-nowrap" onclick="filterCategory('audio')">Audio</button>
+<h3 class="text-sm font-bold uppercase tracking-wider text-slate-700">Artículos Disponibles</h3>
+<span class="text-xs text-slate-500" id="sf-items-count-badge">0 disponibles</span>
 </div>
 </div>
 <!-- Products Grid -->
-<div class="space-y-3" id="products-catalog-container">
+<div class="space-y-3" id="sf-products-container">
 <!-- Rendered dynamically by JavaScript -->
 </div>
 </section>
 <!-- END: VIEW 2 -->
 <!-- ========================================================================= -->
-<!-- BEGIN: VIEW 3 - SELLER DASHBOARD (PANEL VENDEDOR)                         -->
+<!-- BEGIN: VIEW 3 - SELLER DASHBOARD (PANEL PRIVADO DE TIENDA)               -->
 <!-- ========================================================================= -->
 <section class="hidden space-y-6" data-purpose="seller-admin-panel" id="view-seller">
 <!-- Status Banner -->
 <div class="bg-gradient-to-r from-emerald-800 to-teal-900 text-white p-5 rounded-2xl shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
 <div>
 <div class="flex items-center gap-2">
-<span class="px-2 py-0.5 rounded bg-emerald-400 text-slate-950 font-bold text-[11px] uppercase tracking-wide">Plan Pro Activo</span>
-<span class="text-xs text-emerald-200">KSLR 1609</span>
+<span class="px-2 py-0.5 rounded bg-emerald-400 text-slate-950 font-bold text-[11px] uppercase tracking-wide" id="seller-plan-badge">Plan Pro</span>
+<span class="text-xs text-emerald-200 font-semibold" id="seller-header-store-name">KSLR 1609</span>
 </div>
-<h2 class="text-xl font-bold mt-1">Panel de Control del Vendedor</h2>
-<p class="text-xs text-emerald-100">Próximo vencimiento de tu suscripción en <strong>24 días</strong>.</p>
+<h2 class="text-xl font-bold mt-1">Panel de Control de tu Comercio</h2>
+<p class="text-xs text-emerald-100">Estado de suscripción: <span class="font-bold text-white" id="seller-sub-status">Activa</span> (<span id="seller-sub-days">24 días restantes</span>)</p>
 </div>
-<button class="px-4 py-2 bg-white text-emerald-900 rounded-xl font-bold text-xs hover:bg-emerald-50 transition shadow whitespace-nowrap" onclick="switchView('billing')">
-          Renovar / Pagar $5.00
+<div class="flex items-center gap-2">
+<button class="px-3.5 py-2 bg-emerald-500 text-slate-950 rounded-xl font-bold text-xs hover:bg-emerald-400 transition shadow whitespace-nowrap" onclick="openSubscriptionFlow()">
+          💳 Renovar / Plan $5.00
         </button>
+<button class="px-3 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl font-medium text-xs transition border border-white/20" onclick="viewMyStorefront()">
+          👀 Ver mi Vitrina
+        </button>
+</div>
+</div>
+<!-- Shareable Storefront Link Card -->
+<div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+<div class="space-y-0.5">
+<span class="text-[11px] font-bold uppercase tracking-wider text-emerald-800">Enlace de tu Catálogo para Redes / WhatsApp</span>
+<p class="text-xs text-emerald-950 font-mono font-semibold" id="seller-shareable-url">https://toquecatalogo.pages.dev/?tienda=kslr1609</p>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 transition" onclick="copyStoreUrl()">
+          Copiar Link
+        </button>
+<button class="px-3 py-1.5 rounded-lg bg-white text-emerald-900 border border-emerald-300 font-bold text-xs hover:bg-emerald-100 transition" onclick="viewMyStorefront()">
+          Abrir
+        </button>
+</div>
 </div>
 <!-- Metrics KPI Cards -->
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
 <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
-<p class="text-xs text-slate-500 font-medium">Visitas a tu catálogo hoy</p>
-<p class="text-2xl font-bold text-slate-900 mt-1">142</p>
-<span class="text-[11px] text-emerald-600 font-medium">↑ +18% vs ayer</span>
+<p class="text-xs text-slate-500 font-medium">Productos Activos</p>
+<p class="text-2xl font-bold text-slate-900 mt-1" id="seller-metric-prods">0</p>
+<span class="text-[11px] text-emerald-600 font-medium">Sincronizados en vitrina</span>
 </div>
 <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
-<p class="text-xs text-slate-500 font-medium">Pedidos recibidos (Mes)</p>
-<p class="text-2xl font-bold text-slate-900 mt-1">18</p>
-<span class="text-[11px] text-slate-400 font-medium">Vía WhatsApp &amp; Web</span>
+<p class="text-xs text-slate-500 font-medium">Tasa BCV Aplicada</p>
+<p class="text-2xl font-bold text-slate-900 mt-1" id="seller-metric-rate">Bs. 48,20</p>
+<span class="text-[11px] text-slate-400 font-medium">Actualización automática</span>
 </div>
 <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
-<p class="text-xs text-slate-500 font-medium">Ventas Totales Est.</p>
-<p class="text-2xl font-bold text-emerald-700 mt-1">$420.00</p>
-<span class="text-[11px] text-slate-500 font-medium">≈ Bs. 20.244,00 BCV</span>
+<p class="text-xs text-slate-500 font-medium">Valor Total Inventario</p>
+<p class="text-2xl font-bold text-emerald-700 mt-1" id="seller-metric-val">$0.00</p>
+<span class="text-[11px] text-slate-500 font-medium" id="seller-metric-val-bs">≈ Bs. 0,00</span>
 </div>
 </div>
 <!-- Inventory Management -->
-<div class="bg-white rounded-2xl border border-slate-200 p-5 space-y-4">
+<div class="bg-white rounded-2xl border border-slate-200 p-5 space-y-4 shadow-xs">
 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
 <div>
 <h3 class="text-base font-bold text-slate-900">Mis Productos en Vitrina</h3>
-<p class="text-xs text-slate-500">Gestiona precios en USD e inventario disponible</p>
+<p class="text-xs text-slate-500">Agrega, edita precios en USD y controla tu stock disponible</p>
 </div>
 <button class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-sm transition" onclick="toggleModal('modal-add-product')">
 <span>➕</span> Cargar Nuevo Producto
-          </button>
+        </button>
 </div>
-<!-- Inventory List Table/Cards -->
+<!-- Inventory Table -->
 <div class="overflow-x-auto">
 <table class="w-full text-left text-xs">
 <thead class="bg-slate-50 text-slate-600 uppercase font-semibold border-y border-slate-200">
@@ -395,45 +373,34 @@
 </tr>
 </thead>
 <tbody class="divide-y divide-slate-100" id="seller-products-table">
-<!-- Dynamically populated from JS -->
+<!-- Dynamically populated from active store products -->
 </tbody>
 </table>
 </div>
 </div>
-<!-- Currency & Payment Settings Config -->
-<div class="bg-white rounded-2xl border border-slate-200 p-5 space-y-4">
-<h3 class="text-base font-bold text-slate-900">Configuración de Moneda y Métodos de Cobro</h3>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-<div class="p-4 rounded-xl border border-slate-200 space-y-3">
-<span class="font-bold text-xs text-slate-800 block">Tasa de Cambio para Catálogo</span>
-<div class="flex items-center gap-3">
-<label class="flex items-center gap-2 text-xs text-slate-700 font-medium">
-<input checked="" class="text-emerald-600 focus:ring-emerald-500" name="rate-mode" type="radio"/>
-                BCV Automática (Bs. 48,20)
-              </label>
-<label class="flex items-center gap-2 text-xs text-slate-700 font-medium">
-<input class="text-emerald-600 focus:ring-emerald-500" name="rate-mode" type="radio"/>
-                Tasa Personalizada
-              </label>
+<!-- Currency & Payment Settings Config for THIS store -->
+<div class="bg-white rounded-2xl border border-slate-200 p-5 space-y-4 shadow-xs">
+<div class="flex items-center justify-between">
+<div>
+<h3 class="text-base font-bold text-slate-900">Tus Datos de Cobro (Pago Móvil &amp; Contacto)</h3>
+<p class="text-xs text-slate-500">Estos son los datos que verán tus clientes al finalizar su pedido</p>
 </div>
-<input class="w-full text-xs rounded-lg border-slate-200 bg-slate-100 text-slate-500 p-2" disabled="" type="text" value="48.20"/>
+<button class="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition" onclick="saveActiveStorePaymentSettings()">
+          💾 Guardar Cambios
+        </button>
 </div>
-<div class="p-4 rounded-xl border border-slate-200 space-y-3">
-<span class="font-bold text-xs text-slate-800 block">Métodos Habilitados para tus Clientes</span>
-<div class="space-y-2 text-xs">
-<label class="flex items-center justify-between">
-<span class="text-slate-700">Pago Móvil BDV / Interbancario</span>
-<input checked="" class="rounded text-emerald-600 focus:ring-emerald-500" type="checkbox"/>
-</label>
-<label class="flex items-center justify-between">
-<span class="text-slate-700">Zelle o Efectivo USD</span>
-<input checked="" class="rounded text-emerald-600 focus:ring-emerald-500" type="checkbox"/>
-</label>
-<label class="flex items-center justify-between">
-<span class="text-slate-700">Binance Pay (USDT)</span>
-<input checked="" class="rounded text-emerald-600 focus:ring-emerald-500" type="checkbox"/>
-</label>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+<div>
+<label class="block font-semibold text-slate-700 mb-1">Banco para Pago Móvil</label>
+<input class="w-full rounded-xl border-slate-300 text-xs p-2.5" id="cfg-bank" placeholder="0102 - BDV" type="text"/>
 </div>
+<div>
+<label class="block font-semibold text-slate-700 mb-1">Cédula o RIF</label>
+<input class="w-full rounded-xl border-slate-300 text-xs p-2.5" id="cfg-id" placeholder="V-32446771" type="text"/>
+</div>
+<div>
+<label class="block font-semibold text-slate-700 mb-1">Teléfono Pago Móvil &amp; WhatsApp</label>
+<input class="w-full rounded-xl border-slate-300 text-xs p-2.5" id="cfg-phone" placeholder="04126732004" type="text"/>
 </div>
 </div>
 </div>
@@ -443,11 +410,17 @@
 <!-- BEGIN: VIEW 4 - SAAS BILLING VIEW ($5/MONTH SUBSCRIPTION)                -->
 <!-- ========================================================================= -->
 <section class="hidden max-w-lg mx-auto space-y-6" data-purpose="saas-subscription-billing" id="view-billing">
+<div class="flex items-center justify-between text-xs px-1">
+<button class="text-slate-600 hover:text-emerald-700 font-semibold flex items-center gap-1" onclick="navigateTo('seller')">
+        ← Volver a mi panel
+      </button>
+<span class="text-slate-400">Pasarela ToqueCatálogo SaaS</span>
+</div>
 <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-5">
 <div class="text-center space-y-1">
 <span class="inline-block px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 font-bold text-xs">Suscripción ToqueCatálogo</span>
 <h2 class="text-2xl font-black text-slate-900">Activa o Renueva tu Tienda</h2>
-<p class="text-xs text-slate-500">Comercio: <strong>KSLR 1609</strong> (Plan Pro)</p>
+<p class="text-xs text-slate-500">Comercio: <strong id="billing-current-store-name">KSLR 1609</strong></p>
 </div>
 <!-- Plan Period Selector -->
 <div class="grid grid-cols-3 gap-2 text-center text-xs">
@@ -497,102 +470,108 @@
 <!-- Verification Form -->
 <form class="space-y-3" data-purpose="subscription-report-form" onsubmit="handleSubscriptionReport(event)">
 <div>
+<label class="block text-xs font-semibold text-slate-700 mb-1">Método con el que pagaste</label>
+<select class="w-full text-xs rounded-xl border-slate-300 p-2.5" id="billing-method-select">
+<option value="Pago Móvil Mercantil">Pago Móvil (Mercantil / BDV)</option>
+<option value="Binance Pay USDT">Binance Pay (USDT)</option>
+<option value="Zelle Directo">Zelle Directo</option>
+</select>
+</div>
+<div>
 <label class="block text-xs font-semibold text-slate-700 mb-1">Número de Referencia Bancaria / Binance TxID</label>
 <input class="w-full text-xs rounded-xl border-slate-300 focus:border-emerald-500 focus:ring-emerald-500 p-2.5" id="billing-ref" placeholder="Ej: 849201 o 4 últimos dígitos" required="" type="text"/>
 </div>
-<div>
-<label class="block text-xs font-semibold text-slate-700 mb-1">Adjuntar Captura de Pago (Simulada)</label>
-<input accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100" type="file"/>
-</div>
 <div class="p-3 bg-amber-50 rounded-xl border border-amber-200 text-[11px] text-amber-800">
-            ⚠️ <strong>Período de Gracia:</strong> Al reportar tu pago, tu tienda sigue activa de forma inmediata por 5 días de cortesía mientras se valida en SuperAdmin.
-          </div>
+          ⚠️ <strong>Período de Gracia:</strong> Al reportar tu pago, tu tienda sigue activa de forma inmediata por 5 días de cortesía mientras el SuperAdmin concilia.
+        </div>
 <button class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs tracking-wide shadow-md transition" type="submit">
-            Reportar Pago de Suscripción
-          </button>
+          Reportar Pago de Suscripción
+        </button>
 </form>
 </div>
 </section>
 <!-- END: VIEW 4 -->
 <!-- ========================================================================= -->
-<!-- BEGIN: VIEW 5 - SUPERADMIN OWNER VIEW                                     -->
+<!-- BEGIN: VIEW 5 - SUPERADMIN OWNER VIEW (PRIVADO ESTRICTO)                  -->
 <!-- ========================================================================= -->
 <section class="hidden space-y-6" data-purpose="superadmin-dashboard" id="view-superadmin">
 <!-- Admin Header -->
 <div class="bg-slate-900 text-white p-5 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
 <div>
-<span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-bold text-[11px] uppercase tracking-wide border border-purple-500/30">Plataforma Matriz</span>
-<h2 class="text-xl font-bold mt-1">SuperAdmin ToqueCatálogo</h2>
-<p class="text-xs text-slate-400">Consolidado general de tiendas suscritas e ingresos SaaS</p>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-bold text-[11px] uppercase tracking-wide border border-purple-500/30">Privado • Solo Matriz</span>
+<span class="text-xs text-slate-400">admin@toquecatalogo.com</span>
 </div>
-<div class="text-right">
-<span class="text-xs text-slate-400">Ingresos este mes</span>
-<p class="text-2xl font-extrabold text-emerald-400">$240.00 USD</p>
+<h2 class="text-xl font-bold mt-1">SuperAdmin Maestro - ToqueCatálogo</h2>
+<p class="text-xs text-slate-400">Consolidado general de tiendas suscritas, concilación de $5 y auditoría SaaS</p>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-3.5 py-1.5 rounded-xl bg-rose-900/40 text-rose-300 border border-rose-800 hover:bg-rose-900/70 text-xs font-bold transition" onclick="handleLogout()">
+          Cerrar Sesión SuperAdmin
+        </button>
 </div>
 </div>
 <!-- Master KPI Metrics -->
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
 <div class="bg-white p-4 rounded-xl border border-slate-200">
-<p class="text-xs text-slate-500 font-medium">Tiendas Totales Registradas</p>
-<p class="text-2xl font-bold text-slate-900 mt-1">48</p>
-<span class="text-[11px] text-emerald-600 font-medium">42 Activas • 6 Vencidas</span>
+<p class="text-xs text-slate-500 font-medium">Tiendas Totales en Plataforma</p>
+<p class="text-2xl font-bold text-slate-900 mt-1" id="admin-total-stores">0</p>
+<span class="text-[11px] text-emerald-600 font-medium" id="admin-active-breakdown">0 Activas • 0 Vencidas</span>
 </div>
 <div class="bg-white p-4 rounded-xl border border-slate-200">
-<p class="text-xs text-slate-500 font-medium">Suscripciones Cobradas (Mes)</p>
-<p class="text-2xl font-bold text-slate-900 mt-1">48 cuotas</p>
+<p class="text-xs text-slate-500 font-medium">Ingresos Totales Conciliados</p>
+<p class="text-2xl font-bold text-emerald-600 mt-1" id="admin-total-revenue">$240.00 USD</p>
 <span class="text-[11px] text-slate-500 font-medium">85% Pago Móvil / 15% Binance</span>
 </div>
 <div class="bg-white p-4 rounded-xl border border-slate-200">
 <p class="text-xs text-slate-500 font-medium">Comprobantes por Conciliar</p>
-<p class="text-2xl font-bold text-amber-600 mt-1" id="pending-count">3</p>
-<span class="text-[11px] text-amber-700 font-medium">Requieren aprobación manual</span>
+<p class="text-2xl font-bold text-amber-600 mt-1" id="admin-pending-count">0</p>
+<span class="text-[11px] text-amber-700 font-medium">Pendientes de aprobación</span>
 </div>
 </div>
 <!-- Verification Queue Table -->
 <div class="bg-white rounded-2xl border border-slate-200 p-5 space-y-4">
-<h3 class="text-base font-bold text-slate-900">Cola de Verificación de Pagos ($5.00 / SaaS)</h3>
+<div class="flex items-center justify-between">
+<h3 class="text-base font-bold text-slate-900">Cola de Pagos Recibidos ($5.00 / SaaS)</h3>
+<span class="text-xs text-slate-500 font-medium">Comprobantes enviados por las tiendas</span>
+</div>
 <div class="overflow-x-auto">
 <table class="w-full text-left text-xs">
 <thead class="bg-slate-50 text-slate-600 uppercase font-semibold border-y border-slate-200">
 <tr>
 <th class="py-3 px-3">Comercio</th>
 <th class="py-3 px-3">Método</th>
-<th class="py-3 px-3">Monto / Referencia</th>
+<th class="py-3 px-3">Monto / Ref</th>
 <th class="py-3 px-3">Fecha</th>
 <th class="py-3 px-3 text-right">Acciones</th>
 </tr>
 </thead>
 <tbody class="divide-y divide-slate-100" id="admin-payments-queue">
-<tr id="admin-row-1">
-<td class="py-3 px-3 font-semibold text-slate-900">KSLR 1609 Accesorios</td>
-<td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-medium">Pago Móvil BDV</span></td>
-<td class="py-3 px-3 font-mono">$5.00 (Ref: #849201)</td>
-<td class="py-3 px-3 text-slate-500">Hoy 10:24 AM</td>
-<td class="py-3 px-3 text-right space-x-1.5">
-<button class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded text-[11px]" onclick="reviewAdminPayment('admin-row-1', true)">Aprobar</button>
-<button class="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 font-medium rounded text-[11px]" onclick="reviewAdminPayment('admin-row-1', false)">Rechazar</button>
-</td>
+<!-- Populated via renderAdminQueue() -->
+</tbody>
+</table>
+</div>
+</div>
+<!-- Directory of All Stores in System -->
+<div class="bg-white rounded-2xl border border-slate-200 p-5 space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="text-base font-bold text-slate-900">Listado Completo de Comercios Registrados</h3>
+<span class="text-xs text-slate-500">Gestión de suscripciones y estados</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-xs">
+<thead class="bg-slate-50 text-slate-600 uppercase font-semibold border-y border-slate-200">
+<tr>
+<th class="py-3 px-3">Tienda</th>
+<th class="py-3 px-3">Correo</th>
+<th class="py-3 px-3">Plan</th>
+<th class="py-3 px-3">Días Restantes</th>
+<th class="py-3 px-3">Estado</th>
+<th class="py-3 px-3 text-right">Acciones</th>
 </tr>
-<tr id="admin-row-2">
-<td class="py-3 px-3 font-semibold text-slate-900">Moda Express CCS</td>
-<td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-amber-50 text-amber-700 font-medium">Binance USDT</span></td>
-<td class="py-3 px-3 font-mono">$13.00 (Trimestre)</td>
-<td class="py-3 px-3 text-slate-500">Ayer 04:12 PM</td>
-<td class="py-3 px-3 text-right space-x-1.5">
-<button class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded text-[11px]" onclick="reviewAdminPayment('admin-row-2', true)">Aprobar</button>
-<button class="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 font-medium rounded text-[11px]" onclick="reviewAdminPayment('admin-row-2', false)">Rechazar</button>
-</td>
-</tr>
-<tr id="admin-row-3">
-<td class="py-3 px-3 font-semibold text-slate-900">Gourmet CCS Market</td>
-<td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-medium">Pago Móvil Banesco</span></td>
-<td class="py-3 px-3 font-mono">$5.00 (Ref: #199482)</td>
-<td class="py-3 px-3 text-slate-500">Ayer 02:40 PM</td>
-<td class="py-3 px-3 text-right space-x-1.5">
-<button class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded text-[11px]" onclick="reviewAdminPayment('admin-row-3', true)">Aprobar</button>
-<button class="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 font-medium rounded text-[11px]" onclick="reviewAdminPayment('admin-row-3', false)">Rechazar</button>
-</td>
-</tr>
+</thead>
+<tbody class="divide-y divide-slate-100" id="admin-stores-table">
+<!-- Populated via renderAdminStores() -->
 </tbody>
 </table>
 </div>
@@ -614,68 +593,112 @@
 </button>
 </div>
 <!-- END: Floating Store Cart Bar -->
-<!-- BEGIN: Modals -->
-<!-- 1. Checkout Modal with Dual Mode (WhatsApp or Pago Movil Direct) -->
-<div class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden items-center justify-center p-4" id="modal-checkout">
-<div class="bg-white rounded-3xl max-w-md w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-200">
-<!-- Modal Header -->
-<div class="p-4 border-b border-slate-100 flex items-center justify-between">
+<!-- ========================================================================= -->
+<!-- BEGIN: MODALS                                                             -->
+<!-- ========================================================================= -->
+<!-- 1. AUTH MODAL (Unified Login & Register with Role Detection) -->
+<div class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden items-center justify-center p-4" id="modal-auth">
+<div class="bg-white rounded-3xl max-w-md w-full overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+<!-- Modal Header Tabs -->
+<div class="flex border-b border-slate-200">
+<button class="flex-1 py-3.5 text-center text-xs font-bold border-b-2 border-emerald-600 text-emerald-800 bg-emerald-50/50" id="auth-tab-login" onclick="switchAuthTab('login')">
+        Iniciar Sesión
+      </button>
+<button class="flex-1 py-3.5 text-center text-xs font-bold text-slate-500 hover:text-slate-800 bg-white" id="auth-tab-register" onclick="switchAuthTab('register')">
+        Crear mi Tienda
+      </button>
+<button class="px-4 text-slate-400 hover:text-slate-600 font-bold" onclick="toggleModal('modal-auth')">✕</button>
+</div>
+<!-- Login Tab Content -->
+<div class="p-6 space-y-4" id="auth-pane-login">
+<div class="text-center space-y-1">
+<h3 class="text-lg font-bold text-slate-900">Acceso a tu Cuenta</h3>
+<p class="text-xs text-slate-500">Ingresa como Comercio o Super Administrador</p>
+</div>
+<form class="space-y-3.5 text-xs" onsubmit="handleLoginSubmit(event)">
 <div>
-<h3 class="font-extrabold text-slate-900 text-base">Finalizar Pedido #1043</h3>
-<p class="text-xs text-slate-500">KSLR 1609 • Caracas</p>
+<label class="block font-semibold text-slate-700 mb-1">Correo Electrónico</label>
+<input class="w-full text-xs rounded-xl border-slate-300 p-2.5 focus:border-emerald-500 focus:ring-emerald-500" id="login-email" placeholder="ej: contacto@kslr.com" required="" type="email"/>
 </div>
-<button class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center font-bold" onclick="toggleModal('modal-checkout')">✕</button>
+<div>
+<label class="block font-semibold text-slate-700 mb-1">Contraseña</label>
+<input class="w-full text-xs rounded-xl border-slate-300 p-2.5 focus:border-emerald-500 focus:ring-emerald-500" id="login-pass" placeholder="••••••••" required="" type="password"/>
 </div>
-<!-- Modal Body (Scrollable) -->
-<div class="p-5 overflow-y-auto space-y-4 text-xs">
-<!-- Order Summary -->
-<div class="rounded-2xl bg-slate-50 p-3.5 border border-slate-200/80 space-y-2">
-<span class="font-bold text-slate-700 block">Resumen del Carrito</span>
-<div class="space-y-1.5 divide-y divide-slate-100" id="checkout-cart-list">
-<!-- Dynamic order items -->
-</div>
-<div class="pt-2 border-t border-slate-200 flex justify-between font-bold text-sm">
-<span>Total a Pagar:</span>
-<div class="text-right">
-<div class="text-emerald-700" id="checkout-total-usd">$0.00</div>
-<div class="text-[11px] text-slate-500 font-normal" id="checkout-total-bs">Bs. 0,00 BCV</div>
-</div>
-</div>
-</div>
-<!-- Customer details -->
-<div class="space-y-2">
-<label class="block font-semibold text-slate-800">Tus Datos para la Entrega</label>
-<input class="w-full text-xs rounded-xl border-slate-300 p-2.5" id="cust-name" placeholder="Nombre y Apellido" type="text"/>
-<input class="w-full text-xs rounded-xl border-slate-300 p-2.5" id="cust-phone" placeholder="Número de WhatsApp (ej: 0412...)" type="tel"/>
-<input class="w-full text-xs rounded-xl border-slate-300 p-2.5" id="cust-address" placeholder="Zona de Entrega / Municipio (ej: Chacao)" type="text"/>
-</div>
-<!-- Mode Selector: WhatsApp vs Web Pago Movil -->
-<div class="space-y-2 pt-1">
-<label class="block font-semibold text-slate-800">¿Cómo deseas concretar?</label>
-<div class="grid grid-cols-2 gap-2">
-<button class="p-3 rounded-xl border-2 border-emerald-600 bg-emerald-50 text-emerald-900 font-bold text-center" id="mode-btn-whatsapp" onclick="setCheckoutMode('whatsapp')" type="button">
-              💬 Por WhatsApp
-            </button>
-<button class="p-3 rounded-xl border border-slate-200 text-slate-600 font-bold text-center" id="mode-btn-web" onclick="setCheckoutMode('web')" type="button">
-              📲 Reporte Web BDV
-            </button>
-</div>
-</div>
-<!-- Optional Web BDV direct report panel -->
-<div class="hidden space-y-2.5 p-3.5 rounded-2xl bg-cyan-50 border border-cyan-200" id="web-bdv-report-panel">
+<button class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs tracking-wide shadow-md transition" type="submit">
+          Ingresar al Panel
+        </button>
+</form>
+<!-- Quick Demo Credentials helper for testers -->
+<div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-[11px] text-slate-600 space-y-1.5">
+<span class="font-bold text-slate-800 block">💡 Cuentas Demo para probar:</span>
 <div class="flex items-center justify-between">
-<span class="font-bold text-cyan-900">Datos Pago Móvil KSLR 1609</span>
-<button class="text-[11px] text-cyan-700 font-bold underline" onclick="copyAllPaymentData()" type="button">Copiar</button>
+<span>Tienda Demo: <strong>kslr@gmail.com</strong> / 123456</span>
+<button class="text-emerald-700 font-bold underline" onclick="fillDemoCredentials('kslr@gmail.com', '123456')">Usar</button>
 </div>
-<p class="text-[11px] text-cyan-800">BDV (0102) • V-32446771 • 0412-6732004</p>
-<input class="w-full text-xs rounded-xl border-cyan-300 bg-white p-2" id="bdv-order-ref" placeholder="Número de Referencia Pago Móvil" type="text"/>
+<div class="flex items-center justify-between border-t border-slate-200 pt-1">
+<span>SuperAdmin: <strong>admin@toquecatalogo.com</strong> / admin123</span>
+<button class="text-purple-700 font-bold underline" onclick="fillDemoCredentials('admin@toquecatalogo.com', 'admin123')">Usar</button>
 </div>
 </div>
-<!-- Modal Footer -->
-<div class="p-4 border-t border-slate-100 bg-slate-50 flex items-center gap-2">
-<button class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md transition flex items-center justify-center gap-1.5" onclick="confirmOrderSubmission()">
-<span>Confirmar y Enviar Pedido</span>
-</button>
+</div>
+<!-- Register Tab Content -->
+<div class="p-6 space-y-4 hidden" id="auth-pane-register">
+<div class="text-center space-y-1">
+<h3 class="text-lg font-bold text-slate-900">Registra tu Tienda Gratis</h3>
+<p class="text-xs text-slate-500">Crea tu catálogo con cobro en Bs BCV y WhatsApp en 1 minuto</p>
+</div>
+<form class="space-y-3 text-xs" onsubmit="handleRegisterSubmit(event)">
+<div>
+<label class="block font-semibold text-slate-700 mb-1">Nombre del Comercio</label>
+<input class="w-full text-xs rounded-xl border-slate-300 p-2.5" id="reg-name" placeholder="Ej: Moda Caracas Express" required="" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div>
+<label class="block font-semibold text-slate-700 mb-1">Categoría</label>
+<select class="w-full text-xs rounded-xl border-slate-300 p-2.5" id="reg-cat">
+<option value="Accesorios &amp; Moda">Accesorios &amp; Moda</option>
+<option value="Tecnología &amp; Celulares">Tecnología &amp; Celulares</option>
+<option value="Comida &amp; Postres">Comida &amp; Postres</option>
+<option value="Salud &amp; Belleza">Salud &amp; Belleza</option>
+<option value="Otro">Otro Comercio</option>
+</select>
+</div>
+<div>
+<label class="block font-semibold text-slate-700 mb-1">WhatsApp / Contacto</label>
+<input class="w-full text-xs rounded-xl border-slate-300 p-2.5" id="reg-phone" placeholder="04121234567" required="" type="tel"/>
+</div>
+</div>
+<div>
+<label class="block font-semibold text-slate-700 mb-1">Correo de Acceso</label>
+<input class="w-full text-xs rounded-xl border-slate-300 p-2.5" id="reg-email" placeholder="tienda@correo.com" required="" type="email"/>
+</div>
+<div>
+<label class="block font-semibold text-slate-700 mb-1">Crea una Contraseña</label>
+<input class="w-full text-xs rounded-xl border-slate-300 p-2.5" id="reg-pass" minlength="4" placeholder="Mínimo 6 caracteres" required="" type="password"/>
+</div>
+<div>
+<label class="block font-semibold text-slate-700 mb-1">Selecciona tu Plan Inicial</label>
+<div class="grid grid-cols-2 gap-2">
+<label class="p-2.5 border rounded-xl flex flex-col cursor-pointer border-slate-300 bg-white" id="lbl-plan-free">
+<div class="flex items-center gap-1.5 font-bold text-slate-900">
+<input checked="" name="reg-plan-choice" onchange="togglePlanRadioStyle()" type="radio" value="gratis"/>
+<span>Gratis ($0)</span>
+</div>
+<span class="text-[10px] text-slate-500 mt-0.5">Hasta 2 productos</span>
+</label>
+<label class="p-2.5 border-2 border-emerald-500 bg-emerald-50/40 rounded-xl flex flex-col cursor-pointer" id="lbl-plan-pro">
+<div class="flex items-center gap-1.5 font-bold text-emerald-950">
+<input name="reg-plan-choice" onchange="togglePlanRadioStyle()" type="radio" value="pro"/>
+<span>Plan Pro ($5)</span>
+</div>
+<span class="text-[10px] text-emerald-700 font-semibold mt-0.5">Ilimitado + BDV</span>
+</label>
+</div>
+</div>
+<button class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs tracking-wide shadow-md transition mt-2" type="submit">
+          Crear Tienda y Entrar
+        </button>
+</form>
 </div>
 </div>
 </div>
@@ -698,398 +721,1056 @@
 </div>
 <div>
 <label class="block font-semibold text-slate-700 mb-1">Categoría</label>
-<select class="w-full rounded-xl border-slate-300 text-xs p-2.5" id="new-prod-cat">
-<option value="relojes">Relojes</option>
-<option value="billeteras">Billeteras</option>
-<option value="audio">Audio</option>
-</select>
+<input class="w-full rounded-xl border-slate-300 text-xs p-2.5" id="new-prod-cat" placeholder="General, Ropa, etc." required="" type="text" value="General"/>
 </div>
 </div>
 <div>
 <label class="block font-semibold text-slate-700 mb-1">Stock Disponible</label>
 <input class="w-full rounded-xl border-slate-300 text-xs p-2.5" id="new-prod-stock" type="number" value="5"/>
 </div>
+<div>
+<label class="block font-semibold text-slate-700 mb-1">Descripción corta</label>
+<textarea class="w-full rounded-xl border-slate-300 text-xs p-2" id="new-prod-desc" placeholder="Breve detalle del producto..." rows="2"></textarea>
+</div>
 <button class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs mt-2 transition" type="submit">
-          Guardar y Publicar en Vitrina
-        </button>
+        Guardar y Publicar en Vitrina
+      </button>
 </form>
 </div>
 </div>
-<!-- END: Modals -->
+<!-- 3. Checkout Modal with Dual Mode (WhatsApp or Pago Movil Direct) -->
+<div class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden items-center justify-center p-4" id="modal-checkout">
+<div class="bg-white rounded-3xl max-w-md w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+<div class="p-4 border-b border-slate-100 flex items-center justify-between">
+<div>
+<h3 class="font-extrabold text-slate-900 text-base" id="checkout-modal-title">Finalizar Pedido</h3>
+<p class="text-xs text-slate-500" id="checkout-modal-store-label">Comercio</p>
+</div>
+<button class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center font-bold" onclick="toggleModal('modal-checkout')">✕</button>
+</div>
+<div class="p-5 overflow-y-auto space-y-4 text-xs">
+<!-- Order Summary -->
+<div class="rounded-2xl bg-slate-50 p-3.5 border border-slate-200/80 space-y-2">
+<span class="font-bold text-slate-700 block">Resumen del Carrito</span>
+<div class="space-y-1.5 divide-y divide-slate-100" id="checkout-cart-list"></div>
+<div class="pt-2 border-t border-slate-200 flex justify-between font-bold text-sm">
+<span>Total a Pagar:</span>
+<div class="text-right">
+<div class="text-emerald-700 font-extrabold" id="checkout-total-usd">$0.00</div>
+<div class="text-[11px] text-slate-500 font-normal" id="checkout-total-bs">Bs. 0,00 BCV</div>
+</div>
+</div>
+</div>
+<!-- Customer details -->
+<div class="space-y-2">
+<label class="block font-semibold text-slate-800">Tus Datos para la Entrega</label>
+<input class="w-full text-xs rounded-xl border-slate-300 p-2.5" id="cust-name" placeholder="Nombre y Apellido" type="text"/>
+<input class="w-full text-xs rounded-xl border-slate-300 p-2.5" id="cust-phone" placeholder="Número de WhatsApp" type="tel"/>
+<input class="w-full text-xs rounded-xl border-slate-300 p-2.5" id="cust-address" placeholder="Zona de Entrega / Municipio" type="text"/>
+</div>
+<!-- Mode Selector -->
+<div class="space-y-2 pt-1">
+<label class="block font-semibold text-slate-800">¿Cómo deseas concretar?</label>
+<div class="grid grid-cols-2 gap-2">
+<button class="p-3 rounded-xl border-2 border-emerald-600 bg-emerald-50 text-emerald-900 font-bold text-center" id="mode-btn-whatsapp" onclick="setCheckoutMode('whatsapp')" type="button">
+            💬 Por WhatsApp
+          </button>
+<button class="p-3 rounded-xl border border-slate-200 text-slate-600 font-bold text-center" id="mode-btn-web" onclick="setCheckoutMode('web')" type="button">
+            📲 Reporte Pago Móvil
+          </button>
+</div>
+</div>
+<!-- Web Payment Direct panel -->
+<div class="hidden space-y-2.5 p-3.5 rounded-2xl bg-cyan-50 border border-cyan-200" id="web-bdv-report-panel">
+<div class="flex items-center justify-between">
+<span class="font-bold text-cyan-900">Datos Pago Móvil</span>
+<button class="text-[11px] text-cyan-700 font-bold underline" onclick="copyActiveStorePaymentData()" type="button">Copiar Todo</button>
+</div>
+<p class="text-[11px] text-cyan-800" id="checkout-pm-summary">Banco • Cédula • Teléfono</p>
+<input class="w-full text-xs rounded-xl border-cyan-300 bg-white p-2" id="bdv-order-ref" placeholder="Número de Referencia Pago Móvil" type="text"/>
+</div>
+</div>
+<div class="p-4 border-t border-slate-100 bg-slate-50 flex items-center gap-2">
+<button class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md transition flex items-center justify-center gap-1.5" onclick="confirmOrderSubmission()">
+<span>Confirmar y Enviar Pedido</span>
+</button>
+</div>
+</div>
+</div>
 <!-- ========================================================================= -->
-<!-- JAVASCRIPT APPLICATION LOGIC                                              -->
+<!-- JAVASCRIPT APPLICATION CORE (LocalStorage, Multi-Tenant Stores, Auth)    -->
 <!-- ========================================================================= -->
-<!-- State & Mock Database Script -->
-<script data-purpose="app-state">
-    // Currency Exchange Rate Configuration (BCV)
-    const EXCHANGE_RATE_BCV = 48.20;
+<script data-purpose="app-core">
+  // Config & State
+  const STORAGE_KEY_STORES = 'toque_stores_v1';
+  const STORAGE_KEY_AUTH = 'toque_current_auth_v1';
+  const STORAGE_KEY_RATE = 'toque_bcv_rate_v1';
+  const STORAGE_KEY_PAYMENTS = 'toque_admin_payments_v1';
 
-    // Initial Product Catalog (with provided image snapshot as hero asset)
-    let catalogProducts = [
-      {
-        id: 1,
-        title: "Reloj Militar Táctico KSLR Black",
-        category: "relojes",
-        priceUsd: 35.00,
-        stock: 6,
-        inStock: true,
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAg0SPFzwXz4D0TqTWFUnMhvM2azJlB3nK4zWl3wQqifK1Kkr6QV9ZhSjttbGAxNTsg1kg2N89vDS9Xem-bMpKJHlDFyk3frNOrlw7iTLw6xc_QMHs2a0zifqJeAvnsJZ9qYvTgazi6c5Dugj4LZF76h3Izv3TP9ezhXrnCb9QyJ3_oiw2xykn6jeirmW2BzAwSNljrbrMZLYOBh6YTGM7zrcqRN8bXPGlimppGete-UwfI3JpkrOpqO_v9q0VuE3mOxA",
-        desc: "Sumergible 50m, cronómetro y luz nocturna."
-      },
-      {
-        id: 2,
-        title: "Billetera Minimalista Slim RFID",
-        category: "billeteras",
-        priceUsd: 15.00,
-        stock: 12,
-        inStock: true,
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAg0SPFzwXz4D0TqTWFUnMhvM2azJlB3nK4zWl3wQqifK1Kkr6QV9ZhSjttbGAxNTsg1kg2N89vDS9Xem-bMpKJHlDFyk3frNOrlw7iTLw6xc_QMHs2a0zifqJeAvnsJZ9qYvTgazi6c5Dugj4LZF76h3Izv3TP9ezhXrnCb9QyJ3_oiw2xykn6jeirmW2BzAwSNljrbrMZLYOBh6YTGM7zrcqRN8bXPGlimppGete-UwfI3JpkrOpqO_v9q0VuE3mOxA",
-        desc: "Aluminio aeroespacial con protección contra escaneo."
-      },
-      {
-        id: 3,
-        title: "Audífonos Bluetooth Pro K-Bass",
-        category: "audio",
-        priceUsd: 28.00,
-        stock: 4,
-        inStock: true,
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAg0SPFzwXz4D0TqTWFUnMhvM2azJlB3nK4zWl3wQqifK1Kkr6QV9ZhSjttbGAxNTsg1kg2N89vDS9Xem-bMpKJHlDFyk3frNOrlw7iTLw6xc_QMHs2a0zifqJeAvnsJZ9qYvTgazi6c5Dugj4LZF76h3Izv3TP9ezhXrnCb9QyJ3_oiw2xykn6jeirmW2BzAwSNljrbrMZLYOBh6YTGM7zrcqRN8bXPGlimppGete-UwfI3JpkrOpqO_v9q0VuE3mOxA",
-        desc: "Cancelación activa de ruido y estuche de carga rápida."
-      },
-      {
-        id: 4,
-        title: "Reloj Inteligente Fit Tracker V8",
-        category: "relojes",
-        priceUsd: 45.00,
-        stock: 3,
-        inStock: true,
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAg0SPFzwXz4D0TqTWFUnMhvM2azJlB3nK4zWl3wQqifK1Kkr6QV9ZhSjttbGAxNTsg1kg2N89vDS9Xem-bMpKJHlDFyk3frNOrlw7iTLw6xc_QMHs2a0zifqJeAvnsJZ9qYvTgazi6c5Dugj4LZF76h3Izv3TP9ezhXrnCb9QyJ3_oiw2xykn6jeirmW2BzAwSNljrbrMZLYOBh6YTGM7zrcqRN8bXPGlimppGete-UwfI3JpkrOpqO_v9q0VuE3mOxA",
-        desc: "Monitor cardíaco y notificaciones de WhatsApp."
+  let exchangeRate = parseFloat(localStorage.getItem(STORAGE_KEY_RATE)) || 48.20;
+
+  // Initial Seed Data for stores
+  const DEFAULT_STORES = [
+    {
+      id: 'kslr1609',
+      name: 'KSLR 1609',
+      category: 'Accesorios Importados',
+      email: 'kslr@gmail.com',
+      password: '123456',
+      phone: '0412-6732004',
+      location: 'Caracas, Venezuela',
+      bankName: '0102 - BDV',
+      bankId: 'V-32446771',
+      plan: 'pro',
+      subDays: 24,
+      subStatus: 'Activa',
+      logo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAg0SPFzwXz4D0TqTWFUnMhvM2azJlB3nK4zWl3wQqifK1Kkr6QV9ZhSjttbGAxNTsg1kg2N89vDS9Xem-bMpKJHlDFyk3frNOrlw7iTLw6xc_QMHs2a0zifqJeAvnsJZ9qYvTgazi6c5Dugj4LZF76h3Izv3TP9ezhXrnCb9QyJ3_oiw2xykn6jeirmW2BzAwSNljrbrMZLYOBh6YTGM7zrcqRN8bXPGlimppGete-UwfI3JpkrOpqO_v9q0VuE3mOxA',
+      products: [
+        {
+          id: 101,
+          title: "Reloj Militar Táctico KSLR Black",
+          category: "relojes",
+          priceUsd: 35.00,
+          stock: 6,
+          desc: "Sumergible 50m, cronómetro y luz nocturna.",
+          image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAg0SPFzwXz4D0TqTWFUnMhvM2azJlB3nK4zWl3wQqifK1Kkr6QV9ZhSjttbGAxNTsg1kg2N89vDS9Xem-bMpKJHlDFyk3frNOrlw7iTLw6xc_QMHs2a0zifqJeAvnsJZ9qYvTgazi6c5Dugj4LZF76h3Izv3TP9ezhXrnCb9QyJ3_oiw2xykn6jeirmW2BzAwSNljrbrMZLYOBh6YTGM7zrcqRN8bXPGlimppGete-UwfI3JpkrOpqO_v9q0VuE3mOxA"
+        },
+        {
+          id: 102,
+          title: "Billetera Minimalista Slim RFID",
+          category: "billeteras",
+          priceUsd: 15.00,
+          stock: 12,
+          desc: "Aluminio aeroespacial con protección contra escaneo.",
+          image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAg0SPFzwXz4D0TqTWFUnMhvM2azJlB3nK4zWl3wQqifK1Kkr6QV9ZhSjttbGAxNTsg1kg2N89vDS9Xem-bMpKJHlDFyk3frNOrlw7iTLw6xc_QMHs2a0zifqJeAvnsJZ9qYvTgazi6c5Dugj4LZF76h3Izv3TP9ezhXrnCb9QyJ3_oiw2xykn6jeirmW2BzAwSNljrbrMZLYOBh6YTGM7zrcqRN8bXPGlimppGete-UwfI3JpkrOpqO_v9q0VuE3mOxA"
+        },
+        {
+          id: 103,
+          title: "Audífonos Bluetooth Pro K-Bass",
+          category: "audio",
+          priceUsd: 28.00,
+          stock: 4,
+          desc: "Cancelación activa de ruido y estuche de carga rápida.",
+          image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAg0SPFzwXz4D0TqTWFUnMhvM2azJlB3nK4zWl3wQqifK1Kkr6QV9ZhSjttbGAxNTsg1kg2N89vDS9Xem-bMpKJHlDFyk3frNOrlw7iTLw6xc_QMHs2a0zifqJeAvnsJZ9qYvTgazi6c5Dugj4LZF76h3Izv3TP9ezhXrnCb9QyJ3_oiw2xykn6jeirmW2BzAwSNljrbrMZLYOBh6YTGM7zrcqRN8bXPGlimppGete-UwfI3JpkrOpqO_v9q0VuE3mOxA"
+        }
+      ]
+    },
+    {
+      id: 'modaexpress',
+      name: 'Moda Express CCS',
+      category: 'Calzado & Ropa Urbana',
+      email: 'moda@ccs.com',
+      password: '123456',
+      phone: '0414-9988771',
+      location: 'Chacao, Caracas',
+      bankName: '0102 - BDV',
+      bankId: 'V-26119882',
+      plan: 'pro',
+      subDays: 14,
+      subStatus: 'Activa',
+      logo: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=150&auto=format&fit=crop&q=60',
+      products: [
+        {
+          id: 201,
+          title: "Sneakers Urban Street White",
+          category: "calzado",
+          priceUsd: 45.00,
+          stock: 8,
+          desc: "Zapatillas urbanas suela alta confort.",
+          image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=150&auto=format&fit=crop&q=60"
+        }
+      ]
+    },
+    {
+      id: 'gourmetccs',
+      name: 'Gourmet CCS Market',
+      category: 'Snacks & Delicateses',
+      email: 'gourmet@ccs.com',
+      password: '123456',
+      phone: '0424-5551234',
+      location: 'Las Mercedes, Caracas',
+      bankName: '0134 - Banesco',
+      bankId: 'J-50192837',
+      plan: 'gratis',
+      subDays: 365,
+      subStatus: 'Activa',
+      logo: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=150&auto=format&fit=crop&q=60',
+      products: [
+        {
+          id: 301,
+          title: "Pack Café Artesanal Gourmet 500g",
+          category: "alimentos",
+          priceUsd: 8.50,
+          stock: 15,
+          desc: "Tostado medio origen Caripe.",
+          image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=150&auto=format&fit=crop&q=60"
+        }
+      ]
+    }
+  ];
+
+  const DEFAULT_PAYMENTS = [
+    { id: 'p1', storeId: 'kslr1609', storeName: 'KSLR 1609', method: 'Pago Móvil BDV', ref: '849201', amount: 5.00, date: 'Hoy 10:24 AM' },
+    { id: 'p2', storeId: 'modaexpress', storeName: 'Moda Express CCS', method: 'Binance USDT', ref: 'Tx#9948210', amount: 13.00, date: 'Ayer 04:12 PM' }
+  ];
+
+  // Load / Save Helpers
+  function getStores() {
+    const raw = localStorage.getItem(STORAGE_KEY_STORES);
+    if (!raw) {
+      localStorage.setItem(STORAGE_KEY_STORES, JSON.stringify(DEFAULT_STORES));
+      return DEFAULT_STORES;
+    }
+    try { return JSON.parse(raw); } catch (e) { return DEFAULT_STORES; }
+  }
+
+  function saveStores(stores) {
+    localStorage.setItem(STORAGE_KEY_STORES, JSON.stringify(stores));
+  }
+
+  function getPaymentsQueue() {
+    const raw = localStorage.getItem(STORAGE_KEY_PAYMENTS);
+    if (!raw) {
+      localStorage.setItem(STORAGE_KEY_PAYMENTS, JSON.stringify(DEFAULT_PAYMENTS));
+      return DEFAULT_PAYMENTS;
+    }
+    try { return JSON.parse(raw); } catch (e) { return DEFAULT_PAYMENTS; }
+  }
+
+  function savePaymentsQueue(q) {
+    localStorage.setItem(STORAGE_KEY_PAYMENTS, JSON.stringify(q));
+  }
+
+  function getCurrentAuth() {
+    const raw = localStorage.getItem(STORAGE_KEY_AUTH);
+    if (!raw) return null;
+    try { return JSON.parse(raw); } catch (e) { return null; }
+  }
+
+  function setAuthSession(authObj) {
+    if (authObj) {
+      localStorage.setItem(STORAGE_KEY_AUTH, JSON.stringify(authObj));
+    } else {
+      localStorage.removeItem(STORAGE_KEY_AUTH);
+    }
+    updateNavAuthUI();
+  }
+
+  // Active Storefront State
+  let activeStorefrontId = 'kslr1609';
+  let cart = [];
+  let activeCheckoutMode = 'whatsapp';
+
+  function formatBs(usdAmount) {
+    const bs = usdAmount * exchangeRate;
+    return "Bs. " + bs.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function promptEditRate() {
+    const newRate = prompt("Ingresa la nueva tasa oficial BCV (Bs por 1 USD):", exchangeRate);
+    if (newRate && !isNaN(parseFloat(newRate))) {
+      exchangeRate = parseFloat(newRate);
+      localStorage.setItem(STORAGE_KEY_RATE, exchangeRate);
+      document.getElementById('global-rate-display').textContent = `Bs. ${exchangeRate.toFixed(2)}`;
+      showToast(`Tasa BCV actualizada a Bs. ${exchangeRate.toFixed(2)}`);
+      // Re-render
+      renderPublicDirectory();
+      if (!document.getElementById('view-store').classList.contains('hidden')) {
+        renderStorefrontProducts(activeStorefrontId);
       }
-    ];
+      if (!document.getElementById('view-seller').classList.contains('hidden')) {
+        renderSellerDashboard();
+      }
+    }
+  }
 
-    // Shopping Cart State
-    let cart = [];
-    let activeCheckoutMode = 'whatsapp';
-  </script>
-<!-- View Router Script -->
-<script data-purpose="view-router">
-    function switchView(viewName) {
-      const views = ['landing', 'store', 'seller', 'billing', 'superadmin'];
-      
-      views.forEach(v => {
-        const el = document.getElementById(`view-${v}`);
-        const btn = document.getElementById(`nav-btn-${v}`);
-        
+  // Navigation Controller
+  function navigateTo(viewName) {
+    const views = ['landing', 'store', 'seller', 'billing', 'superadmin'];
+    views.forEach(v => {
+      const el = document.getElementById(`view-${v}`);
+      if (el) {
         if (v === viewName) {
           el.classList.remove('hidden');
-          btn.className = "px-2.5 py-1.5 rounded-md transition-all whitespace-nowrap bg-emerald-50 text-emerald-700 font-bold border border-emerald-200/60";
         } else {
           el.classList.add('hidden');
-          btn.className = "px-2.5 py-1.5 rounded-md transition-all whitespace-nowrap text-slate-600 hover:bg-slate-100";
         }
-      });
-
-      // Manage Cart Bar visibility based on view
-      const cartBar = document.getElementById('floating-cart-bar');
-      if (viewName === 'store' && cart.length > 0) {
-        cartBar.classList.remove('hidden');
-      } else {
-        cartBar.classList.add('hidden');
       }
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  </script>
-<!-- Storefront & Cart Operations Script -->
-<script data-purpose="store-operations">
-    function formatBs(usdAmount) {
-      const bs = usdAmount * EXCHANGE_RATE_BCV;
-      return "Bs. " + bs.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
-
-    function renderStoreCatalog(filter = 'todos') {
-      const container = document.getElementById('products-catalog-container');
-      container.innerHTML = '';
-
-      const filtered = filter === 'todos' 
-        ? catalogProducts 
-        : catalogProducts.filter(p => p.category === filter);
-
-      document.getElementById('catalog-count-badge').textContent = `${filtered.length} disponibles`;
-
-      filtered.forEach(prod => {
-        const card = document.createElement('div');
-        card.className = "bg-white rounded-2xl p-3.5 border border-slate-200 shadow-2xs flex gap-3.5 items-center";
-        card.innerHTML = `
-          <div class="relative w-20 h-20 rounded-xl overflow-hidden bg-slate-100 flex-shrink-0 border border-slate-100">
-            <img src="${prod.image}" alt="${prod.title}" class="w-full h-full object-cover">
-            <span class="absolute bottom-1 left-1 bg-slate-900/80 backdrop-blur-xs text-[9px] text-white px-1.5 py-0.2 rounded font-medium">
-              ${prod.stock} disp.
-            </span>
-          </div>
-          <div class="flex-grow min-w-0">
-            <h4 class="font-bold text-slate-900 text-xs truncate">${prod.title}</h4>
-            <p class="text-[11px] text-slate-500 line-clamp-1 mt-0.5">${prod.desc}</p>
-            <div class="mt-1 flex items-baseline gap-1.5">
-              <span class="text-sm font-extrabold text-slate-900">$${prod.priceUsd.toFixed(2)}</span>
-              <span class="text-[11px] font-semibold text-emerald-600">${formatBs(prod.priceUsd)}</span>
-            </div>
-          </div>
-          <div class="flex-shrink-0">
-            <button onclick="addToCart(${prod.id})" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-emerald-600 text-white font-bold text-xs transition active:scale-95 shadow-sm">
-              + Agregar
-            </button>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    function filterCategory(cat) {
-      document.querySelectorAll('.cat-pill').forEach(btn => {
-        btn.classList.remove('bg-slate-900', 'text-white');
-        btn.classList.add('bg-white', 'text-slate-600', 'border', 'border-slate-200');
-      });
-      event.target.classList.add('bg-slate-900', 'text-white');
-      event.target.classList.remove('bg-white', 'text-slate-600', 'border');
-      renderStoreCatalog(cat);
-    }
-
-    function addToCart(productId) {
-      const prod = catalogProducts.find(p => p.id === productId);
-      if (!prod) return;
-
-      const existing = cart.find(item => item.id === productId);
-      if (existing) {
-        existing.quantity += 1;
-      } else {
-        cart.push({ ...prod, quantity: 1 });
-      }
-
-      updateCartUI();
-      showToast(`Añadido: ${prod.title}`);
-    }
-
-    function updateCartUI() {
-      const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
-      const totalUsd = cart.reduce((acc, item) => acc + (item.priceUsd * item.quantity), 0);
-      const cartBar = document.getElementById('floating-cart-bar');
-
-      document.getElementById('cart-items-count').textContent = totalItems;
-      document.getElementById('cart-total-usd').textContent = `$${totalUsd.toFixed(2)}`;
-      document.getElementById('cart-total-bs').textContent = `• ${formatBs(totalUsd)}`;
-
-      // Show floating cart if we are in the store view and have items
-      const isStoreActive = !document.getElementById('view-store').classList.contains('hidden');
-      if (totalItems > 0 && isStoreActive) {
-        cartBar.classList.remove('hidden');
-      } else {
-        cartBar.classList.add('hidden');
-      }
-    }
-
-    function openCheckoutModal() {
-      const totalUsd = cart.reduce((acc, item) => acc + (item.priceUsd * item.quantity), 0);
-      document.getElementById('checkout-total-usd').textContent = `$${totalUsd.toFixed(2)}`;
-      document.getElementById('checkout-total-bs').textContent = formatBs(totalUsd);
-
-      const listContainer = document.getElementById('checkout-cart-list');
-      listContainer.innerHTML = '';
-      
-      cart.forEach(item => {
-        const row = document.createElement('div');
-        row.className = "flex justify-between items-center py-1 text-slate-700";
-        row.innerHTML = `
-          <span>${item.quantity}x ${item.title}</span>
-          <span class="font-bold">$${(item.priceUsd * item.quantity).toFixed(2)}</span>
-        `;
-        listContainer.appendChild(row);
-      });
-
-      toggleModal('modal-checkout');
-    }
-
-    function setCheckoutMode(mode) {
-      activeCheckoutMode = mode;
-      const bdvPanel = document.getElementById('web-bdv-report-panel');
-      const btnWa = document.getElementById('mode-btn-whatsapp');
-      const btnWeb = document.getElementById('mode-btn-web');
-
-      if (mode === 'whatsapp') {
-        bdvPanel.classList.add('hidden');
-        btnWa.className = "p-3 rounded-xl border-2 border-emerald-600 bg-emerald-50 text-emerald-900 font-bold text-center";
-        btnWeb.className = "p-3 rounded-xl border border-slate-200 text-slate-600 font-bold text-center";
-      } else {
-        bdvPanel.classList.remove('hidden');
-        btnWeb.className = "p-3 rounded-xl border-2 border-cyan-600 bg-cyan-50 text-cyan-900 font-bold text-center";
-        btnWa.className = "p-3 rounded-xl border border-slate-200 text-slate-600 font-bold text-center";
-      }
-    }
-
-    function confirmOrderSubmission() {
-      const name = document.getElementById('cust-name').value.trim() || 'Cliente';
-      const address = document.getElementById('cust-address').value.trim() || 'Caracas';
-      const totalUsd = cart.reduce((acc, item) => acc + (item.priceUsd * item.quantity), 0);
-      const totalBs = formatBs(totalUsd);
-
-      if (activeCheckoutMode === 'whatsapp') {
-        let msg = `*NUEVO PEDIDO #1043 - KSLR 1609*%0A`;
-        msg += `Cliente: ${name}%0A`;
-        msg += `Entrega en: ${address}%0A%0A`;
-        msg += `*ARTÍCULOS:*%0A`;
-        cart.forEach(it => {
-          msg += `• ${it.quantity}x ${it.title} ($${(it.priceUsd * it.quantity).toFixed(2)})%0A`;
-        });
-        msg += `%0A*TOTAL:* $${totalUsd.toFixed(2)} (${totalBs})%0A`;
-        msg += `Tasa oficial BCV: Bs. 48.20`;
-
-        window.open(`https://wa.me/584126732004?text=${msg}`, '_blank');
-      } else {
-        const ref = document.getElementById('bdv-order-ref').value || 'S/R';
-        showToast(`Pedido #1043 recibido. Ref Pago Móvil: ${ref}`);
-      }
-
-      cart = [];
-      updateCartUI();
-      toggleModal('modal-checkout');
-    }
-  </script>
-<!-- Seller Panel & Inventory Logic -->
-<script data-purpose="seller-management">
-    function renderSellerTable() {
-      const tbody = document.getElementById('seller-products-table');
-      tbody.innerHTML = '';
-
-      catalogProducts.forEach(prod => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td class="py-3 px-3 font-medium text-slate-900 flex items-center gap-2">
-            <img src="${prod.image}" class="w-7 h-7 rounded object-cover border">
-            <span class="truncate max-w-[140px] sm:max-w-xs">${prod.title}</span>
-          </td>
-          <td class="py-3 px-3 capitalize text-slate-500">${prod.category}</td>
-          <td class="py-3 px-3">
-            <span class="font-bold text-slate-900">$${prod.priceUsd.toFixed(2)}</span>
-            <span class="text-[10px] text-slate-400 block">${formatBs(prod.priceUsd)}</span>
-          </td>
-          <td class="py-3 px-3">
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${prod.stock > 0 ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
-              ${prod.stock} disp.
-            </span>
-          </td>
-          <td class="py-3 px-3 text-right">
-            <button onclick="deleteProduct(${prod.id})" class="text-rose-600 hover:text-rose-800 font-semibold text-[11px]">Eliminar</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function handleCreateProduct(e) {
-      e.preventDefault();
-      const title = document.getElementById('new-prod-title').value;
-      const price = parseFloat(document.getElementById('new-prod-price').value);
-      const cat = document.getElementById('new-prod-cat').value;
-      const stock = parseInt(document.getElementById('new-prod-stock').value) || 1;
-
-      const newP = {
-        id: Date.now(),
-        title: title,
-        category: cat,
-        priceUsd: price,
-        stock: stock,
-        inStock: true,
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAg0SPFzwXz4D0TqTWFUnMhvM2azJlB3nK4zWl3wQqifK1Kkr6QV9ZhSjttbGAxNTsg1kg2N89vDS9Xem-bMpKJHlDFyk3frNOrlw7iTLw6xc_QMHs2a0zifqJeAvnsJZ9qYvTgazi6c5Dugj4LZF76h3Izv3TP9ezhXrnCb9QyJ3_oiw2xykn6jeirmW2BzAwSNljrbrMZLYOBh6YTGM7zrcqRN8bXPGlimppGete-UwfI3JpkrOpqO_v9q0VuE3mOxA",
-        desc: "Producto agregado recientemente desde el panel de control."
-      };
-
-      catalogProducts.unshift(newP);
-      renderStoreCatalog();
-      renderSellerTable();
-      toggleModal('modal-add-product');
-      showToast("Producto agregado exitosamente");
-      e.target.reset();
-    }
-
-    function deleteProduct(id) {
-      catalogProducts = catalogProducts.filter(p => p.id !== id);
-      renderStoreCatalog();
-      renderSellerTable();
-      showToast("Producto eliminado");
-    }
-  </script>
-<!-- SaaS Billing & SuperAdmin Logic -->
-<script data-purpose="billing-and-superadmin">
-    function updateBillingAmount(usd) {
-      const bs = (usd * EXCHANGE_RATE_BCV).toLocaleString('es-VE', { minimumFractionDigits: 2 });
-      document.getElementById('billing-amount-chip').textContent = `Total: $${usd}.00`;
-      document.getElementById('billing-bs-converted').innerHTML = `Monto en Bs: <strong>Bs. ${bs}</strong> (Tasa BCV)`;
-    }
-
-    function handleSubscriptionReport(e) {
-      e.preventDefault();
-      const ref = document.getElementById('billing-ref').value;
-      showToast(`¡Reporte recibido! Referencia #${ref}. Período activo.`);
-      e.target.reset();
-
-      // Switch to seller to show continued access
-      setTimeout(() => {
-        switchView('seller');
-      }, 1500);
-    }
-
-    function reviewAdminPayment(rowId, approved) {
-      const row = document.getElementById(rowId);
-      if (row) {
-        row.remove();
-        const countEl = document.getElementById('pending-count');
-        let current = parseInt(countEl.textContent) || 0;
-        if (current > 0) countEl.textContent = current - 1;
-        showToast(approved ? "Pago APROBADO correctamente" : "Pago rechazado");
-      }
-    }
-  </script>
-<!-- Global Utility Scripts (Copy, Toast, Modal) -->
-<script data-purpose="utilities">
-    function showToast(msg) {
-      const toast = document.getElementById('toast');
-      const toastMsg = document.getElementById('toast-message');
-      toastMsg.textContent = msg;
-      toast.classList.remove('opacity-0', 'pointer-events-none');
-      setTimeout(() => {
-        toast.classList.add('opacity-0', 'pointer-events-none');
-      }, 2400);
-    }
-
-    function copyToClipboard(text, customToastMsg) {
-      navigator.clipboard.writeText(text).then(() => {
-        showToast(customToastMsg || "Copiado al portapapeles");
-      }).catch(() => {
-        showToast("Copiado con éxito");
-      });
-    }
-
-    function copyAllPaymentData() {
-      const text = "Pago Móvil KSLR 1609:\nBanco: 0102 - BDV\nCédula: V-32446771\nTeléfono: 0412-6732004";
-      copyToClipboard(text, "Todos los datos de Pago Móvil copiados");
-    }
-
-    function toggleModal(id) {
-      const el = document.getElementById(id);
-      if (el.classList.contains('hidden')) {
-        el.classList.remove('hidden');
-        el.classList.add('flex');
-      } else {
-        el.classList.add('hidden');
-        el.classList.remove('flex');
-      }
-    }
-
-    // Initialize initial views on page load
-    document.addEventListener('DOMContentLoaded', () => {
-      renderStoreCatalog();
-      renderSellerTable();
     });
-  </script>
+
+    const cartBar = document.getElementById('floating-cart-bar');
+    if (viewName === 'store' && cart.length > 0) {
+      cartBar.classList.remove('hidden');
+    } else {
+      cartBar.classList.add('hidden');
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function scrollToDirectoryOrExplore() {
+    navigateTo('landing');
+    setTimeout(() => {
+      const dir = document.getElementById('section-stores-directory');
+      if (dir) dir.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  }
+
+  // Update Nav Bar state based on authentication
+  function updateNavAuthUI() {
+    const auth = getCurrentAuth();
+    const container = document.getElementById('nav-user-container');
+    container.innerHTML = '';
+
+    if (!auth) {
+      // Guest
+      container.innerHTML = `
+        <button onclick="openAuthModal('login')" class="px-3 py-1.5 rounded-lg text-slate-700 font-bold hover:bg-slate-100 border border-slate-200 transition whitespace-nowrap">
+          Iniciar Sesión
+        </button>
+        <button onclick="openAuthModal('register')" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition shadow-xs whitespace-nowrap">
+          Crear mi Tienda
+        </button>
+      `;
+    } else if (auth.role === 'superadmin') {
+      // SuperAdmin logged in
+      container.innerHTML = `
+        <div class="flex items-center gap-2">
+          <button onclick="navigateTo('superadmin')" class="px-3 py-1.5 rounded-lg bg-purple-50 text-purple-700 border border-purple-200 font-bold hover:bg-purple-100 transition whitespace-nowrap">
+            🛡️ SuperAdmin
+          </button>
+          <button onclick="handleLogout()" class="px-2.5 py-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 font-bold text-xs transition">
+            Salir
+          </button>
+        </div>
+      `;
+    } else if (auth.role === 'seller') {
+      // Seller logged in
+      const stores = getStores();
+      const currentStore = stores.find(s => s.id === auth.storeId) || { name: 'Mi Tienda' };
+      container.innerHTML = `
+        <div class="flex items-center gap-1.5">
+          <button onclick="navigateTo('seller'); renderSellerDashboard();" class="px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold hover:bg-emerald-100 transition whitespace-nowrap flex items-center gap-1.5">
+            <span>📦</span> ${currentStore.name}
+          </button>
+          <button onclick="handleLogout()" class="px-2.5 py-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 font-bold text-xs transition" title="Cerrar Sesión">
+            Salir
+          </button>
+        </div>
+      `;
+    }
+  }
+
+  // Authentication System
+  function openAuthModal(tab = 'login', defaultPlan = 'gratis') {
+    switchAuthTab(tab);
+    if (defaultPlan === 'pro') {
+      document.querySelector('input[name="reg-plan-choice"][value="pro"]').checked = true;
+      togglePlanRadioStyle();
+    }
+    toggleModal('modal-auth');
+  }
+
+  function switchAuthTab(tab) {
+    const tabLogin = document.getElementById('auth-tab-login');
+    const tabReg = document.getElementById('auth-tab-register');
+    const paneLogin = document.getElementById('auth-pane-login');
+    const paneReg = document.getElementById('auth-pane-register');
+
+    if (tab === 'login') {
+      tabLogin.className = "flex-1 py-3.5 text-center text-xs font-bold border-b-2 border-emerald-600 text-emerald-800 bg-emerald-50/50";
+      tabReg.className = "flex-1 py-3.5 text-center text-xs font-bold text-slate-500 hover:text-slate-800 bg-white";
+      paneLogin.classList.remove('hidden');
+      paneReg.classList.add('hidden');
+    } else {
+      tabReg.className = "flex-1 py-3.5 text-center text-xs font-bold border-b-2 border-emerald-600 text-emerald-800 bg-emerald-50/50";
+      tabLogin.className = "flex-1 py-3.5 text-center text-xs font-bold text-slate-500 hover:text-slate-800 bg-white";
+      paneReg.classList.remove('hidden');
+      paneLogin.classList.add('hidden');
+    }
+  }
+
+  function togglePlanRadioStyle() {
+    const selected = document.querySelector('input[name="reg-plan-choice"]:checked').value;
+    const lblFree = document.getElementById('lbl-plan-free');
+    const lblPro = document.getElementById('lbl-plan-pro');
+
+    if (selected === 'pro') {
+      lblPro.className = "p-2.5 border-2 border-emerald-500 bg-emerald-50/50 rounded-xl flex flex-col cursor-pointer";
+      lblFree.className = "p-2.5 border border-slate-300 bg-white rounded-xl flex flex-col cursor-pointer";
+    } else {
+      lblFree.className = "p-2.5 border-2 border-emerald-500 bg-emerald-50/50 rounded-xl flex flex-col cursor-pointer";
+      lblPro.className = "p-2.5 border border-slate-300 bg-white rounded-xl flex flex-col cursor-pointer";
+    }
+  }
+
+  function fillDemoCredentials(email, pass) {
+    document.getElementById('login-email').value = email;
+    document.getElementById('login-pass').value = pass;
+    showToast("Credenciales cargadas. Haz clic en 'Ingresar'.");
+  }
+
+  function handleLoginSubmit(e) {
+    e.preventDefault();
+    const email = document.getElementById('login-email').value.trim().toLowerCase();
+    const pass = document.getElementById('login-pass').value.trim();
+
+    // 1. Check SuperAdmin Role
+    if (email === 'admin@toquecatalogo.com' && (pass === 'admin123' || pass === 'superadmin')) {
+      setAuthSession({ role: 'superadmin', email: email });
+      toggleModal('modal-auth');
+      renderSuperAdminDashboard();
+      navigateTo('superadmin');
+      showToast("Bienvenido al SuperAdmin Matriz");
+      return;
+    }
+
+    // 2. Check Store Owners in local DB
+    const stores = getStores();
+    const store = stores.find(s => s.email.toLowerCase() === email && s.password === pass);
+
+    if (store) {
+      setAuthSession({ role: 'seller', storeId: store.id, email: store.email });
+      toggleModal('modal-auth');
+      renderSellerDashboard();
+      navigateTo('seller');
+      showToast(`Bienvenido a tu panel: ${store.name}`);
+    } else {
+      alert("Credenciales incorrectas.\n\nPuedes probar con:\n- Tienda: kslr@gmail.com / 123456\n- SuperAdmin: admin@toquecatalogo.com / admin123");
+    }
+  }
+
+  function handleRegisterSubmit(e) {
+    e.preventDefault();
+    const name = document.getElementById('reg-name').value.trim();
+    const category = document.getElementById('reg-cat').value;
+    const phone = document.getElementById('reg-phone').value.trim();
+    const email = document.getElementById('reg-email').value.trim().toLowerCase();
+    const pass = document.getElementById('reg-pass').value.trim();
+    const plan = document.querySelector('input[name="reg-plan-choice"]:checked').value;
+
+    const stores = getStores();
+    // Check if email already exists
+    if (stores.some(s => s.email.toLowerCase() === email)) {
+      alert("Este correo ya está registrado. Por favor inicia sesión.");
+      switchAuthTab('login');
+      return;
+    }
+
+    const slug = name.toLowerCase().replace(/[^a-z0-9]/g, '') || `tienda${Date.now()}`;
+    const newStore = {
+      id: slug,
+      name: name,
+      category: category,
+      email: email,
+      password: pass,
+      phone: phone,
+      location: 'Venezuela',
+      bankName: '0102 - BDV',
+      bankId: 'V-00000000',
+      plan: plan,
+      subDays: plan === 'pro' ? 30 : 365,
+      subStatus: 'Activa',
+      logo: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=150&auto=format&fit=crop&q=60',
+      products: []
+    };
+
+    stores.unshift(newStore);
+    saveStores(stores);
+
+    // Auto login
+    setAuthSession({ role: 'seller', storeId: newStore.id, email: newStore.email });
+    toggleModal('modal-auth');
+    renderPublicDirectory();
+    renderSellerDashboard();
+    navigateTo('seller');
+    showToast(`¡Tienda "${name}" creada exitosamente!`);
+    e.target.reset();
+  }
+
+  function handleLogout() {
+    setAuthSession(null);
+    navigateTo('landing');
+    renderPublicDirectory();
+    showToast("Has cerrado sesión.");
+  }
+
+  // Public Directory Rendering
+  function renderPublicDirectory() {
+    const stores = getStores();
+    const container = document.getElementById('public-stores-grid');
+    const badge = document.getElementById('dir-total-count');
+    if (!container) return;
+
+    badge.textContent = `${stores.length} tiendas`;
+    container.innerHTML = '';
+
+    stores.forEach(st => {
+      const card = document.createElement('div');
+      card.className = "bg-white border border-slate-200 rounded-2xl p-4 shadow-xs hover:shadow-md transition space-y-3";
+      card.innerHTML = `
+        <div class="flex items-center gap-3">
+          <img src="${st.logo}" alt="${st.name}" class="w-12 h-12 rounded-full object-cover border border-slate-200">
+          <div class="min-w-0 flex-1">
+            <h4 class="font-bold text-slate-900 leading-tight truncate">${st.name}</h4>
+            <p class="text-xs text-slate-500 truncate">${st.category}</p>
+            <span class="text-[10px] text-emerald-600 font-medium">📍 ${st.location || 'Venezuela'}</span>
+          </div>
+        </div>
+        <button class="w-full py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-medium text-xs transition flex items-center justify-center gap-1.5" onclick="previewStorefront('${st.id}')">
+          <span>Ver Vitrina</span>
+          <span>→</span>
+        </button>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  // Public Storefront Rendering
+  function previewStorefront(storeId) {
+    const stores = getStores();
+    const st = stores.find(s => s.id === storeId) || stores[0];
+    if (!st) return;
+
+    activeStorefrontId = st.id;
+    cart = []; // Reset cart for this storefront
+    updateCartUI();
+
+    document.getElementById('sf-store-logo').src = st.logo;
+    document.getElementById('sf-store-name').textContent = st.name;
+    document.getElementById('sf-store-category').textContent = st.category;
+    document.getElementById('sf-store-location').textContent = st.location || 'Venezuela';
+    document.getElementById('sf-phone-display').textContent = st.phone || '0412-0000000';
+    document.getElementById('sf-wa-link').href = `https://wa.me/58${(st.phone || '').replace(/[^0-9]/g, '').slice(-10)}`;
+
+    document.getElementById('sf-bank-display').textContent = st.bankName || '0102 - BDV';
+    document.getElementById('sf-id-display').textContent = st.bankId || 'V-00000000';
+    document.getElementById('sf-pm-phone-display').textContent = st.phone || '0412-0000000';
+
+    document.getElementById('store-slug-badge').textContent = `toquecatalogo.pages.dev/?tienda=${st.id}`;
+
+    renderStorefrontProducts(st.id);
+    navigateTo('store');
+  }
+
+  function renderStorefrontProducts(storeId) {
+    const stores = getStores();
+    const st = stores.find(s => s.id === storeId);
+    if (!st) return;
+
+    const container = document.getElementById('sf-products-container');
+    container.innerHTML = '';
+    const prods = st.products || [];
+
+    document.getElementById('sf-items-count-badge').textContent = `${prods.length} disponibles`;
+
+    if (prods.length === 0) {
+      container.innerHTML = `
+        <div class="text-center py-8 bg-white rounded-2xl border border-dashed border-slate-300 p-6 space-y-2">
+          <p class="text-2xl">🛍️</p>
+          <p class="font-bold text-slate-800 text-sm">Esta tienda aún no ha cargado productos</p>
+          <p class="text-xs text-slate-500">Pronto estarán disponibles sus artículos.</p>
+        </div>
+      `;
+      return;
+    }
+
+    prods.forEach(prod => {
+      const card = document.createElement('div');
+      card.className = "bg-white rounded-2xl p-3.5 border border-slate-200 shadow-2xs flex gap-3.5 items-center";
+      card.innerHTML = `
+        <div class="relative w-20 h-20 rounded-xl overflow-hidden bg-slate-100 flex-shrink-0 border border-slate-100">
+          <img src="${prod.image}" alt="${prod.title}" class="w-full h-full object-cover">
+          <span class="absolute bottom-1 left-1 bg-slate-900/80 backdrop-blur-xs text-[9px] text-white px-1.5 py-0.2 rounded font-medium">
+            ${prod.stock} disp.
+          </span>
+        </div>
+        <div class="flex-grow min-w-0">
+          <h4 class="font-bold text-slate-900 text-xs truncate">${prod.title}</h4>
+          <p class="text-[11px] text-slate-500 line-clamp-1 mt-0.5">${prod.desc || 'Producto disponible en catálogo'}</p>
+          <div class="mt-1 flex items-baseline gap-1.5">
+            <span class="text-sm font-extrabold text-slate-900">$${prod.priceUsd.toFixed(2)}</span>
+            <span class="text-[11px] font-semibold text-emerald-600">${formatBs(prod.priceUsd)}</span>
+          </div>
+        </div>
+        <div class="flex-shrink-0">
+          <button onclick="addToStorefrontCart(${prod.id})" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-emerald-600 text-white font-bold text-xs transition active:scale-95 shadow-sm">
+            + Agregar
+          </button>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  function addToStorefrontCart(productId) {
+    const stores = getStores();
+    const st = stores.find(s => s.id === activeStorefrontId);
+    if (!st) return;
+
+    const prod = (st.products || []).find(p => p.id === productId);
+    if (!prod) return;
+
+    const existing = cart.find(item => item.id === productId);
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      cart.push({ ...prod, quantity: 1 });
+    }
+
+    updateCartUI();
+    showToast(`Añadido: ${prod.title}`);
+  }
+
+  function updateCartUI() {
+    const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+    const totalUsd = cart.reduce((acc, item) => acc + (item.priceUsd * item.quantity), 0);
+    const cartBar = document.getElementById('floating-cart-bar');
+
+    document.getElementById('cart-items-count').textContent = totalItems;
+    document.getElementById('cart-total-usd').textContent = `$${totalUsd.toFixed(2)}`;
+    document.getElementById('cart-total-bs').textContent = `• ${formatBs(totalUsd)}`;
+
+    const isStoreActive = !document.getElementById('view-store').classList.contains('hidden');
+    if (totalItems > 0 && isStoreActive) {
+      cartBar.classList.remove('hidden');
+    } else {
+      cartBar.classList.add('hidden');
+    }
+  }
+
+  function openCheckoutModal() {
+    const stores = getStores();
+    const st = stores.find(s => s.id === activeStorefrontId) || { name: 'Comercio' };
+
+    document.getElementById('checkout-modal-title').textContent = `Finalizar Pedido`;
+    document.getElementById('checkout-modal-store-label').textContent = `${st.name} • ${st.location || 'Venezuela'}`;
+
+    const totalUsd = cart.reduce((acc, item) => acc + (item.priceUsd * item.quantity), 0);
+    document.getElementById('checkout-total-usd').textContent = `$${totalUsd.toFixed(2)}`;
+    document.getElementById('checkout-total-bs').textContent = `${formatBs(totalUsd)} BCV`;
+
+    document.getElementById('checkout-pm-summary').textContent = `${st.bankName} • ${st.bankId} • ${st.phone}`;
+
+    const listContainer = document.getElementById('checkout-cart-list');
+    listContainer.innerHTML = '';
+
+    cart.forEach(item => {
+      const row = document.createElement('div');
+      row.className = "flex justify-between items-center py-1 text-slate-700";
+      row.innerHTML = `
+        <span>${item.quantity}x ${item.title}</span>
+        <span class="font-bold">$${(item.priceUsd * item.quantity).toFixed(2)}</span>
+      `;
+      listContainer.appendChild(row);
+    });
+
+    toggleModal('modal-checkout');
+  }
+
+  function setCheckoutMode(mode) {
+    activeCheckoutMode = mode;
+    const bdvPanel = document.getElementById('web-bdv-report-panel');
+    const btnWa = document.getElementById('mode-btn-whatsapp');
+    const btnWeb = document.getElementById('mode-btn-web');
+
+    if (mode === 'whatsapp') {
+      bdvPanel.classList.add('hidden');
+      btnWa.className = "p-3 rounded-xl border-2 border-emerald-600 bg-emerald-50 text-emerald-900 font-bold text-center";
+      btnWeb.className = "p-3 rounded-xl border border-slate-200 text-slate-600 font-bold text-center";
+    } else {
+      bdvPanel.classList.remove('hidden');
+      btnWeb.className = "p-3 rounded-xl border-2 border-cyan-600 bg-cyan-50 text-cyan-900 font-bold text-center";
+      btnWa.className = "p-3 rounded-xl border border-slate-200 text-slate-600 font-bold text-center";
+    }
+  }
+
+  function confirmOrderSubmission() {
+    const stores = getStores();
+    const st = stores.find(s => s.id === activeStorefrontId) || {};
+    const name = document.getElementById('cust-name').value.trim() || 'Cliente';
+    const address = document.getElementById('cust-address').value.trim() || 'Caracas';
+    const totalUsd = cart.reduce((acc, item) => acc + (item.priceUsd * item.quantity), 0);
+    const totalBs = formatBs(totalUsd);
+
+    if (activeCheckoutMode === 'whatsapp') {
+      let cleanPhone = (st.phone || '04126732004').replace(/[^0-9]/g, '');
+      if (cleanPhone.startsWith('0')) cleanPhone = '58' + cleanPhone.slice(1);
+
+      let msg = `*NUEVO PEDIDO - ${st.name}*%0A`;
+      msg += `Cliente: ${name}%0A`;
+      msg += `Entrega en: ${address}%0A%0A`;
+      msg += `*ARTÍCULOS:*%0A`;
+      cart.forEach(it => {
+        msg += `• ${it.quantity}x ${it.title} ($${(it.priceUsd * it.quantity).toFixed(2)})%0A`;
+      });
+      msg += `%0A*TOTAL:* $${totalUsd.toFixed(2)} (${totalBs})%0A`;
+      msg += `Tasa oficial BCV: Bs. ${exchangeRate.toFixed(2)}`;
+
+      window.open(`https://wa.me/${cleanPhone}?text=${msg}`, '_blank');
+    } else {
+      const ref = document.getElementById('bdv-order-ref').value || 'S/R';
+      showToast(`Pedido registrado. Referencia: ${ref}. Notificando a la tienda.`);
+    }
+
+    cart = [];
+    updateCartUI();
+    toggleModal('modal-checkout');
+  }
+
+  function copyActiveStorePaymentData() {
+    const stores = getStores();
+    const st = stores.find(s => s.id === activeStorefrontId);
+    if (!st) return;
+    const text = `Pago Móvil ${st.name}:\nBanco: ${st.bankName}\nCédula: ${st.bankId}\nTeléfono: ${st.phone}`;
+    copyToClipboard(text, "Datos de Pago Móvil copiados");
+  }
+
+  function copyDynamicField(elementId, msg) {
+    const text = document.getElementById(elementId).textContent.trim();
+    copyToClipboard(text, msg);
+  }
+
+  // Seller Dashboard Operations
+  function renderSellerDashboard() {
+    const auth = getCurrentAuth();
+    if (!auth || auth.role !== 'seller') {
+      navigateTo('landing');
+      return;
+    }
+
+    const stores = getStores();
+    const st = stores.find(s => s.id === auth.storeId);
+    if (!st) return;
+
+    document.getElementById('seller-header-store-name').textContent = st.name;
+    document.getElementById('seller-plan-badge').textContent = st.plan === 'pro' ? 'Plan Pro Activo' : 'Plan Inicial';
+    document.getElementById('seller-sub-days').textContent = `${st.subDays || 30} días restantes`;
+    document.getElementById('seller-sub-status').textContent = st.subStatus || 'Activa';
+
+    document.getElementById('seller-shareable-url').textContent = `https://toquecatalogo.pages.dev/?tienda=${st.id}`;
+
+    // Metrics
+    const prods = st.products || [];
+    document.getElementById('seller-metric-prods').textContent = prods.length;
+    document.getElementById('seller-metric-rate').textContent = `Bs. ${exchangeRate.toFixed(2)}`;
+    const totalVal = prods.reduce((acc, p) => acc + (p.priceUsd * (p.stock || 0)), 0);
+    document.getElementById('seller-metric-val').textContent = `$${totalVal.toFixed(2)}`;
+    document.getElementById('seller-metric-val-bs').textContent = `≈ ${formatBs(totalVal)}`;
+
+    // Config form inputs
+    document.getElementById('cfg-bank').value = st.bankName || '';
+    document.getElementById('cfg-id').value = st.bankId || '';
+    document.getElementById('cfg-phone').value = st.phone || '';
+
+    // Render Products Table
+    const tbody = document.getElementById('seller-products-table');
+    tbody.innerHTML = '';
+
+    if (prods.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="5" class="py-6 text-center text-slate-400">
+            Aún no has agregado productos. Haz clic en "Cargar Nuevo Producto".
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    prods.forEach(prod => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="py-3 px-3 font-medium text-slate-900 flex items-center gap-2">
+          <img src="${prod.image}" class="w-7 h-7 rounded object-cover border">
+          <span class="truncate max-w-[140px] sm:max-w-xs">${prod.title}</span>
+        </td>
+        <td class="py-3 px-3 capitalize text-slate-500">${prod.category}</td>
+        <td class="py-3 px-3">
+          <span class="font-bold text-slate-900">$${prod.priceUsd.toFixed(2)}</span>
+          <span class="text-[10px] text-slate-400 block">${formatBs(prod.priceUsd)}</span>
+        </td>
+        <td class="py-3 px-3">
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold ${prod.stock > 0 ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+            ${prod.stock} disp.
+          </span>
+        </td>
+        <td class="py-3 px-3 text-right">
+          <button onclick="deleteProductFromActiveStore(${prod.id})" class="text-rose-600 hover:text-rose-800 font-semibold text-[11px]">Eliminar</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function handleCreateProduct(e) {
+    e.preventDefault();
+    const auth = getCurrentAuth();
+    if (!auth || auth.role !== 'seller') return;
+
+    const stores = getStores();
+    const storeIdx = stores.findIndex(s => s.id === auth.storeId);
+    if (storeIdx === -1) return;
+
+    const currentProds = stores[storeIdx].products || [];
+    // Plan limitation check (Free plan limited to 2 items)
+    if (stores[storeIdx].plan === 'gratis' && currentProds.length >= 2) {
+      alert("El Plan Inicial gratuito permite hasta 2 productos. Actualiza al Plan Pro ($5/mes) para productos ilimitados.");
+      return;
+    }
+
+    const title = document.getElementById('new-prod-title').value.trim();
+    const price = parseFloat(document.getElementById('new-prod-price').value) || 0;
+    const cat = document.getElementById('new-prod-cat').value.trim() || 'General';
+    const stock = parseInt(document.getElementById('new-prod-stock').value) || 1;
+    const desc = document.getElementById('new-prod-desc').value.trim() || 'Producto en catálogo';
+
+    const newProd = {
+      id: Date.now(),
+      title: title,
+      category: cat,
+      priceUsd: price,
+      stock: stock,
+      desc: desc,
+      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAg0SPFzwXz4D0TqTWFUnMhvM2azJlB3nK4zWl3wQqifK1Kkr6QV9ZhSjttbGAxNTsg1kg2N89vDS9Xem-bMpKJHlDFyk3frNOrlw7iTLw6xc_QMHs2a0zifqJeAvnsJZ9qYvTgazi6c5Dugj4LZF76h3Izv3TP9ezhXrnCb9QyJ3_oiw2xykn6jeirmW2BzAwSNljrbrMZLYOBh6YTGM7zrcqRN8bXPGlimppGete-UwfI3JpkrOpqO_v9q0VuE3mOxA"
+    };
+
+    if (!stores[storeIdx].products) stores[storeIdx].products = [];
+    stores[storeIdx].products.unshift(newProd);
+    saveStores(stores);
+
+    renderSellerDashboard();
+    toggleModal('modal-add-product');
+    showToast("Producto publicado exitosamente");
+    e.target.reset();
+  }
+
+  function deleteProductFromActiveStore(prodId) {
+    const auth = getCurrentAuth();
+    if (!auth || auth.role !== 'seller') return;
+
+    const stores = getStores();
+    const storeIdx = stores.findIndex(s => s.id === auth.storeId);
+    if (storeIdx === -1) return;
+
+    stores[storeIdx].products = (stores[storeIdx].products || []).filter(p => p.id !== prodId);
+    saveStores(stores);
+    renderSellerDashboard();
+    showToast("Producto eliminado");
+  }
+
+  function saveActiveStorePaymentSettings() {
+    const auth = getCurrentAuth();
+    if (!auth || auth.role !== 'seller') return;
+
+    const stores = getStores();
+    const storeIdx = stores.findIndex(s => s.id === auth.storeId);
+    if (storeIdx === -1) return;
+
+    stores[storeIdx].bankName = document.getElementById('cfg-bank').value.trim();
+    stores[storeIdx].bankId = document.getElementById('cfg-id').value.trim();
+    stores[storeIdx].phone = document.getElementById('cfg-phone').value.trim();
+
+    saveStores(stores);
+    showToast("Datos de cobro actualizados con éxito");
+  }
+
+  function viewMyStorefront() {
+    const auth = getCurrentAuth();
+    if (!auth || auth.role !== 'seller') return;
+    previewStorefront(auth.storeId);
+  }
+
+  function copyStoreUrl() {
+    const url = document.getElementById('seller-shareable-url').textContent;
+    copyToClipboard(url, "Enlace de tu vitrina copiado");
+  }
+
+  function openSubscriptionFlow() {
+    const auth = getCurrentAuth();
+    if (!auth) return;
+    const stores = getStores();
+    const st = stores.find(s => s.id === auth.storeId) || { name: 'Comercio' };
+    document.getElementById('billing-current-store-name').textContent = st.name;
+    navigateTo('billing');
+  }
+
+  function updateBillingAmount(usd) {
+    const bs = (usd * exchangeRate).toLocaleString('es-VE', { minimumFractionDigits: 2 });
+    document.getElementById('billing-amount-chip').textContent = `Total: $${usd}.00`;
+    document.getElementById('billing-bs-converted').innerHTML = `Monto en Bs: <strong>Bs. ${bs}</strong> (Tasa BCV)`;
+  }
+
+  function handleSubscriptionReport(e) {
+    e.preventDefault();
+    const auth = getCurrentAuth();
+    const ref = document.getElementById('billing-ref').value.trim();
+    const method = document.getElementById('billing-method-select').value;
+
+    const stores = getStores();
+    const storeIdx = stores.findIndex(s => s.id === (auth ? auth.storeId : 'kslr1609'));
+    const storeName = storeIdx !== -1 ? stores[storeIdx].name : 'Mi Comercio';
+
+    // Add to SuperAdmin queue
+    const queue = getPaymentsQueue();
+    queue.unshift({
+      id: `p-${Date.now()}`,
+      storeId: auth ? auth.storeId : 'kslr1609',
+      storeName: storeName,
+      method: method,
+      ref: ref,
+      amount: 5.00,
+      date: 'Hace un momento'
+    });
+    savePaymentsQueue(queue);
+
+    // Apply grace period to store
+    if (storeIdx !== -1) {
+      stores[storeIdx].plan = 'pro';
+      stores[storeIdx].subDays = (stores[storeIdx].subDays || 0) + 30;
+      stores[storeIdx].subStatus = 'Activa (Conciliando)';
+      saveStores(stores);
+    }
+
+    showToast(`¡Reporte recibido! Ref #${ref}. Días de cortesía aplicados.`);
+    e.target.reset();
+
+    setTimeout(() => {
+      renderSellerDashboard();
+      navigateTo('seller');
+    }, 1200);
+  }
+
+  // SuperAdmin Operations
+  function renderSuperAdminDashboard() {
+    const stores = getStores();
+    const queue = getPaymentsQueue();
+
+    document.getElementById('admin-total-stores').textContent = stores.length;
+    const activeCount = stores.filter(s => s.subStatus === 'Activa').length;
+    document.getElementById('admin-active-breakdown').textContent = `${activeCount} Activas • ${stores.length - activeCount} Vencidas/Prórroga`;
+    document.getElementById('admin-pending-count').textContent = queue.length;
+
+    // Render Payments Queue
+    const qBody = document.getElementById('admin-payments-queue');
+    qBody.innerHTML = '';
+    if (queue.length === 0) {
+      qBody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-slate-400">No hay pagos pendientes de conciliar.</td></tr>`;
+    } else {
+      queue.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.id = `q-${item.id}`;
+        tr.innerHTML = `
+          <td class="py-3 px-3 font-semibold text-slate-900">${item.storeName}</td>
+          <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-medium">${item.method}</span></td>
+          <td class="py-3 px-3 font-mono">$${item.amount.toFixed(2)} (Ref: #${item.ref})</td>
+          <td class="py-3 px-3 text-slate-500">${item.date}</td>
+          <td class="py-3 px-3 text-right space-x-1.5">
+            <button onclick="approveAdminPayment('${item.id}')" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded text-[11px]">Aprobar</button>
+            <button onclick="rejectAdminPayment('${item.id}')" class="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 font-medium rounded text-[11px]">Rechazar</button>
+          </td>
+        `;
+        qBody.appendChild(tr);
+      });
+    }
+
+    // Render Stores List
+    const sBody = document.getElementById('admin-stores-table');
+    sBody.innerHTML = '';
+    stores.forEach(st => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="py-3 px-3 font-semibold text-slate-900 flex items-center gap-2">
+          <img src="${st.logo}" class="w-6 h-6 rounded-full object-cover">
+          <span>${st.name}</span>
+        </td>
+        <td class="py-3 px-3 text-slate-600">${st.email}</td>
+        <td class="py-3 px-3 uppercase font-bold text-[10px]"><span class="px-1.5 py-0.5 rounded ${st.plan === 'pro' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-700'}">${st.plan}</span></td>
+        <td class="py-3 px-3">${st.subDays || 0} días</td>
+        <td class="py-3 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${st.subStatus === 'Activa' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${st.subStatus || 'Activa'}</span></td>
+        <td class="py-3 px-3 text-right">
+          <button onclick="previewStorefront('${st.id}')" class="text-emerald-700 hover:underline font-bold text-[11px] mr-2">Ver Vitrina</button>
+        </td>
+      `;
+      sBody.appendChild(tr);
+    });
+  }
+
+  function approveAdminPayment(paymentId) {
+    let queue = getPaymentsQueue();
+    const item = queue.find(q => q.id === paymentId);
+    if (!item) return;
+
+    // Update store subscription
+    const stores = getStores();
+    const storeIdx = stores.findIndex(s => s.id === item.storeId);
+    if (storeIdx !== -1) {
+      stores[storeIdx].subStatus = 'Activa';
+      stores[storeIdx].subDays = (stores[storeIdx].subDays || 0) + 30;
+      saveStores(stores);
+    }
+
+    // Remove from queue
+    queue = queue.filter(q => q.id !== paymentId);
+    savePaymentsQueue(queue);
+    renderSuperAdminDashboard();
+    showToast(`Pago aprobado para ${item.storeName}`);
+  }
+
+  function rejectAdminPayment(paymentId) {
+    let queue = getPaymentsQueue();
+    queue = queue.filter(q => q.id !== paymentId);
+    savePaymentsQueue(queue);
+    renderSuperAdminDashboard();
+    showToast("Comprobante rechazado");
+  }
+
+  // Utilities
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    const toastMsg = document.getElementById('toast-message');
+    toastMsg.textContent = msg;
+    toast.classList.remove('opacity-0', 'pointer-events-none');
+    setTimeout(() => {
+      toast.classList.add('opacity-0', 'pointer-events-none');
+    }, 2500);
+  }
+
+  function copyToClipboard(text, customToastMsg) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast(customToastMsg || "Copiado al portapapeles");
+    }).catch(() => {
+      showToast("Copiado con éxito");
+    });
+  }
+
+  function toggleModal(id) {
+    const el = document.getElementById(id);
+    if (el.classList.contains('hidden')) {
+      el.classList.remove('hidden');
+      el.classList.add('flex');
+    } else {
+      el.classList.add('hidden');
+      el.classList.remove('flex');
+    }
+  }
+
+  // Initial Boot
+  document.addEventListener('DOMContentLoaded', () => {
+    // Check if initial stores exist
+    getStores();
+    renderPublicDirectory();
+    updateNavAuthUI();
+
+    // Check if user is already logged in
+    const auth = getCurrentAuth();
+    if (auth) {
+      if (auth.role === 'superadmin') {
+        renderSuperAdminDashboard();
+      } else if (auth.role === 'seller') {
+        renderSellerDashboard();
+      }
+    }
+  });
+</script>
 </body></html>
