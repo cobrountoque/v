@@ -38,6 +38,10 @@
     }
   </script>
 <style data-purpose="base-styling">
+    html, body {
+      overflow-x: hidden;
+      max-width: 100vw;
+    }
     body {
       -webkit-tap-highlight-color: transparent;
       font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
@@ -51,66 +55,59 @@
     }
   </style>
 </head>
-<body class="min-h-full flex flex-col text-slate-800 antialiased selection:bg-emerald-500 selection:text-white pb-16">
+<body class="min-h-full flex flex-col text-slate-800 antialiased selection:bg-emerald-500 selection:text-white pb-16 overflow-x-hidden">
 <!-- BEGIN: TopBarAndTicker -->
 <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs" data-purpose="sticky-header">
 <!-- Live BCV Rate Ticker -->
-<div class="bg-slate-900 text-white text-xs px-3.5 py-1.5 flex items-center justify-between font-medium">
-<div class="flex items-center gap-2 overflow-hidden text-ellipsis whitespace-nowrap">
-<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">BCV OFICIAL</span>
-<span>1 USD = <strong class="text-emerald-400 font-bold" id="global-rate-display">Bs. 48,20</strong></span>
-<span class="text-slate-400 hidden sm:inline">• Sincronizado automáticamente</span>
+<div class="bg-slate-900 text-white text-xs px-3 py-1.5 flex items-center justify-between font-medium">
+<div class="flex items-center gap-1.5 min-w-0">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 whitespace-nowrap">BCV</span>
+<span class="truncate">1 USD = <strong class="text-emerald-400 font-bold" id="global-rate-display">Bs. 48,20</strong></span>
 </div>
-<div class="flex items-center gap-2 text-[11px] text-slate-300">
-<span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>Online</span>
-<button class="text-slate-400 hover:text-emerald-400 underline ml-1 text-[10px]" onclick="promptEditRate()">Ajustar tasa</button>
+<div class="flex items-center gap-2 text-[11px] text-slate-300 flex-shrink-0">
+<span class="flex items-center gap-1 text-[10px] sm:text-[11px]"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>Online</span>
+<button class="text-slate-400 hover:text-emerald-400 underline ml-0.5 text-[10px]" onclick="promptEditRate()">Ajustar</button>
 </div>
 </div>
-<!-- App Brand & Clean Navigation Bar -->
-<div class="max-w-5xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3">
+<!-- App Brand & Clean Responsive Navigation Bar -->
+<div class="max-w-5xl mx-auto px-3 sm:px-4 py-2 flex flex-wrap items-center justify-between gap-2">
 <!-- Brand Logo -->
-<div class="flex items-center gap-2.5 cursor-pointer" onclick="navigateTo('landing')">
-<div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-700 to-emerald-500 flex items-center justify-center text-white font-extrabold text-lg shadow-sm shadow-emerald-500/30">
+<div class="flex items-center gap-2 cursor-pointer flex-shrink-0" onclick="navigateTo('landing')">
+<div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-tr from-emerald-700 to-emerald-500 flex items-center justify-center text-white font-extrabold text-sm sm:text-base shadow-sm shadow-emerald-500/30">
         T
       </div>
-<div>
-<span class="font-extrabold text-base tracking-tight text-slate-900 flex items-center gap-1.5">
+<div class="flex items-center gap-1">
+<span class="font-extrabold text-sm sm:text-base tracking-tight text-slate-900">
           ToqueCatálogo
-          <span class="text-[10px] bg-emerald-50 text-emerald-700 font-bold px-1.5 py-0.2 rounded border border-emerald-200">VE</span>
-</span>
+        </span>
+<span class="text-[9px] bg-emerald-50 text-emerald-700 font-bold px-1 py-0.2 rounded border border-emerald-200">VE</span>
 </div>
 </div>
-<!-- Navigation actions (Clean: No SuperAdmin or Seller leaks) -->
-<nav class="flex items-center gap-2 text-xs font-semibold" data-purpose="clean-top-nav">
-<button class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition whitespace-nowrap" onclick="scrollToDirectoryOrExplore()">
+<!-- Navigation actions (Mobile friendly, no horizontal overflow) -->
+<nav class="flex items-center gap-1.5 text-xs font-semibold" data-purpose="clean-top-nav">
+<button class="px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition whitespace-nowrap text-[11px] sm:text-xs" onclick="scrollToDirectoryOrExplore()">
         🛍️ Vitrinas
       </button>
-<!-- User Logged Status Container (Dynamic) -->
-<div class="flex items-center gap-2" id="nav-user-container">
-<!-- Will show Iniciar Sesión / Registrarse when logged out, or Account badge when logged in -->
-<button class="px-3 py-1.5 rounded-lg text-slate-700 font-bold hover:bg-slate-100 border border-slate-200 transition whitespace-nowrap" onclick="openAuthModal('login')">
-          Iniciar Sesión
-        </button>
-<button class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition shadow-xs whitespace-nowrap" onclick="openAuthModal('register')">
-          Crear mi Tienda
-        </button>
+<!-- Dynamic Container -->
+<div class="flex items-center gap-1 sm:gap-2" id="nav-user-container">
+<!-- Injected by JavaScript -->
 </div>
 </nav>
 </div>
 </header>
 <!-- END: TopBarAndTicker -->
 <!-- Toast Notification System -->
-<div class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-xl opacity-0 pointer-events-none transition-opacity duration-300 flex items-center gap-2 border border-slate-700" id="toast">
+<div class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-xl opacity-0 pointer-events-none transition-opacity duration-300 flex items-center gap-2 border border-slate-700 max-w-[90vw]" id="toast">
 <span id="toast-icon">✅</span>
-<span id="toast-message">Notificación</span>
+<span class="truncate" id="toast-message">Notificación</span>
 </div>
-<main class="flex-grow max-w-5xl w-full mx-auto p-4 md:p-6" data-purpose="app-views-container">
+<main class="flex-grow max-w-5xl w-full mx-auto p-3 sm:p-4 md:p-6 overflow-x-hidden" data-purpose="app-views-container">
 <!-- ========================================================================= -->
 <!-- BEGIN: VIEW 1 - LANDING & MARKETPLACE PORTADA                            -->
 <!-- ========================================================================= -->
 <section class="space-y-12" id="view-landing">
 <!-- Hero Banner -->
-<div class="text-center max-w-2xl mx-auto pt-6 pb-2 space-y-4">
+<div class="text-center max-w-2xl mx-auto pt-6 pb-2 space-y-4 px-2">
 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-semibold border border-emerald-200">
 <span class="flex h-2 w-2 rounded-full bg-emerald-600"></span>
         Optimizado para el Comercio en Venezuela
@@ -122,10 +119,10 @@
         Vende por WhatsApp y Web sin comisiones por venta. Actualización automática de bolívares en base al Banco Central de Venezuela.
       </p>
 <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
-<button class="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-md shadow-emerald-600/20 text-sm transition" onclick="openAuthModal('register')">
+<button class="px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-md shadow-emerald-600/20 text-xs sm:text-sm transition" onclick="openAuthModal('register')">
           🚀 Registrar mi Tienda Gratis
         </button>
-<button class="px-6 py-3 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold text-sm transition flex items-center gap-2" onclick="previewStorefront('kslr1609')">
+<button class="px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold text-xs sm:text-sm transition flex items-center gap-2" onclick="previewStorefront('kslr1609')">
 <span>👀 Ver Tienda Demo</span>
 </button>
 </div>
@@ -144,7 +141,7 @@
           📲
         </div>
 <h3 class="text-lg font-bold text-slate-900">Pago Móvil BDV 1-Click</h3>
-<p class="text-sm text-slate-600">Tus clientes copian tus datos de Pago Móvil con un toque o abren directo la aplicación móvil del BDV.</p>
+<p class="text-sm text-slate-600">Tus clientes copian tus datos de Pago Móvil con un toque o abren directo la aplicación móvil del BDV al momento de pagar.</p>
 </div>
 <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs space-y-3">
 <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl font-bold">
@@ -155,7 +152,7 @@
 </div>
 </div>
 <!-- Pricing Plans -->
-<div class="bg-slate-900 text-white p-8 rounded-3xl space-y-8 shadow-xl">
+<div class="bg-slate-900 text-white p-6 sm:p-8 rounded-3xl space-y-8 shadow-xl">
 <div class="text-center max-w-lg mx-auto space-y-2">
 <h2 class="text-2xl sm:text-3xl font-bold">Planes simples y justos</h2>
 <p class="text-slate-400 text-sm">Sin porcentajes sobre tus ventas. Todo el dinero va directo a tu cuenta bancaria.</p>
@@ -193,7 +190,7 @@
 <p class="text-xs text-emerald-300 font-medium">O $13.00 al trimestre (Ahorras 15%)</p>
 <ul class="text-sm text-slate-200 space-y-2 pt-1">
 <li class="flex items-center gap-2">✓ Catálogo y productos ilimitados</li>
-<li class="flex items-center gap-2">✓ Botón Pago Móvil BDV Directo</li>
+<li class="flex items-center gap-2">✓ Botón Pago Móvil BDV en Checkout</li>
 <li class="flex items-center gap-2">✓ Enlace exclusivo personalizado</li>
 <li class="flex items-center gap-2">✓ Sin comisiones por venta</li>
 </ul>
@@ -220,74 +217,56 @@
 </section>
 <!-- END: VIEW 1 -->
 <!-- ========================================================================= -->
-<!-- BEGIN: VIEW 2 - PUBLIC STOREFRONT (VITRINA DINÁMICA POR TIENDA)          -->
+<!-- BEGIN: VIEW 2 - PUBLIC STOREFRONT (CATÁLOGO DIGITAL E-COMMERCE LIMPIO)   -->
 <!-- ========================================================================= -->
-<section class="hidden max-w-md mx-auto space-y-5" data-purpose="public-storefront" id="view-store">
-<!-- Breadcrumb back -->
+<section class="hidden max-w-lg mx-auto space-y-4" data-purpose="public-storefront" id="view-store">
+<!-- Top Controls: Volver & Compartir -->
 <div class="flex items-center justify-between text-xs px-1">
-<button class="text-slate-600 hover:text-emerald-700 font-semibold flex items-center gap-1" onclick="navigateTo('landing')">
-        ← Volver a ToqueCatálogo
-      </button>
-<span class="text-slate-400 font-mono text-[10px]" id="store-slug-badge">toquecatalogo.pages.dev/?tienda=...</span>
+<button class="text-slate-600 hover:text-emerald-700 font-semibold flex items-center gap-1.5 py-1 px-2 rounded-lg hover:bg-slate-200/60 transition" onclick="navigateTo('landing')">
+<span>←</span> Volver a ToqueCatálogo
+</button>
+<button class="text-emerald-700 bg-emerald-50 border border-emerald-200 hover:bg-emerald-100 font-semibold px-2.5 py-1 rounded-lg flex items-center gap-1 transition" onclick="shareStoreUrl()">
+<span>🔗</span> Compartir Catálogo
+</button>
 </div>
-<!-- Store Header Card -->
-<div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm text-center space-y-4">
-<div class="flex justify-center">
-<div class="relative">
-<img alt="Store Logo" class="w-24 h-24 rounded-full object-cover border-4 border-slate-100 shadow-sm" id="sf-store-logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAg0SPFzwXz4D0TqTWFUnMhvM2azJlB3nK4zWl3wQqifK1Kkr6QV9ZhSjttbGAxNTsg1kg2N89vDS9Xem-bMpKJHlDFyk3frNOrlw7iTLw6xc_QMHs2a0zifqJeAvnsJZ9qYvTgazi6c5Dugj4LZF76h3Izv3TP9ezhXrnCb9QyJ3_oiw2xykn6jeirmW2BzAwSNljrbrMZLYOBh6YTGM7zrcqRN8bXPGlimppGete-UwfI3JpkrOpqO_v9q0VuE3mOxA"/>
-<span class="absolute bottom-1 right-1 bg-emerald-500 text-white rounded-full p-1 shadow" title="Comercio Verificado">
+<!-- Store Clean E-Commerce Header -->
+<div class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm space-y-4">
+<div class="flex items-center gap-4">
+<div class="relative flex-shrink-0">
+<img alt="Store Logo" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-slate-100 shadow-xs" id="sf-store-logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAg0SPFzwXz4D0TqTWFUnMhvM2azJlB3nK4zWl3wQqifK1Kkr6QV9ZhSjttbGAxNTsg1kg2N89vDS9Xem-bMpKJHlDFyk3frNOrlw7iTLw6xc_QMHs2a0zifqJeAvnsJZ9qYvTgazi6c5Dugj4LZF76h3Izv3TP9ezhXrnCb9QyJ3_oiw2xykn6jeirmW2BzAwSNljrbrMZLYOBh6YTGM7zrcqRN8bXPGlimppGete-UwfI3JpkrOpqO_v9q0VuE3mOxA"/>
+<span class="absolute -bottom-1 -right-1 bg-emerald-600 text-white rounded-full p-0.5 shadow" title="Comercio Verificado">
 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path></svg>
 </span>
 </div>
+<div class="min-w-0 flex-1">
+<div class="flex items-center gap-1.5 flex-wrap">
+<h2 class="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight truncate" id="sf-store-name">KSLR 1609</h2>
+<span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold border border-emerald-200">Abierto</span>
 </div>
-<div>
-<h2 class="text-xl font-extrabold text-slate-900 tracking-tight" id="sf-store-name">KSLR 1609</h2>
-<p class="text-xs font-semibold text-emerald-600 tracking-wide uppercase mt-0.5" id="sf-store-category">Accesorios Importados</p>
-<p class="text-[11px] text-slate-400 font-medium tracking-wider uppercase mt-0.5" id="sf-store-location">Caracas, Venezuela</p>
-</div>
-<!-- Social & Direct Contact Buttons -->
-<div class="space-y-2 pt-1">
-<a class="w-full py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-semibold text-xs tracking-wide flex items-center justify-center gap-2 shadow-sm transition" href="#" id="sf-wa-link" target="_blank">
-<span>💬</span> WhatsApp Directo (<span id="sf-phone-display">0412-6732004</span>)
-        </a>
-</div>
-<!-- Pago Movil Quick Section -->
-<div class="pt-2 border-t border-slate-100 space-y-2.5 text-left">
-<div class="text-center">
-<span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Datos Oficiales de Pago Móvil</span>
-</div>
-<!-- BDV Direct Link Button -->
-<a class="w-full py-2 px-4 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-semibold text-xs flex items-center justify-center gap-2 shadow-xs transition" href="https://bdvenlinea.banvenez.com" target="_blank">
-<span>📲</span> Abrir BDV en Línea
-        </a>
-<!-- Bank Details Copy Tiles -->
-<div class="space-y-1.5 text-xs">
-<div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
-<span class="text-slate-700 font-medium">Banco: <strong id="sf-bank-display">0102 - BDV</strong></span>
-<button class="text-slate-500 hover:text-slate-900 font-semibold text-[11px] bg-white px-2 py-1 rounded border border-slate-200 shadow-2xs" onclick="copyDynamicField('sf-bank-display', 'Banco copiado')">Copiar</button>
-</div>
-<div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
-<span class="text-slate-700 font-medium">Cédula: <strong id="sf-id-display">V-32446771</strong></span>
-<button class="text-slate-500 hover:text-slate-900 font-semibold text-[11px] bg-white px-2 py-1 rounded border border-slate-200 shadow-2xs" onclick="copyDynamicField('sf-id-display', 'Cédula copiada')">Copiar</button>
-</div>
-<div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
-<span class="text-slate-700 font-medium">Teléfono: <strong id="sf-pm-phone-display">0412-6732004</strong></span>
-<button class="text-slate-500 hover:text-slate-900 font-semibold text-[11px] bg-white px-2 py-1 rounded border border-slate-200 shadow-2xs" onclick="copyDynamicField('sf-pm-phone-display', 'Teléfono copiado')">Copiar</button>
+<p class="text-xs font-semibold text-emerald-700 mt-0.5 truncate" id="sf-store-category">Accesorios Importados</p>
+<div class="flex items-center gap-3 text-[11px] text-slate-500 mt-1 flex-wrap">
+<span class="flex items-center gap-1">📍 <span id="sf-store-location">Caracas, Venezuela</span></span>
+<span class="flex items-center gap-1">🕒 9:00 AM - 6:00 PM</span>
 </div>
 </div>
-<button class="w-full py-2 rounded-xl border border-dashed border-emerald-500 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-semibold flex items-center justify-center gap-1.5 transition" onclick="copyActiveStorePaymentData()">
-          📋 Copiar todos los datos de Pago Móvil
-        </button>
+</div>
+<!-- Search & Category Filters -->
+<div class="pt-2 border-t border-slate-100 space-y-2.5">
+<div class="relative">
+<input class="w-full text-xs rounded-xl border border-slate-200 bg-slate-50 pl-8 pr-3 py-2 text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-emerald-600" id="sf-search-input" oninput="filterStorefrontProducts()" placeholder="Buscar producto en el catálogo..." type="text"/>
+<span class="absolute left-2.5 top-2.5 text-slate-400 text-xs">🔍</span>
+</div>
+<div class="flex items-center gap-1.5 overflow-x-auto hide-scrollbar pb-0.5" id="sf-category-chips">
+<!-- Injected by JavaScript -->
 </div>
 </div>
-<!-- Catalog Header and Category Filter -->
-<div class="space-y-3">
+</div>
+<!-- Catalog Count and List Header -->
 <div class="flex items-center justify-between px-1">
-<h3 class="text-sm font-bold uppercase tracking-wider text-slate-700">Artículos Disponibles</h3>
-<span class="text-xs text-slate-500" id="sf-items-count-badge">0 disponibles</span>
+<h3 class="text-xs font-bold uppercase tracking-wider text-slate-600">Artículos Disponibles</h3>
+<span class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200" id="sf-items-count-badge">0 disponibles</span>
 </div>
-</div>
-<!-- Products Grid -->
+<!-- Products List Grid -->
 <div class="space-y-3" id="sf-products-container">
 <!-- Rendered dynamically by JavaScript -->
 </div>
@@ -383,7 +362,7 @@
 <div class="flex items-center justify-between">
 <div>
 <h3 class="text-base font-bold text-slate-900">Tus Datos de Cobro (Pago Móvil &amp; Contacto)</h3>
-<p class="text-xs text-slate-500">Estos son los datos que verán tus clientes al finalizar su pedido</p>
+<p class="text-xs text-slate-500">Estos datos solo se utilizarán en el Checkout cuando el cliente confirme su compra</p>
 </div>
 <button class="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition" onclick="saveActiveStorePaymentSettings()">
           💾 Guardar Cambios
@@ -503,7 +482,7 @@
 <span class="text-xs text-slate-400">admin@toquecatalogo.com</span>
 </div>
 <h2 class="text-xl font-bold mt-1">SuperAdmin Maestro - ToqueCatálogo</h2>
-<p class="text-xs text-slate-400">Consolidado general de tiendas suscritas, concilación de $5 y auditoría SaaS</p>
+<p class="text-xs text-slate-400">Consolidado general de tiendas suscritas, conciliación real y auditoría SaaS</p>
 </div>
 <div class="flex items-center gap-2">
 <button class="px-3.5 py-1.5 rounded-xl bg-rose-900/40 text-rose-300 border border-rose-800 hover:bg-rose-900/70 text-xs font-bold transition" onclick="handleLogout()">
@@ -511,7 +490,7 @@
         </button>
 </div>
 </div>
-<!-- Master KPI Metrics -->
+<!-- Master KPI Metrics (Init at $0.00 / Sin saldos falsos) -->
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
 <div class="bg-white p-4 rounded-xl border border-slate-200">
 <p class="text-xs text-slate-500 font-medium">Tiendas Totales en Plataforma</p>
@@ -520,8 +499,8 @@
 </div>
 <div class="bg-white p-4 rounded-xl border border-slate-200">
 <p class="text-xs text-slate-500 font-medium">Ingresos Totales Conciliados</p>
-<p class="text-2xl font-bold text-emerald-600 mt-1" id="admin-total-revenue">$240.00 USD</p>
-<span class="text-[11px] text-slate-500 font-medium">85% Pago Móvil / 15% Binance</span>
+<p class="text-2xl font-bold text-emerald-600 mt-1" id="admin-total-revenue">$0.00 USD</p>
+<span class="text-[11px] text-slate-500 font-medium" id="admin-total-revenue-bs">≈ Bs. 0,00</span>
 </div>
 <div class="bg-white p-4 rounded-xl border border-slate-200">
 <p class="text-xs text-slate-500 font-medium">Comprobantes por Conciliar</p>
@@ -580,8 +559,8 @@
 <!-- END: VIEW 5 -->
 </main>
 <!-- BEGIN: Floating Store Cart Bar (Only appears in Store view if cart has items) -->
-<div class="fixed bottom-4 inset-x-4 max-w-md mx-auto z-40 hidden transition-all duration-300" id="floating-cart-bar">
-<button class="w-full bg-slate-900 text-white py-3.5 px-5 rounded-2xl shadow-xl flex items-center justify-between font-semibold text-sm hover:bg-slate-800 active:scale-[0.99] transition" onclick="openCheckoutModal()">
+<div class="fixed bottom-4 inset-x-3 sm:inset-x-4 max-w-md mx-auto z-40 hidden transition-all duration-300" id="floating-cart-bar">
+<button class="w-full bg-slate-900 text-white py-3.5 px-4 sm:px-5 rounded-2xl shadow-xl flex items-center justify-between font-semibold text-sm hover:bg-slate-800 active:scale-[0.99] transition border border-slate-700" onclick="openCheckoutModal()">
 <div class="flex items-center gap-2.5">
 <span class="w-6 h-6 rounded-full bg-emerald-500 text-slate-950 font-extrabold text-xs flex items-center justify-center" id="cart-items-count">0</span>
 <span>Ver mi pedido</span>
@@ -596,7 +575,7 @@
 <!-- ========================================================================= -->
 <!-- BEGIN: MODALS                                                             -->
 <!-- ========================================================================= -->
-<!-- 1. AUTH MODAL (Unified Login & Register with Role Detection) -->
+<!-- 1. AUTH MODAL (Clean - Without Public Demo Credentials) -->
 <div class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden items-center justify-center p-4" id="modal-auth">
 <div class="bg-white rounded-3xl max-w-md w-full overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-200">
 <!-- Modal Header Tabs -->
@@ -607,13 +586,13 @@
 <button class="flex-1 py-3.5 text-center text-xs font-bold text-slate-500 hover:text-slate-800 bg-white" id="auth-tab-register" onclick="switchAuthTab('register')">
         Crear mi Tienda
       </button>
-<button class="px-4 text-slate-400 hover:text-slate-600 font-bold" onclick="toggleModal('modal-auth')">✕</button>
+<button class="px-4 text-slate-400 hover:text-slate-600 font-bold text-sm" onclick="toggleModal('modal-auth')">✕</button>
 </div>
 <!-- Login Tab Content -->
 <div class="p-6 space-y-4" id="auth-pane-login">
 <div class="text-center space-y-1">
 <h3 class="text-lg font-bold text-slate-900">Acceso a tu Cuenta</h3>
-<p class="text-xs text-slate-500">Ingresa como Comercio o Super Administrador</p>
+<p class="text-xs text-slate-500">Ingresa como Comercio o Administrador</p>
 </div>
 <form class="space-y-3.5 text-xs" onsubmit="handleLoginSubmit(event)">
 <div>
@@ -628,18 +607,6 @@
           Ingresar al Panel
         </button>
 </form>
-<!-- Quick Demo Credentials helper for testers -->
-<div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-[11px] text-slate-600 space-y-1.5">
-<span class="font-bold text-slate-800 block">💡 Cuentas Demo para probar:</span>
-<div class="flex items-center justify-between">
-<span>Tienda Demo: <strong>kslr@gmail.com</strong> / 123456</span>
-<button class="text-emerald-700 font-bold underline" onclick="fillDemoCredentials('kslr@gmail.com', '123456')">Usar</button>
-</div>
-<div class="flex items-center justify-between border-t border-slate-200 pt-1">
-<span>SuperAdmin: <strong>admin@toquecatalogo.com</strong> / admin123</span>
-<button class="text-purple-700 font-bold underline" onclick="fillDemoCredentials('admin@toquecatalogo.com', 'admin123')">Usar</button>
-</div>
-</div>
 </div>
 <!-- Register Tab Content -->
 <div class="p-6 space-y-4 hidden" id="auth-pane-register">
@@ -702,37 +669,57 @@
 </div>
 </div>
 </div>
-<!-- 2. Modal: Cargar Nuevo Producto (Seller Panel) -->
+<!-- 2. Modal: Cargar Nuevo Producto (Con Carga Real de Imagen & Vista Previa) -->
 <div class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden items-center justify-center p-4" id="modal-add-product">
-<div class="bg-white rounded-3xl max-w-md w-full p-5 space-y-4 shadow-2xl">
-<div class="flex items-center justify-between border-b border-slate-100 pb-3">
+<div class="bg-white rounded-3xl max-w-md w-full max-h-[92vh] flex flex-col overflow-hidden shadow-2xl">
+<div class="p-4 border-b border-slate-100 flex items-center justify-between">
 <h3 class="font-bold text-slate-900 text-sm">Cargar Nuevo Producto</h3>
-<button class="w-7 h-7 rounded-full bg-slate-100 text-slate-500 font-bold" onclick="toggleModal('modal-add-product')">✕</button>
+<button class="w-7 h-7 rounded-full bg-slate-100 text-slate-500 font-bold hover:bg-slate-200" onclick="toggleModal('modal-add-product')">✕</button>
 </div>
-<form class="space-y-3 text-xs" onsubmit="handleCreateProduct(event)">
+<form class="p-4 sm:p-5 overflow-y-auto space-y-3.5 text-xs" onsubmit="handleCreateProduct(event)">
+<!-- Image Uploader Box -->
+<div>
+<label class="block font-semibold text-slate-700 mb-1.5">Foto del Producto</label>
+<div class="relative border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-2xl p-3 bg-slate-50 text-center transition flex flex-col items-center justify-center cursor-pointer group" onclick="document.getElementById('productImageInput').click()">
+<div class="w-24 h-24 rounded-xl overflow-hidden bg-slate-200 border border-slate-300 flex items-center justify-center relative mb-2" id="prod-img-preview-box">
+<img alt="Preview" class="w-full h-full object-cover hidden" id="prod-img-preview"/>
+<div class="text-center p-2 text-slate-400 group-hover:text-emerald-600 transition" id="prod-img-placeholder">
+<span class="text-2xl block">📸</span>
+<span class="text-[10px] font-medium leading-tight block mt-1">Toca para elegir</span>
+</div>
+</div>
+<span class="text-xs font-bold text-emerald-700 group-hover:underline">Subir foto del producto / Cambiar imagen</span>
+<p class="text-[10px] text-slate-400 mt-0.5">JPG, PNG o WebP desde tu galería o cámara</p>
+<input accept="image/*" class="sr-only" id="productImageInput" onchange="handleProductImageSelect(event)" type="file"/>
+</div>
+<div class="mt-1.5 flex items-center gap-1.5">
+<input class="w-full text-[11px] rounded-lg border-slate-200 bg-white p-1.5 text-slate-600" id="new-prod-image-url" placeholder="O pega un link directo de imagen (opcional)" type="url"/>
+<button class="px-2 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg text-[10px] whitespace-nowrap" onclick="applyImageUrlPreview()" type="button">Ver</button>
+</div>
+</div>
 <div>
 <label class="block font-semibold text-slate-700 mb-1">Nombre del Producto</label>
-<input class="w-full rounded-xl border-slate-300 text-xs p-2.5" id="new-prod-title" placeholder="Ej: Lentes de Sol Polarizados" required="" type="text"/>
+<input class="w-full rounded-xl border-slate-300 text-xs p-2.5 focus:border-emerald-500 focus:ring-emerald-500" id="new-prod-title" placeholder="Ej: Lentes de Sol Polarizados" required="" type="text"/>
 </div>
 <div class="grid grid-cols-2 gap-2">
 <div>
 <label class="block font-semibold text-slate-700 mb-1">Precio ($ USD)</label>
-<input class="w-full rounded-xl border-slate-300 text-xs p-2.5" id="new-prod-price" placeholder="25.00" required="" step="0.5" type="number"/>
+<input class="w-full rounded-xl border-slate-300 text-xs p-2.5 focus:border-emerald-500 focus:ring-emerald-500" id="new-prod-price" placeholder="25.00" required="" step="0.5" type="number"/>
 </div>
 <div>
 <label class="block font-semibold text-slate-700 mb-1">Categoría</label>
-<input class="w-full rounded-xl border-slate-300 text-xs p-2.5" id="new-prod-cat" placeholder="General, Ropa, etc." required="" type="text" value="General"/>
+<input class="w-full rounded-xl border-slate-300 text-xs p-2.5 focus:border-emerald-500 focus:ring-emerald-500" id="new-prod-cat" placeholder="General, Ropa, etc." required="" type="text" value="General"/>
 </div>
 </div>
 <div>
 <label class="block font-semibold text-slate-700 mb-1">Stock Disponible</label>
-<input class="w-full rounded-xl border-slate-300 text-xs p-2.5" id="new-prod-stock" type="number" value="5"/>
+<input class="w-full rounded-xl border-slate-300 text-xs p-2.5 focus:border-emerald-500 focus:ring-emerald-500" id="new-prod-stock" min="1" type="number" value="5"/>
 </div>
 <div>
 <label class="block font-semibold text-slate-700 mb-1">Descripción corta</label>
-<textarea class="w-full rounded-xl border-slate-300 text-xs p-2" id="new-prod-desc" placeholder="Breve detalle del producto..." rows="2"></textarea>
+<textarea class="w-full rounded-xl border-slate-300 text-xs p-2.5 focus:border-emerald-500 focus:ring-emerald-500" id="new-prod-desc" placeholder="Breve detalle del producto..." rows="2"></textarea>
 </div>
-<button class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs mt-2 transition" type="submit">
+<button class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs mt-2 shadow-md transition" type="submit">
         Guardar y Publicar en Vitrina
       </button>
 </form>
@@ -783,10 +770,10 @@
 <!-- Web Payment Direct panel -->
 <div class="hidden space-y-2.5 p-3.5 rounded-2xl bg-cyan-50 border border-cyan-200" id="web-bdv-report-panel">
 <div class="flex items-center justify-between">
-<span class="font-bold text-cyan-900">Datos Pago Móvil</span>
+<span class="font-bold text-cyan-900">Datos Pago Móvil del Comercio</span>
 <button class="text-[11px] text-cyan-700 font-bold underline" onclick="copyActiveStorePaymentData()" type="button">Copiar Todo</button>
 </div>
-<p class="text-[11px] text-cyan-800" id="checkout-pm-summary">Banco • Cédula • Teléfono</p>
+<p class="text-[11px] text-cyan-800 font-medium" id="checkout-pm-summary">Banco • Cédula • Teléfono</p>
 <input class="w-full text-xs rounded-xl border-cyan-300 bg-white p-2" id="bdv-order-ref" placeholder="Número de Referencia Pago Móvil" type="text"/>
 </div>
 </div>
@@ -806,6 +793,7 @@
   const STORAGE_KEY_AUTH = 'toque_current_auth_v1';
   const STORAGE_KEY_RATE = 'toque_bcv_rate_v1';
   const STORAGE_KEY_PAYMENTS = 'toque_admin_payments_v1';
+  const STORAGE_KEY_REVENUE = 'toque_admin_revenue_v1';
 
   let exchangeRate = parseFloat(localStorage.getItem(STORAGE_KEY_RATE)) || 48.20;
 
@@ -842,7 +830,7 @@
           priceUsd: 15.00,
           stock: 12,
           desc: "Aluminio aeroespacial con protección contra escaneo.",
-          image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAg0SPFzwXz4D0TqTWFUnMhvM2azJlB3nK4zWl3wQqifK1Kkr6QV9ZhSjttbGAxNTsg1kg2N89vDS9Xem-bMpKJHlDFyk3frNOrlw7iTLw6xc_QMHs2a0zifqJeAvnsJZ9qYvTgazi6c5Dugj4LZF76h3Izv3TP9ezhXrnCb9QyJ3_oiw2xykn6jeirmW2BzAwSNljrbrMZLYOBh6YTGM7zrcqRN8bXPGlimppGete-UwfI3JpkrOpqO_v9q0VuE3mOxA"
+          image: "https://images.unsplash.com/photo-1627123424574-724758594e93?w=300&auto=format&fit=crop&q=60"
         },
         {
           id: 103,
@@ -851,7 +839,7 @@
           priceUsd: 28.00,
           stock: 4,
           desc: "Cancelación activa de ruido y estuche de carga rápida.",
-          image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAg0SPFzwXz4D0TqTWFUnMhvM2azJlB3nK4zWl3wQqifK1Kkr6QV9ZhSjttbGAxNTsg1kg2N89vDS9Xem-bMpKJHlDFyk3frNOrlw7iTLw6xc_QMHs2a0zifqJeAvnsJZ9qYvTgazi6c5Dugj4LZF76h3Izv3TP9ezhXrnCb9QyJ3_oiw2xykn6jeirmW2BzAwSNljrbrMZLYOBh6YTGM7zrcqRN8bXPGlimppGete-UwfI3JpkrOpqO_v9q0VuE3mOxA"
+          image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=300&auto=format&fit=crop&q=60"
         }
       ]
     },
@@ -877,7 +865,7 @@
           priceUsd: 45.00,
           stock: 8,
           desc: "Zapatillas urbanas suela alta confort.",
-          image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=150&auto=format&fit=crop&q=60"
+          image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=300&auto=format&fit=crop&q=60"
         }
       ]
     },
@@ -903,18 +891,13 @@
           priceUsd: 8.50,
           stock: 15,
           desc: "Tostado medio origen Caripe.",
-          image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=150&auto=format&fit=crop&q=60"
+          image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=300&auto=format&fit=crop&q=60"
         }
       ]
     }
   ];
 
-  const DEFAULT_PAYMENTS = [
-    { id: 'p1', storeId: 'kslr1609', storeName: 'KSLR 1609', method: 'Pago Móvil BDV', ref: '849201', amount: 5.00, date: 'Hoy 10:24 AM' },
-    { id: 'p2', storeId: 'modaexpress', storeName: 'Moda Express CCS', method: 'Binance USDT', ref: 'Tx#9948210', amount: 13.00, date: 'Ayer 04:12 PM' }
-  ];
-
-  // Load / Save Helpers
+  // Store & Payments Data Access
   function getStores() {
     const raw = localStorage.getItem(STORAGE_KEY_STORES);
     if (!raw) {
@@ -931,14 +914,26 @@
   function getPaymentsQueue() {
     const raw = localStorage.getItem(STORAGE_KEY_PAYMENTS);
     if (!raw) {
-      localStorage.setItem(STORAGE_KEY_PAYMENTS, JSON.stringify(DEFAULT_PAYMENTS));
-      return DEFAULT_PAYMENTS;
+      localStorage.setItem(STORAGE_KEY_PAYMENTS, JSON.stringify([]));
+      return [];
     }
-    try { return JSON.parse(raw); } catch (e) { return DEFAULT_PAYMENTS; }
+    try { return JSON.parse(raw); } catch (e) { return []; }
   }
 
   function savePaymentsQueue(q) {
     localStorage.setItem(STORAGE_KEY_PAYMENTS, JSON.stringify(q));
+  }
+
+  function getSuperAdminRevenue() {
+    const raw = localStorage.getItem(STORAGE_KEY_REVENUE);
+    return raw ? parseFloat(raw) : 0.00;
+  }
+
+  function addSuperAdminRevenue(amount) {
+    const current = getSuperAdminRevenue();
+    const updated = current + amount;
+    localStorage.setItem(STORAGE_KEY_REVENUE, updated.toFixed(2));
+    return updated;
   }
 
   function getCurrentAuth() {
@@ -960,6 +955,8 @@
   let activeStorefrontId = 'kslr1609';
   let cart = [];
   let activeCheckoutMode = 'whatsapp';
+  let activeCategoryFilter = 'all';
+  let currentProductImageBase64 = null;
 
   function formatBs(usdAmount) {
     const bs = usdAmount * exchangeRate;
@@ -973,13 +970,15 @@
       localStorage.setItem(STORAGE_KEY_RATE, exchangeRate);
       document.getElementById('global-rate-display').textContent = `Bs. ${exchangeRate.toFixed(2)}`;
       showToast(`Tasa BCV actualizada a Bs. ${exchangeRate.toFixed(2)}`);
-      // Re-render
       renderPublicDirectory();
       if (!document.getElementById('view-store').classList.contains('hidden')) {
         renderStorefrontProducts(activeStorefrontId);
       }
       if (!document.getElementById('view-seller').classList.contains('hidden')) {
         renderSellerDashboard();
+      }
+      if (!document.getElementById('view-superadmin').classList.contains('hidden')) {
+        renderSuperAdminDashboard();
       }
     }
   }
@@ -1016,44 +1015,49 @@
     }, 100);
   }
 
+  // Share store link
+  function shareStoreUrl() {
+    const url = `https://toquecatalogo.pages.dev/?tienda=${activeStorefrontId}`;
+    copyToClipboard(url, "Enlace copiado");
+  }
+
   // Update Nav Bar state based on authentication
   function updateNavAuthUI() {
     const auth = getCurrentAuth();
     const container = document.getElementById('nav-user-container');
+    if (!container) return;
     container.innerHTML = '';
 
     if (!auth) {
-      // Guest
+      // Guest: Compact mobile buttons to avoid overflow
       container.innerHTML = `
-        <button onclick="openAuthModal('login')" class="px-3 py-1.5 rounded-lg text-slate-700 font-bold hover:bg-slate-100 border border-slate-200 transition whitespace-nowrap">
+        <button onclick="openAuthModal('login')" class="px-2 sm:px-3 py-1.5 rounded-lg text-slate-700 font-bold hover:bg-slate-100 border border-slate-200 transition whitespace-nowrap text-[11px] sm:text-xs">
           Iniciar Sesión
         </button>
-        <button onclick="openAuthModal('register')" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition shadow-xs whitespace-nowrap">
-          Crear mi Tienda
+        <button onclick="openAuthModal('register')" class="px-2.5 sm:px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition shadow-xs whitespace-nowrap text-[11px] sm:text-xs">
+          Crear Tienda
         </button>
       `;
     } else if (auth.role === 'superadmin') {
-      // SuperAdmin logged in
       container.innerHTML = `
-        <div class="flex items-center gap-2">
-          <button onclick="navigateTo('superadmin')" class="px-3 py-1.5 rounded-lg bg-purple-50 text-purple-700 border border-purple-200 font-bold hover:bg-purple-100 transition whitespace-nowrap">
-            🛡️ SuperAdmin
+        <div class="flex items-center gap-1 sm:gap-2">
+          <button onclick="navigateTo('superadmin')" class="px-2.5 py-1.5 rounded-lg bg-purple-50 text-purple-700 border border-purple-200 font-bold hover:bg-purple-100 transition whitespace-nowrap text-[11px] sm:text-xs">
+            🛡️ Admin
           </button>
-          <button onclick="handleLogout()" class="px-2.5 py-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 font-bold text-xs transition">
+          <button onclick="handleLogout()" class="px-2 py-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 font-bold text-xs transition">
             Salir
           </button>
         </div>
       `;
     } else if (auth.role === 'seller') {
-      // Seller logged in
       const stores = getStores();
       const currentStore = stores.find(s => s.id === auth.storeId) || { name: 'Mi Tienda' };
       container.innerHTML = `
-        <div class="flex items-center gap-1.5">
-          <button onclick="navigateTo('seller'); renderSellerDashboard();" class="px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold hover:bg-emerald-100 transition whitespace-nowrap flex items-center gap-1.5">
-            <span>📦</span> ${currentStore.name}
+        <div class="flex items-center gap-1 sm:gap-1.5">
+          <button onclick="navigateTo('seller'); renderSellerDashboard();" class="px-2.5 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold hover:bg-emerald-100 transition whitespace-nowrap flex items-center gap-1 text-[11px] sm:text-xs max-w-[130px] sm:max-w-none truncate">
+            <span>📦</span> <span class="truncate">${currentStore.name}</span>
           </button>
-          <button onclick="handleLogout()" class="px-2.5 py-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 font-bold text-xs transition" title="Cerrar Sesión">
+          <button onclick="handleLogout()" class="px-2 py-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 font-bold text-xs transition" title="Cerrar Sesión">
             Salir
           </button>
         </div>
@@ -1065,7 +1069,8 @@
   function openAuthModal(tab = 'login', defaultPlan = 'gratis') {
     switchAuthTab(tab);
     if (defaultPlan === 'pro') {
-      document.querySelector('input[name="reg-plan-choice"][value="pro"]').checked = true;
+      const proRadio = document.querySelector('input[name="reg-plan-choice"][value="pro"]');
+      if (proRadio) proRadio.checked = true;
       togglePlanRadioStyle();
     }
     toggleModal('modal-auth');
@@ -1091,7 +1096,9 @@
   }
 
   function togglePlanRadioStyle() {
-    const selected = document.querySelector('input[name="reg-plan-choice"]:checked').value;
+    const selectedRadio = document.querySelector('input[name="reg-plan-choice"]:checked');
+    if (!selectedRadio) return;
+    const selected = selectedRadio.value;
     const lblFree = document.getElementById('lbl-plan-free');
     const lblPro = document.getElementById('lbl-plan-pro');
 
@@ -1102,12 +1109,6 @@
       lblFree.className = "p-2.5 border-2 border-emerald-500 bg-emerald-50/50 rounded-xl flex flex-col cursor-pointer";
       lblPro.className = "p-2.5 border border-slate-300 bg-white rounded-xl flex flex-col cursor-pointer";
     }
-  }
-
-  function fillDemoCredentials(email, pass) {
-    document.getElementById('login-email').value = email;
-    document.getElementById('login-pass').value = pass;
-    showToast("Credenciales cargadas. Haz clic en 'Ingresar'.");
   }
 
   function handleLoginSubmit(e) {
@@ -1136,7 +1137,7 @@
       navigateTo('seller');
       showToast(`Bienvenido a tu panel: ${store.name}`);
     } else {
-      alert("Credenciales incorrectas.\n\nPuedes probar con:\n- Tienda: kslr@gmail.com / 123456\n- SuperAdmin: admin@toquecatalogo.com / admin123");
+      alert("Credenciales incorrectas. Verifica tu correo y contraseña.");
     }
   }
 
@@ -1150,7 +1151,6 @@
     const plan = document.querySelector('input[name="reg-plan-choice"]:checked').value;
 
     const stores = getStores();
-    // Check if email already exists
     if (stores.some(s => s.email.toLowerCase() === email)) {
       alert("Este correo ya está registrado. Por favor inicia sesión.");
       switchAuthTab('login');
@@ -1178,7 +1178,6 @@
     stores.unshift(newStore);
     saveStores(stores);
 
-    // Auto login
     setAuthSession({ role: 'seller', storeId: newStore.id, email: newStore.email });
     toggleModal('modal-auth');
     renderPublicDirectory();
@@ -1210,7 +1209,7 @@
       card.className = "bg-white border border-slate-200 rounded-2xl p-4 shadow-xs hover:shadow-md transition space-y-3";
       card.innerHTML = `
         <div class="flex items-center gap-3">
-          <img src="${st.logo}" alt="${st.name}" class="w-12 h-12 rounded-full object-cover border border-slate-200">
+          <img src="${st.logo}" alt="${st.name}" class="w-12 h-12 rounded-full object-cover border border-slate-200 flex-shrink-0">
           <div class="min-w-0 flex-1">
             <h4 class="font-bold text-slate-900 leading-tight truncate">${st.name}</h4>
             <p class="text-xs text-slate-500 truncate">${st.category}</p>
@@ -1226,31 +1225,65 @@
     });
   }
 
-  // Public Storefront Rendering
+  // Public Storefront Rendering (Pure Digital E-commerce, Clean Profile)
   function previewStorefront(storeId) {
     const stores = getStores();
     const st = stores.find(s => s.id === storeId) || stores[0];
     if (!st) return;
 
     activeStorefrontId = st.id;
-    cart = []; // Reset cart for this storefront
+    activeCategoryFilter = 'all';
+    cart = [];
     updateCartUI();
 
     document.getElementById('sf-store-logo').src = st.logo;
     document.getElementById('sf-store-name').textContent = st.name;
     document.getElementById('sf-store-category').textContent = st.category;
-    document.getElementById('sf-store-location').textContent = st.location || 'Venezuela';
-    document.getElementById('sf-phone-display').textContent = st.phone || '0412-0000000';
-    document.getElementById('sf-wa-link').href = `https://wa.me/58${(st.phone || '').replace(/[^0-9]/g, '').slice(-10)}`;
+    document.getElementById('sf-store-location').textContent = st.location || 'Caracas, Venezuela';
 
-    document.getElementById('sf-bank-display').textContent = st.bankName || '0102 - BDV';
-    document.getElementById('sf-id-display').textContent = st.bankId || 'V-00000000';
-    document.getElementById('sf-pm-phone-display').textContent = st.phone || '0412-0000000';
-
-    document.getElementById('store-slug-badge').textContent = `toquecatalogo.pages.dev/?tienda=${st.id}`;
+    // Build Category Chips
+    buildCategoryFilterChips(st.products || []);
+    const searchInput = document.getElementById('sf-search-input');
+    if (searchInput) searchInput.value = '';
 
     renderStorefrontProducts(st.id);
     navigateTo('store');
+  }
+
+  function buildCategoryFilterChips(products) {
+    const chipsContainer = document.getElementById('sf-category-chips');
+    if (!chipsContainer) return;
+    chipsContainer.innerHTML = '';
+
+    const categories = ['all'];
+    products.forEach(p => {
+      if (p.category && !categories.includes(p.category.toLowerCase())) {
+        categories.push(p.category.toLowerCase());
+      }
+    });
+
+    categories.forEach(cat => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      const label = cat === 'all' ? 'Todos' : (cat.charAt(0).toUpperCase() + cat.slice(1));
+      const isActive = activeCategoryFilter === cat;
+      btn.className = `px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition ${
+        isActive 
+          ? 'bg-slate-900 text-white shadow-xs' 
+          : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+      }`;
+      btn.textContent = label;
+      btn.onclick = () => {
+        activeCategoryFilter = cat;
+        buildCategoryFilterChips(products);
+        filterStorefrontProducts();
+      };
+      chipsContainer.appendChild(btn);
+    });
+  }
+
+  function filterStorefrontProducts() {
+    renderStorefrontProducts(activeStorefrontId);
   }
 
   function renderStorefrontProducts(storeId) {
@@ -1260,16 +1293,31 @@
 
     const container = document.getElementById('sf-products-container');
     container.innerHTML = '';
-    const prods = st.products || [];
+    let prods = st.products || [];
+
+    // Filter by search text
+    const searchInput = document.getElementById('sf-search-input');
+    const term = searchInput ? searchInput.value.toLowerCase().trim() : '';
+    if (term) {
+      prods = prods.filter(p => 
+        p.title.toLowerCase().includes(term) || 
+        (p.desc && p.desc.toLowerCase().includes(term))
+      );
+    }
+
+    // Filter by Category
+    if (activeCategoryFilter !== 'all') {
+      prods = prods.filter(p => (p.category || '').toLowerCase() === activeCategoryFilter);
+    }
 
     document.getElementById('sf-items-count-badge').textContent = `${prods.length} disponibles`;
 
     if (prods.length === 0) {
       container.innerHTML = `
         <div class="text-center py-8 bg-white rounded-2xl border border-dashed border-slate-300 p-6 space-y-2">
-          <p class="text-2xl">🛍️</p>
-          <p class="font-bold text-slate-800 text-sm">Esta tienda aún no ha cargado productos</p>
-          <p class="text-xs text-slate-500">Pronto estarán disponibles sus artículos.</p>
+          <p class="text-3xl">🛍️</p>
+          <p class="font-bold text-slate-800 text-sm">No se encontraron productos</p>
+          <p class="text-xs text-slate-500">Pronto agregaremos nuevos artículos en esta categoría.</p>
         </div>
       `;
       return;
@@ -1277,7 +1325,7 @@
 
     prods.forEach(prod => {
       const card = document.createElement('div');
-      card.className = "bg-white rounded-2xl p-3.5 border border-slate-200 shadow-2xs flex gap-3.5 items-center";
+      card.className = "bg-white rounded-2xl p-3.5 border border-slate-200 shadow-2xs flex gap-3.5 items-center hover:border-slate-300 transition";
       card.innerHTML = `
         <div class="relative w-20 h-20 rounded-xl overflow-hidden bg-slate-100 flex-shrink-0 border border-slate-100">
           <img src="${prod.image}" alt="${prod.title}" class="w-full h-full object-cover">
@@ -1286,9 +1334,9 @@
           </span>
         </div>
         <div class="flex-grow min-w-0">
-          <h4 class="font-bold text-slate-900 text-xs truncate">${prod.title}</h4>
+          <h4 class="font-bold text-slate-900 text-xs sm:text-sm truncate">${prod.title}</h4>
           <p class="text-[11px] text-slate-500 line-clamp-1 mt-0.5">${prod.desc || 'Producto disponible en catálogo'}</p>
-          <div class="mt-1 flex items-baseline gap-1.5">
+          <div class="mt-1 flex items-baseline gap-1.5 flex-wrap">
             <span class="text-sm font-extrabold text-slate-900">$${prod.priceUsd.toFixed(2)}</span>
             <span class="text-[11px] font-semibold text-emerald-600">${formatBs(prod.priceUsd)}</span>
           </div>
@@ -1350,7 +1398,7 @@
     document.getElementById('checkout-total-usd').textContent = `$${totalUsd.toFixed(2)}`;
     document.getElementById('checkout-total-bs').textContent = `${formatBs(totalUsd)} BCV`;
 
-    document.getElementById('checkout-pm-summary').textContent = `${st.bankName} • ${st.bankId} • ${st.phone}`;
+    document.getElementById('checkout-pm-summary').textContent = `Banco: ${st.bankName || 'BDV'} • CI/RIF: ${st.bankId || 'V-0000000'} • Tel: ${st.phone || '0412-0000000'}`;
 
     const listContainer = document.getElementById('checkout-cart-list');
     listContainer.innerHTML = '';
@@ -1359,8 +1407,8 @@
       const row = document.createElement('div');
       row.className = "flex justify-between items-center py-1 text-slate-700";
       row.innerHTML = `
-        <span>${item.quantity}x ${item.title}</span>
-        <span class="font-bold">$${(item.priceUsd * item.quantity).toFixed(2)}</span>
+        <span class="truncate max-w-[200px]">${item.quantity}x ${item.title}</span>
+        <span class="font-bold whitespace-nowrap">$${(item.priceUsd * item.quantity).toFixed(2)}</span>
       `;
       listContainer.appendChild(row);
     });
@@ -1422,13 +1470,8 @@
     const stores = getStores();
     const st = stores.find(s => s.id === activeStorefrontId);
     if (!st) return;
-    const text = `Pago Móvil ${st.name}:\nBanco: ${st.bankName}\nCédula: ${st.bankId}\nTeléfono: ${st.phone}`;
+    const text = `Pago Móvil ${st.name}:\nBanco: ${st.bankName || 'BDV'}\nCédula: ${st.bankId || 'V-0000000'}\nTeléfono: ${st.phone || '04120000000'}`;
     copyToClipboard(text, "Datos de Pago Móvil copiados");
-  }
-
-  function copyDynamicField(elementId, msg) {
-    const text = document.getElementById(elementId).textContent.trim();
-    copyToClipboard(text, msg);
   }
 
   // Seller Dashboard Operations
@@ -1482,8 +1525,8 @@
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td class="py-3 px-3 font-medium text-slate-900 flex items-center gap-2">
-          <img src="${prod.image}" class="w-7 h-7 rounded object-cover border">
-          <span class="truncate max-w-[140px] sm:max-w-xs">${prod.title}</span>
+          <img src="${prod.image}" class="w-8 h-8 rounded-lg object-cover border border-slate-200">
+          <span class="truncate max-w-[140px] sm:max-w-xs font-semibold">${prod.title}</span>
         </td>
         <td class="py-3 px-3 capitalize text-slate-500">${prod.category}</td>
         <td class="py-3 px-3">
@@ -1503,6 +1546,51 @@
     });
   }
 
+  // Handle Product Image Upload & Preview
+  function handleProductImageSelect(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert("Por favor selecciona un archivo de imagen válido.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      currentProductImageBase64 = e.target.result;
+      displayImagePreview(currentProductImageBase64);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function applyImageUrlPreview() {
+    const url = document.getElementById('new-prod-image-url').value.trim();
+    if (url) {
+      currentProductImageBase64 = url;
+      displayImagePreview(url);
+    }
+  }
+
+  function displayImagePreview(imgSrc) {
+    const preview = document.getElementById('prod-img-preview');
+    const placeholder = document.getElementById('prod-img-placeholder');
+    preview.src = imgSrc;
+    preview.classList.remove('hidden');
+    placeholder.classList.add('hidden');
+  }
+
+  function resetImagePreview() {
+    currentProductImageBase64 = null;
+    const preview = document.getElementById('prod-img-preview');
+    const placeholder = document.getElementById('prod-img-placeholder');
+    preview.src = '';
+    preview.classList.add('hidden');
+    placeholder.classList.remove('hidden');
+    document.getElementById('productImageInput').value = '';
+    document.getElementById('new-prod-image-url').value = '';
+  }
+
   function handleCreateProduct(e) {
     e.preventDefault();
     const auth = getCurrentAuth();
@@ -1513,7 +1601,6 @@
     if (storeIdx === -1) return;
 
     const currentProds = stores[storeIdx].products || [];
-    // Plan limitation check (Free plan limited to 2 items)
     if (stores[storeIdx].plan === 'gratis' && currentProds.length >= 2) {
       alert("El Plan Inicial gratuito permite hasta 2 productos. Actualiza al Plan Pro ($5/mes) para productos ilimitados.");
       return;
@@ -1524,6 +1611,10 @@
     const cat = document.getElementById('new-prod-cat').value.trim() || 'General';
     const stock = parseInt(document.getElementById('new-prod-stock').value) || 1;
     const desc = document.getElementById('new-prod-desc').value.trim() || 'Producto en catálogo';
+    const manualUrl = document.getElementById('new-prod-image-url').value.trim();
+
+    // Use uploaded base64 image or manual url or fallback
+    const resolvedImage = currentProductImageBase64 || manualUrl || 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=300&auto=format&fit=crop&q=60';
 
     const newProd = {
       id: Date.now(),
@@ -1532,16 +1623,17 @@
       priceUsd: price,
       stock: stock,
       desc: desc,
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAg0SPFzwXz4D0TqTWFUnMhvM2azJlB3nK4zWl3wQqifK1Kkr6QV9ZhSjttbGAxNTsg1kg2N89vDS9Xem-bMpKJHlDFyk3frNOrlw7iTLw6xc_QMHs2a0zifqJeAvnsJZ9qYvTgazi6c5Dugj4LZF76h3Izv3TP9ezhXrnCb9QyJ3_oiw2xykn6jeirmW2BzAwSNljrbrMZLYOBh6YTGM7zrcqRN8bXPGlimppGete-UwfI3JpkrOpqO_v9q0VuE3mOxA"
+      image: resolvedImage
     };
 
     if (!stores[storeIdx].products) stores[storeIdx].products = [];
     stores[storeIdx].products.unshift(newProd);
     saveStores(stores);
 
+    resetImagePreview();
     renderSellerDashboard();
     toggleModal('modal-add-product');
-    showToast("Producto publicado exitosamente");
+    showToast("Producto publicado exitosamente en tu vitrina");
     e.target.reset();
   }
 
@@ -1611,7 +1703,6 @@
     const storeIdx = stores.findIndex(s => s.id === (auth ? auth.storeId : 'kslr1609'));
     const storeName = storeIdx !== -1 ? stores[storeIdx].name : 'Mi Comercio';
 
-    // Add to SuperAdmin queue
     const queue = getPaymentsQueue();
     queue.unshift({
       id: `p-${Date.now()}`,
@@ -1624,7 +1715,6 @@
     });
     savePaymentsQueue(queue);
 
-    // Apply grace period to store
     if (storeIdx !== -1) {
       stores[storeIdx].plan = 'pro';
       stores[storeIdx].subDays = (stores[storeIdx].subDays || 0) + 30;
@@ -1641,21 +1731,26 @@
     }, 1200);
   }
 
-  // SuperAdmin Operations
+  // SuperAdmin Operations (Starts with $0.00 / Zero Fake Revenue)
   function renderSuperAdminDashboard() {
     const stores = getStores();
     const queue = getPaymentsQueue();
+    const currentRevenue = getSuperAdminRevenue();
 
     document.getElementById('admin-total-stores').textContent = stores.length;
     const activeCount = stores.filter(s => s.subStatus === 'Activa').length;
     document.getElementById('admin-active-breakdown').textContent = `${activeCount} Activas • ${stores.length - activeCount} Vencidas/Prórroga`;
     document.getElementById('admin-pending-count').textContent = queue.length;
 
+    // Zero-base Revenue displays real accumulated verified funds
+    document.getElementById('admin-total-revenue').textContent = `$${currentRevenue.toFixed(2)} USD`;
+    document.getElementById('admin-total-revenue-bs').textContent = `≈ ${formatBs(currentRevenue)}`;
+
     // Render Payments Queue
     const qBody = document.getElementById('admin-payments-queue');
     qBody.innerHTML = '';
     if (queue.length === 0) {
-      qBody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-slate-400">No hay pagos pendientes de conciliar.</td></tr>`;
+      qBody.innerHTML = `<tr><td colspan="5" class="py-5 text-center text-slate-400">No hay pagos pendientes de conciliar.</td></tr>`;
     } else {
       queue.forEach(item => {
         const tr = document.createElement('tr');
@@ -1665,7 +1760,7 @@
           <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-medium">${item.method}</span></td>
           <td class="py-3 px-3 font-mono">$${item.amount.toFixed(2)} (Ref: #${item.ref})</td>
           <td class="py-3 px-3 text-slate-500">${item.date}</td>
-          <td class="py-3 px-3 text-right space-x-1.5">
+          <td class="py-3 px-3 text-right space-x-1.5 whitespace-nowrap">
             <button onclick="approveAdminPayment('${item.id}')" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded text-[11px]">Aprobar</button>
             <button onclick="rejectAdminPayment('${item.id}')" class="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 font-medium rounded text-[11px]">Rechazar</button>
           </td>
@@ -1681,15 +1776,15 @@
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td class="py-3 px-3 font-semibold text-slate-900 flex items-center gap-2">
-          <img src="${st.logo}" class="w-6 h-6 rounded-full object-cover">
-          <span>${st.name}</span>
+          <img src="${st.logo}" class="w-6 h-6 rounded-full object-cover border border-slate-200">
+          <span class="truncate max-w-[120px] sm:max-w-none">${st.name}</span>
         </td>
-        <td class="py-3 px-3 text-slate-600">${st.email}</td>
+        <td class="py-3 px-3 text-slate-600 truncate max-w-[100px] sm:max-w-none">${st.email}</td>
         <td class="py-3 px-3 uppercase font-bold text-[10px]"><span class="px-1.5 py-0.5 rounded ${st.plan === 'pro' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-700'}">${st.plan}</span></td>
         <td class="py-3 px-3">${st.subDays || 0} días</td>
         <td class="py-3 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${st.subStatus === 'Activa' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${st.subStatus || 'Activa'}</span></td>
         <td class="py-3 px-3 text-right">
-          <button onclick="previewStorefront('${st.id}')" class="text-emerald-700 hover:underline font-bold text-[11px] mr-2">Ver Vitrina</button>
+          <button onclick="previewStorefront('${st.id}')" class="text-emerald-700 hover:underline font-bold text-[11px] whitespace-nowrap">Ver Vitrina</button>
         </td>
       `;
       sBody.appendChild(tr);
@@ -1701,7 +1796,9 @@
     const item = queue.find(q => q.id === paymentId);
     if (!item) return;
 
-    // Update store subscription
+    // Add real verified amount to SaaS balance
+    addSuperAdminRevenue(item.amount || 5.00);
+
     const stores = getStores();
     const storeIdx = stores.findIndex(s => s.id === item.storeId);
     if (storeIdx !== -1) {
@@ -1710,11 +1807,10 @@
       saveStores(stores);
     }
 
-    // Remove from queue
     queue = queue.filter(q => q.id !== paymentId);
     savePaymentsQueue(queue);
     renderSuperAdminDashboard();
-    showToast(`Pago aprobado para ${item.storeName}`);
+    showToast(`Pago de $${item.amount.toFixed(2)} conciliado exitosamente`);
   }
 
   function rejectAdminPayment(paymentId) {
@@ -1740,7 +1836,7 @@
     navigator.clipboard.writeText(text).then(() => {
       showToast(customToastMsg || "Copiado al portapapeles");
     }).catch(() => {
-      showToast("Copiado con éxito");
+      showToast(customToastMsg || "Copiado con éxito");
     });
   }
 
@@ -1757,12 +1853,10 @@
 
   // Initial Boot
   document.addEventListener('DOMContentLoaded', () => {
-    // Check if initial stores exist
     getStores();
     renderPublicDirectory();
     updateNavAuthUI();
 
-    // Check if user is already logged in
     const auth = getCurrentAuth();
     if (auth) {
       if (auth.role === 'superadmin') {
